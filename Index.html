@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaoBirds — Prototype</title>
+<style>
+:root{--green:#176b4d;--green2:#22865f;--cream:#f5f7f3;--dark:#17352b;--muted:#6c7b74;--card:#fff;--line:#e3e9e5}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--cream);color:var(--dark)}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.nav{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;gap:26px}
+.logo{font-size:23px;font-weight:800;color:var(--green);display:flex;align-items:center;gap:8px}
+.logo span{font-size:27px}.nav a{color:#40524a;text-decoration:none;font-weight:600;font-size:14px}.nav a:hover{color:var(--green)}
+.spacer{flex:1}.btn{border:0;border-radius:10px;padding:10px 15px;font-weight:700;cursor:pointer}.login{background:#edf4f0;color:var(--green)}
+.hero{background:linear-gradient(135deg,#123e30,#1f7654);color:#fff;padding:70px 20px 76px}
+.hero-inner{max-width:1180px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:12px;opacity:.75}
+h1{font-size:52px;line-height:1.02;margin:12px 0}.hero p{font-size:18px;max-width:600px;color:#dbeae3}
+.search{display:flex;max-width:650px;background:#fff;border-radius:14px;padding:6px;margin-top:28px;box-shadow:0 10px 30px #08291d55}
+.search input{flex:1;border:0;outline:0;padding:13px;font-size:15px}.search button{background:var(--green2);color:white;border-radius:10px}
+main{max-width:1180px;margin:auto;padding:34px 20px 70px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:18px 0}.section-head h2{margin:0;font-size:25px}.muted{color:var(--muted);font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 3px 12px #183d2b0a}.bird-img{height:155px;background:linear-gradient(135deg,#d9e8de,#b8d0c1);display:flex;align-items:center;justify-content:center;font-size:60px}.card-body{padding:15px}.card h3{margin:0 0 5px;font-size:17px}.latin{font-style:italic;color:var(--muted);font-size:13px}.tag{display:inline-block;background:#eaf4ef;color:var(--green);font-size:11px;font-weight:700;border-radius:20px;padding:5px 8px;margin-top:10px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:10px 0 36px}.stat{background:#fff;border:1px solid var(--line);padding:20px;border-radius:14px}.stat b{display:block;font-size:28px;color:var(--green)}.stat span{font-size:13px;color:var(--muted)}
+.map{height:360px;border-radius:18px;background:#dce8df;position:relative;overflow:hidden;border:1px solid #cbd9d0;background-image:linear-gradient(30deg,#d4e3d8 12%,transparent 12.5%,transparent 87%,#d4e3d8 87.5%),linear-gradient(150deg,#d4e3d8 12%,transparent 12.5%,transparent 87%,#d4e3d8 87.5%);background-size:80px 80px}
+.map:before{content:"LAOS";position:absolute;left:45%;top:35%;font-size:48px;font-weight:800;color:#aac2b2;letter-spacing:5px}
+.pin{position:absolute;width:18px;height:18px;background:#d9544d;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px #3335}.p1{left:43%;top:25%}.p2{left:53%;top:42%}.p3{left:47%;top:62%}.p4{left:61%;top:55%}.p5{left:38%;top:50%}
+.activity{display:grid;grid-template-columns:1.5fr 1fr;gap:22px}.list{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}.obs{padding:16px;border-bottom:1px solid var(--line);display:flex;gap:14px}.obs:last-child{border-bottom:0}.obs .icon{font-size:30px}.obs strong{display:block}.obs small{color:var(--muted)}
+.cta{background:#e4f0e9;border-radius:18px;padding:25px}.cta h3{margin-top:0}.primary{background:var(--green);color:#fff}
+footer{background:#143a2d;color:#cfe0d8;padding:30px 20px}.foot{max-width:1180px;margin:auto;display:flex;justify-content:space-between;font-size:13px}
+.modal{display:none;position:fixed;inset:0;background:#0007;z-index:30;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modalbox{background:#fff;border-radius:18px;max-width:520px;width:100%;padding:25px}.close{float:right;border:0;background:none;font-size:24px;cursor:pointer}
+@media(max-width:850px){.cards{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.activity{grid-template-columns:1fr}.nav a{display:none}h1{font-size:40px}}
+@media(max-width:520px){.cards{grid-template-columns:1fr 1fr;gap:10px}.bird-img{height:115px}.hero{padding-top:45px}.foot{display:block}}
+</style>
+</head>
+<body>
+<header><nav class="nav">
+<div class="logo"><span>🐦</span> LaoBirds</div>
+<a href="#birds">Birds</a><a href="#map">Map</a><a href="#observations">Observations</a><a href="#hotspots">Hotspots</a><a href="#contact">Contact</a>
+<div class="spacer"></div><button class="btn login" onclick="openModal()">Sign in</button>
+</nav></header>
+
+<section class="hero"><div class="hero-inner">
+<div class="eyebrow">Birds & Biodiversity of Laos</div>
+<h1>Discover the birds<br>of Laos.</h1>
+<p>Explore birds, observations, hotspots and biodiversity records from across Lao PDR.</p>
+<div class="search"><input id="search" placeholder="Search bird name, species or family..." oninput="filterBirds()"><button class="btn" onclick="document.getElementById('birds').scrollIntoView({behavior:'smooth'})">Search</button></div>
+</div></section>
+
+<main>
+<div class="stats">
+<div class="stat"><b>240+</b><span>Bird species</span></div>
+<div class="stat"><b>1,280+</b><span>Observations</span></div>
+<div class="stat"><b>85</b><span>Birding hotspots</span></div>
+<div class="stat"><b>320+</b><span>Registered users</span></div>
+</div>
+
+<section id="birds"><div class="section-head"><div><h2>Explore Birds</h2><div class="muted">Example data for the prototype</div></div></div>
+<div class="cards" id="birdCards"></div></section>
+
+<section id="map" style="margin-top:45px"><div class="section-head"><div><h2>Observation Map</h2><div class="muted">Example observation locations across Laos</div></div></div>
+<div class="map"><i class="pin p1"></i><i class="pin p2"></i><i class="pin p3"></i><i class="pin p4"></i><i class="pin p5"></i></div></section>
+
+<section id="observations" style="margin-top:45px"><div class="section-head"><div><h2>Recent Observations</h2><div class="muted">Latest community records</div></div><button class="btn primary" onclick="openModal('Record an Observation')">+ Record Observation</button></div>
+<div class="activity">
+<div class="list">
+<div class="obs"><div class="icon">🦜</div><div><strong>Great Hornbill</strong><small>Buceros bicornis · Luang Prabang · Today</small></div></div>
+<div class="obs"><div class="icon">🐓</div><div><strong>Red Junglefowl</strong><small>Gallus gallus · Oudomxay · Yesterday</small></div></div>
+<div class="obs"><div class="icon">🦅</div><div><strong>Mountain Hawk-Eagle</strong><small>Nisaetus nipalensis · Xieng Khouang · 2 days ago</small></div></div>
+</div>
+<div class="cta" id="hotspots"><h3>Find a birding hotspot</h3><p class="muted">Explore places where birds have been recorded by the LaoBirds community.</p><button class="btn primary" onclick="alert('Hotspots module — prototype')">Explore Hotspots</button></div>
+</div></section>
+
+<section id="contact" style="margin-top:45px">
+  <div class="section-head">
+    <div>
+      <h2>Contact</h2>
+      <div class="muted">LaoBirds project contact</div>
+    </div>
+  </div>
+  <div class="activity">
+    <div class="list">
+      <div class="obs">
+        <div class="icon">👤</div>
+        <div><strong>CHONGVILAY Ekathit</strong><small>Project / Website contact</small></div>
+      </div>
+      <div class="obs">
+        <div class="icon">📞</div>
+        <div><strong>92996627</strong><small>Phone</small></div>
+      </div>
+      <div class="obs">
+        <div class="icon">✉️</div>
+        <div><strong>chongvilai@gmail.com</strong><small>Email</small></div>
+      </div>
+    </div>
+    <div class="cta">
+      <h3>LaoBirds</h3>
+      <p class="muted">A bird biodiversity platform dedicated to documenting, learning about and sharing the birds of Laos.</p>
+      <button class="btn primary" onclick="location.href='mailto:chongvilai@gmail.com'">Contact Me</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="foot"><div><b>🐦 LaoBirds</b><br>Bird biodiversity platform for Laos<br><span style='opacity:.75'>CHONGVILAY Ekathit · 92996627 · chongvilai@gmail.com</span></div><div>About · Data · Community · Contact</div></div></footer>
+
+<div class="modal" id="modal"><div class="modalbox"><button class="close" onclick="closeModal()">×</button><h2 id="modalTitle">Sign in</h2><p class="muted">This is a prototype. The real account and database system will be connected later.</p><input style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:8px 0" placeholder="Email"><input style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:8px 0" placeholder="Password" type="password"><button class="btn primary" style="width:100%;margin-top:8px">Continue</button></div></div>
+
+<script>
+const birds=[
+["Great Hornbill","Buceros bicornis","🦜","Hornbill"],
+["Red Junglefowl","Gallus gallus","🐓","Pheasant"],
+["White-throated Kingfisher","Halcyon smyrnensis","🐦","Kingfisher"],
+["Mountain Hawk-Eagle","Nisaetus nipalensis","🦅","Eagle"],
+["Green Peafowl","Pavo muticus","🦚","Pheasant"],
+["Oriental Pied Hornbill","Anthracoceros albirostris","🦜","Hornbill"],
+["Asian Barred Owlet","Glaucidium cuculoides","🦉","Owl"],
+["Black-naped Monarch","Hypothymis azurea","🐦","Flycatcher"]
+];
+function renderBirds(list=birds){
+document.getElementById('birdCards').innerHTML=list.map((b,i)=>`<article class="card" onclick="openModal('${b[0]}')"><div class="bird-img">${b[2]}</div><div class="card-body"><h3>${b[0]}</h3><div class="latin">${b[1]}</div><span class="tag">${b[3]}</span></div></article>`).join('');
+}
+function filterBirds(){const q=document.getElementById('search').value.toLowerCase();renderBirds(birds.filter(b=>b.join(' ').toLowerCase().includes(q)))}
+function openModal(title='Sign in'){document.getElementById('modalTitle').textContent=title;document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+renderBirds();
+</script>
+</body>
+</html>
