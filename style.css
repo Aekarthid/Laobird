@@ -1,0 +1,319 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7f6;
+    color: #222;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+
+/* HEADER */
+
+header {
+    background: white;
+    border-bottom: 1px solid #ddd;
+    padding: 18px 0;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo a {
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #92e6c7;
+}
+
+nav a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: #333;
+}
+
+
+/* SPECIES HEADER */
+
+.species-header {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.species-image img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.species-info h1 {
+    font-size: 42px;
+    margin: 10px 0;
+}
+
+.species-info h2 {
+    font-size: 22px;
+    font-weight: normal;
+    font-style: italic;
+    color: #666;
+}
+
+.species-info p {
+    font-size: 20px;
+}
+
+.label {
+    font-size: 13px !important;
+    letter-spacing: 2px;
+    color: #1d5c45;
+    font-weight: bold;
+}
+
+
+/* BASIC INFO */
+
+.basic-info {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.basic-info div {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.basic-info strong,
+.basic-info span {
+    display: block;
+}
+
+.basic-info strong {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+
+/* CONTENT */
+
+.content-section {
+    background: white;
+    margin-top: 35px;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+.content-section h2 {
+    color: #1d5c45;
+    margin-top: 0;
+}
+
+
+/* IDENTIFICATION IMAGE */
+
+.identification-image {
+    margin-top: 25px;
+}
+
+.identification-image img {
+    width: 100%;
+    max-height: 600px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+
+/* FEATURES */
+
+.feature-grid {
+    margin-top: 25px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.feature-card {
+    background: #f5f7f6;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.feature-card h3 {
+    margin-top: 0;
+    color: #1d5c45;
+}
+
+
+/* KEY FEATURES */
+
+#keyFeatures li {
+    margin-bottom: 10px;
+}
+
+
+/* SIMILAR SPECIES */
+
+.similar-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+
+    margin-top: 20px;
+}
+
+.similar-card {
+    background: #f5f7f6;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+
+/* MAP */
+
+.map-placeholder {
+    height: 350px;
+
+    background: #e8eeeb;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: #666;
+}
+
+
+/* OBSERVATION */
+
+.observation-placeholder {
+    background: #f5f7f6;
+
+    padding: 30px;
+
+    border-radius: 12px;
+}
+
+
+/* FOOTER */
+
+footer {
+    margin-top: 60px;
+
+    background: #173f31;
+
+    color: white;
+
+    padding: 40px 0;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .header-content {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    nav a {
+        margin: 5px;
+    }
+
+    .species-header {
+        grid-template-columns: 1fr;
+    }
+
+    .species-image img {
+        height: 300px;
+    }
+
+    .species-info h1 {
+        font-size: 32px;
+    }
+
+    .basic-info {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .similar-grid {
+        grid-template-columns: 1fr;
+    }
+}/* =========================================
+   LAOBIRDS LOGO
+========================================= */
+
+.site-logo {
+
+    height: 70px;
+
+    width: auto;
+
+    display: block;
+
+    object-fit: contain;
+
+}
+
+
+.logo a {
+
+    display: flex;
+
+    align-items: center;
+
+    text-decoration: none;
+
+}
+/* Lao font */
+html[lang="lo"] body,
+html[lang="lo"] body button,
+html[lang="lo"] body input,
+html[lang="lo"] body select,
+html[lang="lo"] body textarea,
+html[lang="lo"] body a {
+    font-family: "Phetsarath OT", sans-serif !important;
+}
+/* Mobile */
+
+@media (max-width: 800px) {
+
+    .site-logo {
+
+        height: 55px;
+
+    }
+
+}

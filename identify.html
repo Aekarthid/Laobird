@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaoBirds | Identify a Bird</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+:root{
+    --green:#14573f;
+    --green-dark:#0f4633;
+    --line:#e2e9e5;
+    --muted:#66756e;
+}
+
+body{
+    margin:0;
+    background:#f5f7f5;
+    color:#26352f;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    background:#fff;
+    border-bottom:1px solid #e5e5e5;
+}
+
+.header-content{
+    display:flex;
+    align-items:center;
+    min-height:85px;
+}
+
+.logo a{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    text-decoration:none;
+}
+
+.site-logo{
+    height:70px;
+    width:auto;
+    display:block;
+}
+
+.logo-name{
+    font-size:24px;
+    font-weight:700;
+    color:var(--green);
+}
+
+header nav{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-left:auto;
+    flex-wrap:wrap;
+}
+
+header nav>a{
+    color:#333;
+    text-decoration:none;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+header nav>a:hover{
+    color:var(--green);
+}
+
+.language-switcher{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    margin-left:8px;
+    white-space:nowrap;
+}
+
+.language-switcher button{
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    padding:7px 8px;
+    border-radius:7px;
+}
+
+.language-switcher button.active{
+    background:var(--green);
+    color:#fff;
+    font-weight:700;
+}
+
+main{
+    padding:34px 0 70px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#eaf3ee,#f8fbf9);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    margin:0 0 8px;
+    color:var(--green);
+    font-size:38px;
+}
+
+.hero p{
+    margin:0;
+    color:#617068;
+    line-height:1.6;
+}
+
+.card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px;
+    margin-bottom:18px;
+}
+
+.card h2{
+    margin:0 0 16px;
+    color:var(--green);
+    font-size:24px;
+}
+
+label{
+    display:block;
+    font-size:13px;
+    color:#4c5c54;
+    font-weight:700;
+    margin-bottom:7px;
+}
+
+input,
+select{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #ccd7d1;
+    border-radius:9px;
+    padding:11px 12px;
+    font:inherit;
+    outline:none;
+    background:#fff;
+}
+
+input:focus,
+select:focus{
+    border-color:var(--green);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.preview-wrap{
+    margin-top:16px;
+    display:none;
+}
+
+.preview{
+    width:100%;
+    max-height:430px;
+    object-fit:contain;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#f7f9f8;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:16px;
+}
+
+.btn{
+    border:none;
+    border-radius:9px;
+    padding:11px 16px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+}
+
+.btn-primary{
+    background:var(--green);
+    color:#fff;
+}
+
+.btn-primary:hover{
+    background:var(--green-dark);
+}
+
+.btn-secondary{
+    background:#fff;
+    color:var(--green);
+    border:1px solid #cbd7d0;
+}
+
+.btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.status{
+    display:none;
+    border-radius:10px;
+    padding:12px;
+    margin-top:15px;
+    line-height:1.5;
+}
+
+.status.success{
+    display:block;
+    background:#eaf5ec;
+    border:1px solid #c8dfcd;
+    color:#35643d;
+}
+
+.status.error{
+    display:block;
+    background:#fff0f0;
+    border:1px solid #efcaca;
+    color:#913030;
+}
+
+.results{
+    display:none;
+}
+
+.best-result{
+    border:2px solid #8eb9a5;
+    background:#f4faf6;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:14px;
+}
+
+.best-result h3{
+    margin:0 0 5px;
+    color:var(--green);
+    font-size:24px;
+}
+
+.scientific{
+    font-style:italic;
+    color:var(--muted);
+}
+
+.confidence{
+    margin-top:10px;
+    font-weight:700;
+    color:var(--green);
+}
+
+.reason{
+    margin-top:10px;
+    color:#586861;
+    line-height:1.6;
+}
+
+.alternatives{
+    display:grid;
+    gap:8px;
+}
+
+.alt{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:11px 12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#fff;
+}
+
+.small-note{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.6;
+    margin-top:12px;
+}
+
+.footer-content{
+    display:flex;
+    gap:22px;
+    align-items:flex-start;
+}
+
+.footer-logo img{
+    width:95px;
+}
+
+.footer-info{
+    flex:1;
+}
+
+.footer-info h3{
+    margin:0 0 8px;
+    color:#fff;
+}
+
+footer{
+    background:#143a2d;
+    color:#cfe0d8;
+    padding:34px 0;
+}
+
+@media(max-width:900px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .header-content{
+        flex-wrap:wrap;
+        padding:10px 0;
+    }
+
+    header nav{
+        margin:8px 0 0;
+    }
+}
+
+@media(max-width:600px){
+    .site-logo{
+        height:55px;
+    }
+
+    .logo-name{
+        font-size:20px;
+    }
+
+    .hero h1{
+        font-size:30px;
+    }
+
+    .footer-content{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container header-content">
+
+    <div class="logo">
+        <a href="index.html">
+            <img src="logo.png" alt="LaoBirds Logo" class="site-logo">
+            <span class="logo-name">LaoBirds</span>
+        </a>
+    </div>
+
+    <nav>
+        <a href="index.html" data-en="Home" data-lo="ໜ້າຫຼັກ">Home</a>
+        <a href="birds.html" data-en="Birds" data-lo="ນົກ">Birds</a>
+        <a href="map.html" data-en="Map" data-lo="ແຜນທີ່">Map</a>
+        <a href="hotspots.html" data-en="Hotspots" data-lo="ຈຸດຊົມນົກ">Hotspots</a>
+        <a href="observations.html" data-en="New Checklist" data-lo="ແບບສຳຫຼວດໃໝ່">New Checklist</a>
+        <a href="my-laobirds.html" data-en="My LaoBirds" data-lo="My LaoBirds">My LaoBirds</a>
+        <a href="identify.html" data-en="Identify" data-lo="ຈຳແນກນົກ">Identify</a>
+        <a href="iucn.html" data-en="IUCN List" data-lo="ບັນຊີ IUCN">IUCN List</a>
+        <a href="laos-list.html" data-en="Laos List" data-lo="ບັນຊີນົກລາວ">Laos List</a>
+
+        <div class="language-switcher">
+            <button id="laoButton" type="button">🇱🇦 ລາວ</button>
+            <span>|</span>
+            <button id="englishButton" type="button">🇬🇧 English</button>
+        </div>
+    </nav>
+</div>
+</header>
+
+<main>
+<div class="container">
+
+<section class="hero">
+    <h1 data-en="Identify a Bird" data-lo="ຈຳແນກຊະນິດນົກ">
+        Identify a Bird
+    </h1>
+
+    <p
+        data-en="Upload a bird photo, let AI suggest the most likely species, then confirm the result before saving it to your checklist."
+        data-lo="ອັບໂຫຼດຮູບນົກ, ໃຫ້ AI ຊ່ວຍສະເໜີຊະນິດທີ່ນ່າຈະເປັນ, ແລ້ວຢືນຢັນກ່ອນບັນທຶກເຂົ້າ Checklist.">
+        Upload a bird photo, let AI suggest the most likely species, then confirm the result before saving it to your checklist.
+    </p>
+</section>
+
+<section class="card">
+
+    <h2 data-en="Photo and Checklist" data-lo="ຮູບພາບ ແລະ Checklist">
+        Photo and Checklist
+    </h2>
+
+    <div class="grid">
+
+        <div>
+            <label data-en="Bird photo" data-lo="ຮູບນົກ">Bird photo</label>
+            <input
+                id="photoInput"
+                type="file"
+                accept="image/*">
+            <div class="small-note"
+                 data-en="Maximum 6 MB per photo in this first version."
+                 data-lo="ໃນລຸ້ນທຳອິດນີ້ຈຳກັດ 6 MB ຕໍ່ຮູບ.">
+                Maximum 6 MB per photo in this first version.
+            </div>
+        </div>
+
+        <div>
+            <label data-en="Save to checklist" data-lo="ບັນທຶກເຂົ້າ Checklist">
+                Save to checklist
+            </label>
+            <select id="checklistSelect">
+                <option value="">Loading checklists...</option>
+            </select>
+            <div class="small-note"
+                 data-en="The confirmed species will be linked to the selected checklist."
+                 data-lo="ຊະນິດທີ່ຢືນຢັນແລ້ວຈະຖືກຜູກກັບ Checklist ທີ່ເລືອກ.">
+                The confirmed species will be linked to the selected checklist.
+            </div>
+        </div>
+
+    </div>
+
+    <div id="previewWrap" class="preview-wrap">
+        <img id="preview" class="preview" alt="Bird photo preview">
+    </div>
+
+    <div class="actions">
+        <button id="identifyButton" class="btn btn-primary" type="button" disabled
+                data-en="🤖 Identify Bird" data-lo="🤖 ຈຳແນກນົກ">
+            🤖 Identify Bird
+        </button>
+
+        <a href="observations.html"
+           class="btn btn-secondary"
+           data-en="Back to New Checklist"
+           data-lo="ກັບໄປ New Checklist">
+            Back to New Checklist
+        </a>
+    </div>
+
+    <div id="status" class="status"></div>
+</section>
+
+<section id="results" class="card results">
+
+    <h2 data-en="AI Identification Result" data-lo="ຜົນການຈຳແນກຈາກ AI">
+        AI Identification Result
+    </h2>
+
+    <div id="bestResult" class="best-result"></div>
+
+    <div id="alternativeWrap" style="display:none;">
+        <h3 data-en="Other possible species"
+            data-lo="ຊະນິດອື່ນທີ່ອາດເປັນ">
+            Other possible species
+        </h3>
+
+        <div id="alternatives" class="alternatives"></div>
+    </div>
+
+    <div class="small-note"
+         data-en="AI confidence is an estimate, not a scientific probability. Always review the photo and confirm the species yourself."
+         data-lo="ຄ່າຄວາມໝັ້ນໃຈຂອງ AI ແມ່ນຄ່າປະເມີນ ບໍ່ແມ່ນຄວາມນ່າຈະເປັນທາງວິທະຍາສາດ. ກະລຸນາກວດຮູບ ແລະ ຢືນຢັນຊະນິດດ້ວຍຕົນເອງ.">
+        AI confidence is an estimate, not a scientific probability. Always review the photo and confirm the species yourself.
+    </div>
+
+    <div class="actions">
+        <button id="confirmButton" class="btn btn-primary" type="button" disabled
+                data-en="✓ Confirm and Save to Checklist"
+                data-lo="✓ ຢືນຢັນ ແລະ ບັນທຶກເຂົ້າ Checklist">
+            ✓ Confirm and Save to Checklist
+        </button>
+    </div>
+</section>
+
+</div>
+</main>
+
+<footer>
+<div class="container footer-content">
+    <div class="footer-logo">
+        <img src="logo.png" alt="LaoBirds Logo">
+    </div>
+
+    <div class="footer-info">
+        <h3>LaoBirds</h3>
+        <p
+            data-en="A bird observation and learning platform for Laos."
+            data-lo="ເວັບໄຊສຳລັບຮຽນຮູ້ ແລະ ບັນທຶກການພົບເຫັນນົກໃນປະເທດລາວ.">
+            A bird observation and learning platform for Laos.
+        </p>
+        <p>© LaoBirds</p>
+    </div>
+</div>
+</footer>
+
+<script src="data.js"></script>
+
+<script>
+const PHOTO_BUCKET = "bird-photos";
+const MAX_PHOTO_BYTES = 6 * 1024 * 1024;
+
+let currentLanguage =
+    localStorage.getItem("laobirds-language") || "en";
+
+let supabaseClient = null;
+let currentUser = null;
+let currentFile = null;
+let currentStoragePath = null;
+let currentResult = null;
+let checklists = [];
+
+const config =
+    window.LaoBirdsSupabaseConfig || {};
+
+const rareBridge = [
+    {
+        id:"LB-001",
+        englishName:"Green Peafowl",
+        laoName:"ນົກຍູງ",
+        scientificName:"Pavo muticus"
+    },
+    {
+        id:"LB-002",
+        englishName:"Silver Pheasant",
+        laoName:"ໄກ່ຂວາຫຼວງ (ໄກ້ຂວາຫຼວງຫຼັງຂາວ)",
+        scientificName:"Lophura nycthemera"
+    },
+    {
+        id:"LB-003",
+        englishName:"Great Hornbill",
+        laoName:"ນົກກົດຄໍຄຳ",
+        scientificName:"Buceros bicornis"
+    },
+    {
+        id:"LB-004",
+        englishName:"Hawk",
+        laoName:"ແຫຼວມຸມ",
+        scientificName:"Accipitridae"
+    },
+    {
+        id:"LB-005",
+        englishName:"Baya Weaver",
+        laoName:"ນົກກະຈອກຟ້າເອີກເຫຼືອງ",
+        scientificName:"Ploceus philippinus"
+    },
+    {
+        id:"LB-006",
+        englishName:"Imperial Eagle",
+        laoName:"ແຫຼວອິນຊີປານ້ອຍ",
+        scientificName:"Aquila heliaca"
+    },
+    {
+        id:"LB-007",
+        englishName:"Red-billed Blue Magpie",
+        laoName:"ນົກສີດາ",
+        scientificName:"Urocissa erythroryncha"
+    },
+    {
+        id:"LB-008",
+        englishName:"Oriental Darter",
+        laoName:"ນົກຄໍງູ",
+        scientificName:"Anhinga melanogaster"
+    },
+    {
+        id:"LB-009",
+        englishName:"Lesser Fish Eagle",
+        laoName:"ແຫຼວອິນຊີ",
+        scientificName:"Ichthyophaga humilis"
+    },
+    {
+        id:"LB-010",
+        englishName:"Garganey",
+        laoName:"ນົກເປັດລາຍ",
+        scientificName:"Spatula querquedula"
+    }
+];
+
+function getText(value){
+    if(value === undefined || value === null){
+        return "";
+    }
+
+    if(typeof value === "object"){
+        return value[currentLanguage] ||
+               value.en ||
+               value.lo ||
+               "";
+    }
+
+    return String(value);
+}
+
+function escapeHtml(value){
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function safeFileName(name){
+    return String(name || "bird.jpg")
+        .replace(/[^a-zA-Z0-9._-]+/g,"-")
+        .replace(/-+/g,"-")
+        .replace(/^-|-$/g,"") ||
+        "bird.jpg";
+}
+
+function showStatus(message,type){
+    const box = document.getElementById("status");
+    box.className = "status " + type;
+    box.textContent = message;
+}
+
+function clearStatus(){
+    const box = document.getElementById("status");
+    box.className = "status";
+    box.textContent = "";
+}
+
+function buildCandidates(){
+    const merged = new Map();
+
+    if(typeof birds !== "undefined" && Array.isArray(birds)){
+        birds.forEach(bird => {
+            if(!bird?.id){
+                return;
+            }
+
+            merged.set(String(bird.id),{
+                id:String(bird.id),
+                english_name:getText(bird.englishName),
+                lao_name:getText(bird.laoName),
+                scientific_name:getText(bird.scientificName)
+            });
+        });
+    }
+
+    rareBridge.forEach(bird => {
+        if(!merged.has(String(bird.id))){
+            merged.set(String(bird.id),{
+                id:String(bird.id),
+                english_name:bird.englishName,
+                lao_name:bird.laoName,
+                scientific_name:bird.scientificName
+            });
+        }
+    });
+
+    return [...merged.values()];
+}
+
+async function initSupabase(){
+    if(!window.supabase ||
+       typeof window.supabase.createClient !== "function"){
+        throw new Error("Supabase library did not load.");
+    }
+
+    if(!config.url ||
+       !config.publishableKey ||
+       String(config.url).includes("YOUR_SUPABASE")){
+        throw new Error(
+            "Add your Supabase Project URL and Publishable Key to supabase-config.js."
+        );
+    }
+
+    supabaseClient =
+        window.supabase.createClient(
+            config.url,
+            config.publishableKey
+        );
+
+    const {data,error} =
+        await supabaseClient.auth.getUser();
+
+    if(error){
+        throw error;
+    }
+
+    if(!data.user){
+        window.location.href = "auth.html";
+        return;
+    }
+
+    currentUser = data.user;
+
+    await loadChecklists();
+}
+
+async function loadChecklists(){
+    const {data,error} =
+        await supabaseClient
+            .from("checklists")
+            .select(`
+                id,
+                location_name,
+                observation_date,
+                checklist_observations (
+                    id,
+                    species_id,
+                    count
+                )
+            `)
+            .eq("created_by",currentUser.id)
+            .order("created_at",{ascending:false});
+
+    if(error){
+        throw error;
+    }
+
+    checklists =
+        Array.isArray(data)
+            ? data
+            : [];
+
+    const select =
+        document.getElementById("checklistSelect");
+
+    select.innerHTML = "";
+
+    if(!checklists.length){
+        select.innerHTML =
+            `<option value="">No checklist available</option>`;
+        return;
+    }
+
+    checklists.forEach(checklist => {
+        const option =
+            document.createElement("option");
+
+        option.value = checklist.id;
+
+        option.textContent =
+            `${checklist.location_name || "Unnamed location"} — ` +
+            `${checklist.observation_date || ""}`;
+
+        select.appendChild(option);
+    });
+}
+
+function getSelectedChecklist(){
+    const id =
+        document.getElementById("checklistSelect").value;
+
+    return checklists.find(
+        item => String(item.id) === String(id)
+    ) || null;
+}
+
+function onFileSelected(file){
+    clearStatus();
+    currentResult = null;
+    currentStoragePath = null;
+    document.getElementById("results").style.display = "none";
+    document.getElementById("confirmButton").disabled = true;
+
+    if(!file){
+        currentFile = null;
+        document.getElementById("previewWrap").style.display = "none";
+        document.getElementById("identifyButton").disabled = true;
+        return;
+    }
+
+    if(!file.type.startsWith("image/")){
+        throw new Error(
+            currentLanguage === "lo"
+                ? "ກະລຸນາເລືອກໄຟລ໌ຮູບ."
+                : "Please choose an image file."
+        );
+    }
+
+    if(file.size > MAX_PHOTO_BYTES){
+        throw new Error(
+            currentLanguage === "lo"
+                ? "ຮູບນີ້ໃຫຍ່ກວ່າ 6 MB."
+                : "This photo is larger than 6 MB."
+        );
+    }
+
+    currentFile = file;
+
+    const preview =
+        document.getElementById("preview");
+
+    preview.src =
+        URL.createObjectURL(file);
+
+    document.getElementById("previewWrap")
+        .style.display = "block";
+
+    document.getElementById("identifyButton")
+        .disabled = false;
+}
+
+async function uploadForIdentification(){
+    const checklist =
+        getSelectedChecklist();
+
+    if(!checklist){
+        throw new Error(
+            currentLanguage === "lo"
+                ? "ກະລຸນາເລືອກ Checklist."
+                : "Please select a checklist."
+        );
+    }
+
+    if(!currentFile){
+        throw new Error(
+            currentLanguage === "lo"
+                ? "ກະລຸນາເລືອກຮູບ."
+                : "Please choose a photo."
+        );
+    }
+
+    const path =
+        `${currentUser.id}/${checklist.id}/identify-` +
+        `${Date.now()}-${safeFileName(currentFile.name)}`;
+
+    const {error:uploadError} =
+        await supabaseClient
+            .storage
+            .from(PHOTO_BUCKET)
+            .upload(
+                path,
+                currentFile,
+                {
+                    cacheControl:"3600",
+                    upsert:false,
+                    contentType:
+                        currentFile.type || "image/jpeg"
+                }
+            );
+
+    if(uploadError){
+        throw uploadError;
+    }
+
+    const {data:signedData,error:signedError} =
+        await supabaseClient
+            .storage
+            .from(PHOTO_BUCKET)
+            .createSignedUrl(path,600);
+
+    if(signedError){
+        throw signedError;
+    }
+
+    currentStoragePath = path;
+
+    return signedData.signedUrl;
+}
+
+async function identifyBird(){
+    clearStatus();
+
+    const button =
+        document.getElementById("identifyButton");
+
+    button.disabled = true;
+
+    try{
+        if(!navigator.onLine){
+            throw new Error(
+                currentLanguage === "lo"
+                    ? "ການຈຳແນກດ້ວຍ AI ຕ້ອງໃຊ້ Internet. ສາມາດເກັບຮູບ Offline ໄດ້ຕາມປົກກະຕິ."
+                    : "AI identification requires Internet. You can still save the photo offline normally."
+            );
+        }
+
+        const imageUrl =
+            await uploadForIdentification();
+
+        const candidates =
+            buildCandidates();
+
+        if(!candidates.length){
+            throw new Error(
+                currentLanguage === "lo"
+                    ? "ຍັງບໍ່ມີລາຍຊື່ນົກໃນ data.js."
+                    : "No bird candidates are available in data.js."
+            );
+        }
+
+        const {data,error} =
+            await supabaseClient.functions.invoke(
+                "identify-bird",
+                {
+                    body:{
+                        image_url:imageUrl,
+                        candidates
+                    }
+                }
+            );
+
+        if(error){
+            let detail =
+                error.message ||
+                "The Edge Function could not be reached.";
+
+            try{
+                if(error.context){
+                    const body =
+                        await error.context.json();
+
+                    detail =
+                        body?.error?.message ||
+                        body?.error ||
+                        body?.message ||
+                        detail;
+                }
+            }catch(_ignored){}
+
+            throw new Error(detail);
+        }
+
+        if(data?.ok === false){
+            throw new Error(
+                data.message ||
+                data.error ||
+                "Bird identification failed."
+            );
+        }
+
+        currentResult = data;
+
+        renderResult(data,candidates);
+
+    }catch(error){
+        showStatus(
+            error?.message ||
+            (
+                currentLanguage === "lo"
+                    ? "ບໍ່ສາມາດຈຳແນກຮູບໄດ້."
+                    : "Could not identify the photo."
+            ),
+            "error"
+        );
+    }finally{
+        button.disabled = !currentFile;
+    }
+}
+
+function renderResult(result,candidates){
+    const results =
+        document.getElementById("results");
+
+    results.style.display = "block";
+
+    const best =
+        candidates.find(
+            item => String(item.id) === String(result.best_match_id)
+        );
+
+    const bestBox =
+        document.getElementById("bestResult");
+
+    if(!best){
+        bestBox.innerHTML = `
+            <h3>${currentLanguage === "lo" ? "ບໍ່ແນ່ໃຈ" : "Not confident enough"}</h3>
+            <div class="reason">
+                ${escapeHtml(result.reason || "")}
+            </div>
+        `;
+
+        document.getElementById("alternativeWrap")
+            .style.display = "none";
+
+        document.getElementById("confirmButton")
+            .disabled = true;
+
+        return;
+    }
+
+    const confidence =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Number(result.confidence_percent) || 0
+            )
+        );
+
+    bestBox.innerHTML = `
+        <h3>${escapeHtml(best.english_name || best.id)}</h3>
+        <div class="scientific">
+            ${escapeHtml(best.scientific_name || "")}
+        </div>
+        <div>
+            ${escapeHtml(best.lao_name || "")}
+        </div>
+        <div class="confidence">
+            ${currentLanguage === "lo" ? "ຄວາມໝັ້ນໃຈ:" : "Estimated confidence:"}
+            ${confidence}%
+        </div>
+        <div class="reason">
+            ${escapeHtml(result.reason || "")}
+        </div>
+    `;
+
+    const alternatives =
+        Array.isArray(result.alternatives)
+            ? result.alternatives
+            : [];
+
+    const altWrap =
+        document.getElementById("alternativeWrap");
+
+    const altBox =
+        document.getElementById("alternatives");
+
+    altBox.innerHTML = "";
+
+    if(alternatives.length){
+        altWrap.style.display = "block";
+
+        alternatives.forEach(alt => {
+            const candidate =
+                candidates.find(
+                    item => String(item.id) === String(alt.id)
+                );
+
+            if(!candidate){
+                return;
+            }
+
+            const row =
+                document.createElement("div");
+
+            row.className = "alt";
+
+            row.innerHTML = `
+                <span>
+                    <strong>${escapeHtml(candidate.english_name || candidate.id)}</strong>
+                    <br>
+                    <span class="scientific">${escapeHtml(candidate.scientific_name || "")}</span>
+                </span>
+                <span>
+                    ${Math.round(Number(alt.confidence_percent) || 0)}%
+                </span>
+            `;
+
+            altBox.appendChild(row);
+        });
+    }else{
+        altWrap.style.display = "none";
+    }
+
+    document.getElementById("confirmButton")
+        .disabled = false;
+}
+
+async function confirmAndSave(){
+    clearStatus();
+
+    const checklist =
+        getSelectedChecklist();
+
+    if(!checklist ||
+       !currentResult ||
+       !currentResult.best_match_id ||
+       !currentStoragePath){
+        return;
+    }
+
+    const button =
+        document.getElementById("confirmButton");
+
+    button.disabled = true;
+
+    try{
+        let observation =
+            (checklist.checklist_observations || [])
+                .find(
+                    row =>
+                        String(row.species_id) ===
+                        String(currentResult.best_match_id)
+                );
+
+        if(!observation){
+            const {data,error} =
+                await supabaseClient
+                    .from("checklist_observations")
+                    .insert({
+                        checklist_id:checklist.id,
+                        species_id:String(
+                            currentResult.best_match_id
+                        ),
+                        count:1,
+                        notes:"Added through AI-assisted photo identification."
+                    })
+                    .select("id,species_id,count")
+                    .single();
+
+            if(error){
+                throw error;
+            }
+
+            observation = data;
+        }
+
+        const {error:photoError} =
+            await supabaseClient
+                .from("photos")
+                .insert({
+                    uploaded_by:currentUser.id,
+                    checklist_id:checklist.id,
+                    checklist_observation_id:observation.id,
+                    storage_path:currentStoragePath,
+                    caption:"AI-assisted bird identification."
+                });
+
+        if(photoError){
+            throw photoError;
+        }
+
+        showStatus(
+            currentLanguage === "lo"
+                ? "ບັນທຶກຮູບ ແລະ ຜູກກັບຊະນິດນົກສຳເລັດແລ້ວ."
+                : "Photo saved and linked to the bird species successfully.",
+            "success"
+        );
+
+        button.disabled = true;
+
+    }catch(error){
+        showStatus(
+            error?.message ||
+            (
+                currentLanguage === "lo"
+                    ? "ບັນທຶກບໍ່ສຳເລັດ."
+                    : "Could not save the identified photo."
+            ),
+            "error"
+        );
+
+        button.disabled = false;
+    }
+}
+
+function updateLanguage(){
+    document.documentElement.lang =
+        currentLanguage === "lo" ? "lo" : "en";
+
+    document
+        .querySelectorAll("[data-en][data-lo]")
+        .forEach(element => {
+            element.textContent =
+                currentLanguage === "lo"
+                    ? element.getAttribute("data-lo")
+                    : element.getAttribute("data-en");
+        });
+
+    document.getElementById("laoButton")
+        .classList.toggle(
+            "active",
+            currentLanguage === "lo"
+        );
+
+    document.getElementById("englishButton")
+        .classList.toggle(
+            "active",
+            currentLanguage === "en"
+        );
+}
+
+document.getElementById("photoInput")
+    .addEventListener("change",event => {
+        try{
+            onFileSelected(event.target.files?.[0] || null);
+        }catch(error){
+            showStatus(error.message,"error");
+            event.target.value = "";
+        }
+    });
+
+document.getElementById("identifyButton")
+    .addEventListener("click",identifyBird);
+
+document.getElementById("confirmButton")
+    .addEventListener("click",confirmAndSave);
+
+document.getElementById("laoButton")
+    .addEventListener("click",() => {
+        currentLanguage = "lo";
+        localStorage.setItem(
+            "laobirds-language",
+            "lo"
+        );
+        updateLanguage();
+    });
+
+document.getElementById("englishButton")
+    .addEventListener("click",() => {
+        currentLanguage = "en";
+        localStorage.setItem(
+            "laobirds-language",
+            "en"
+        );
+        updateLanguage();
+    });
+
+updateLanguage();
+
+initSupabase().catch(error => {
+    showStatus(
+        error?.message ||
+        (
+            currentLanguage === "lo"
+                ? "ບໍ່ສາມາດໂຫຼດໜ້າ Identify ໄດ້."
+                : "Could not load the Identify page."
+        ),
+        "error"
+    );
+});
+</script>
+
+</body>
+</html>

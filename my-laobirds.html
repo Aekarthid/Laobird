@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaoBirds | My LaoBirds</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+:root{
+    --green:#14573f;
+    --green-dark:#0f4633;
+    --line:#e2e9e5;
+    --muted:#66756e;
+}
+
+body{
+    margin:0;
+    background:#f5f7f5;
+    color:#26352f;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    background:#fff;
+    border-bottom:1px solid #e5e5e5;
+}
+
+.header-content{
+    display:flex;
+    align-items:center;
+    min-height:85px;
+}
+
+.logo a{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    text-decoration:none;
+}
+
+.site-logo{
+    height:70px;
+    width:auto;
+    display:block;
+}
+
+.logo-name{
+    font-size:24px;
+    font-weight:700;
+    color:var(--green);
+}
+
+header nav{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-left:auto;
+}
+
+header nav>a{
+    color:#333;
+    text-decoration:none;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+header nav>a:hover{
+    color:var(--green);
+}
+
+.language-switcher{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    margin-left:8px;
+    white-space:nowrap;
+}
+
+.language-switcher button{
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    padding:7px 8px;
+    border-radius:7px;
+}
+
+.language-switcher button.active{
+    background:var(--green);
+    color:#fff;
+    font-weight:700;
+}
+
+main{
+    padding:34px 0 70px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#eaf3ee,#f8fbf9);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    margin:0 0 8px;
+    color:var(--green);
+    font-size:38px;
+}
+
+.hero p{
+    margin:0;
+    color:#617068;
+    line-height:1.6;
+}
+
+.hero-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:18px;
+}
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:9px;
+    padding:11px 16px;
+    font-weight:700;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.btn-primary{
+    background:var(--green);
+    color:#fff;
+    border:1px solid var(--green);
+}
+
+.btn-primary:hover{
+    background:var(--green-dark);
+}
+
+.btn-secondary{
+    background:#fff;
+    color:var(--green);
+    border:1px solid #cbd7d0;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:22px;
+}
+
+.stat{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px;
+}
+
+.stat strong{
+    display:block;
+    color:var(--green);
+    font-size:30px;
+    margin-bottom:5px;
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:22px;
+}
+
+.card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px;
+}
+
+.card h2{
+    margin:0 0 16px;
+    color:var(--green);
+    font-size:24px;
+}
+
+.account{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:22px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:15px 18px;
+}
+
+.account strong{
+    color:var(--green);
+}
+
+.account span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.logout{
+    border:1px solid #cbd7d0;
+    background:#fff;
+    color:#8d3838;
+    border-radius:8px;
+    padding:9px 12px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.checklist{
+    border:1px solid var(--line);
+    border-radius:13px;
+    padding:15px;
+    margin-bottom:10px;
+}
+
+.checklist:last-child{
+    margin-bottom:0;
+}
+
+.checklist-head{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    align-items:flex-start;
+}
+
+.checklist-title{
+    font-weight:700;
+    color:#2f4038;
+}
+
+.checklist-meta{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.6;
+    margin-top:5px;
+}
+
+.pill{
+    display:inline-flex;
+    padding:5px 8px;
+    border-radius:999px;
+    background:#eef4f1;
+    color:var(--green);
+    font-size:11px;
+    font-weight:700;
+}
+
+.observation-list{
+    margin:12px 0 0;
+    padding-left:18px;
+    color:#56665e;
+    font-size:13px;
+    line-height:1.7;
+}
+
+.photo-gallery{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+    margin-top:14px;
+}
+
+.photo-link{
+    display:block;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid #e2e9e5;
+    background:#f4f7f5;
+    aspect-ratio:1/1;
+}
+
+.photo-link img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.photo-caption{
+    margin-top:8px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+@media(max-width:600px){
+    .photo-gallery{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+}
+
+.species-list{
+    display:grid;
+    gap:9px;
+}
+
+.species-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:11px 0;
+    border-bottom:1px solid #eef2ef;
+}
+
+.species-item:last-child{
+    border-bottom:0;
+}
+
+.species-name strong{
+    display:block;
+    color:#31423a;
+}
+
+.species-name small{
+    display:block;
+    margin-top:3px;
+    color:var(--muted);
+}
+
+.species-count{
+    color:var(--green);
+    font-weight:700;
+    font-size:13px;
+    white-space:nowrap;
+}
+
+.empty{
+    padding:30px 15px;
+    text-align:center;
+    color:var(--muted);
+    border:1px dashed #c8d4ce;
+    border-radius:12px;
+}
+
+.message{
+    display:none;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:18px;
+}
+
+.message.error{
+    display:block;
+    background:#fff0f0;
+    border:1px solid #efcaca;
+    color:#913030;
+}
+
+footer{
+    background:#143a2d;
+    color:#cfe0d8;
+    padding:34px 0;
+}
+
+.footer-content{
+    display:flex;
+    align-items:flex-start;
+    gap:22px;
+}
+
+.footer-logo img{
+    width:95px;
+}
+
+.footer-info{
+    flex:1;
+}
+
+.footer-info h3{
+    margin:0 0 8px;
+    color:#fff;
+}
+
+@media(max-width:1000px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:800px){
+    .header-content{
+        flex-wrap:wrap;
+        padding:10px 0;
+    }
+
+    .site-logo{
+        height:55px;
+    }
+
+    .logo-name{
+        font-size:20px;
+    }
+
+    header nav{
+        flex-wrap:wrap;
+        margin:8px 0 0;
+    }
+
+    .account{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .footer-content{
+        flex-direction:column;
+    }
+}
+
+@media(max-width:600px){
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .hero h1{
+        font-size:32px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container header-content">
+
+    <div class="logo">
+        <a href="index.html">
+            <img src="logo.png" alt="LaoBirds Logo" class="site-logo">
+            <span class="logo-name">LaoBirds</span>
+        </a>
+    </div>
+
+    <nav>
+        <a href="index.html" data-en="Home" data-lo="ໜ້າຫຼັກ">Home</a>
+        <a href="birds.html" data-en="Birds" data-lo="ນົກ">Birds</a>
+        <a href="map.html" data-en="Map" data-lo="ແຜນທີ່">Map</a>
+        <a href="hotspots.html" data-en="Hotspots" data-lo="ຈຸດຊົມນົກ">Hotspots</a>
+        <a href="observations.html" data-en="New Checklist" data-lo="ແບບສຳຫຼວດໃໝ່">New Checklist</a>
+        <a href="my-laobirds.html" data-en="My LaoBirds" data-lo="My LaoBirds">My LaoBirds</a>
+        <a href="iucn.html" data-en="IUCN List" data-lo="ບັນຊີ IUCN">IUCN List</a>
+        <a href="laos-list.html" data-en="Laos List" data-lo="ບັນຊີນົກລາວ">Laos List</a>
+
+        <div class="language-switcher">
+            <button id="laoButton" type="button">🇱🇦 ລາວ</button>
+            <span>|</span>
+            <button id="englishButton" type="button">🇬🇧 English</button>
+        </div>
+    </nav>
+</div>
+</header>
+
+<main>
+<div class="container">
+
+    <div id="message" class="message"></div>
+
+    <section class="account">
+        <div>
+            <strong id="displayName">Loading...</strong><br>
+            <span id="email"></span>
+        </div>
+
+        <button id="logoutButton" class="logout" type="button"
+                data-en="Log out" data-lo="ອອກຈາກລະບົບ">
+            Log out
+        </button>
+    </section>
+
+    <section class="hero">
+        <h1>My LaoBirds</h1>
+
+        <p
+            data-en="Your personal bird-survey dashboard: checklists, species, locations and survey effort."
+            data-lo="ໜ້າສະຫຼຸບການສຳຫຼວດຂອງທ່ານ: ແບບສຳຫຼວດ, ຊະນິດນົກ, ສະຖານທີ່ ແລະ ຄວາມພະຍາຍາມການສຳຫຼວດ.">
+            Your personal bird-survey dashboard: checklists, species, locations and survey effort.
+        </p>
+
+        <div class="hero-actions">
+            <a href="observations.html"
+               class="btn btn-primary"
+               data-en="+ New Checklist"
+               data-lo="+ ສ້າງແບບສຳຫຼວດໃໝ່">
+                + New Checklist
+            </a>
+
+            <a href="birds.html"
+               class="btn btn-secondary"
+               data-en="Browse Birds"
+               data-lo="ເບິ່ງລາຍຊື່ນົກ">
+                Browse Birds
+            </a>
+        </div>
+    </section>
+
+    <section class="stats">
+
+        <div class="stat">
+            <strong id="speciesCount">0</strong>
+            <span data-en="Species observed" data-lo="ຊະນິດທີ່ພົບ">
+                Species observed
+            </span>
+        </div>
+
+        <div class="stat">
+            <strong id="checklistCount">0</strong>
+            <span data-en="Complete checklists" data-lo="ແບບສຳຫຼວດຄົບຖ້ວນ">
+                Complete checklists
+            </span>
+        </div>
+
+        <div class="stat">
+            <strong id="locationCount">0</strong>
+            <span data-en="Survey locations" data-lo="ສະຖານທີ່ສຳຫຼວດ">
+                Survey locations
+            </span>
+        </div>
+
+        <div class="stat">
+            <strong id="surveyDayCount">0</strong>
+            <span data-en="Survey days" data-lo="ວັນທີ່ສຳຫຼວດ">
+                Survey days
+            </span>
+        </div>
+
+    </section>
+
+    <section class="grid">
+
+        <div class="card">
+
+            <h2
+                data-en="My Recent Checklists"
+                data-lo="ແບບສຳຫຼວດຫຼ້າສຸດ">
+                My Recent Checklists
+            </h2>
+
+            <div id="checklistList"></div>
+
+        </div>
+
+        <div class="card">
+
+            <h2
+                data-en="My Species"
+                data-lo="ຊະນິດນົກຂອງຂ້ອຍ">
+                My Species
+            </h2>
+
+            <div id="speciesList" class="species-list"></div>
+
+        </div>
+
+    </section>
+
+</div>
+</main>
+
+<footer>
+<div class="container footer-content">
+
+    <div class="footer-logo">
+        <img src="logo.png" alt="LaoBirds Logo">
+    </div>
+
+    <div class="footer-info">
+        <h3>LaoBirds</h3>
+
+        <p
+            data-en="A bird observation and learning platform for Laos."
+            data-lo="ເວັບໄຊສຳລັບຮຽນຮູ້ ແລະ ບັນທຶກການພົບເຫັນນົກໃນປະເທດລາວ.">
+            A bird observation and learning platform for Laos.
+        </p>
+
+        <p>© LaoBirds</p>
+    </div>
+
+</div>
+</footer>
+
+<script src="data.js"></script>
+
+<script>
+let currentLanguage =
+    localStorage.getItem("laobirds-language") || "en";
+
+let supabaseClient = null;
+let currentUser = null;
+
+const config =
+    window.LaoBirdsSupabaseConfig || {};
+
+function getText(value){
+
+    if(value === undefined || value === null){
+        return "";
+    }
+
+    if(typeof value === "object"){
+        return value[currentLanguage] ||
+               value.en ||
+               value.lo ||
+               "";
+    }
+
+    return String(value);
+}
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function showError(message){
+
+    const box =
+        document.getElementById("message");
+
+    box.className = "message error";
+    box.textContent = message;
+}
+
+async function initialize(){
+
+    if(
+        !window.supabase ||
+        typeof window.supabase.createClient !== "function"
+    ){
+        throw new Error(
+            "Supabase JavaScript library did not load."
+        );
+    }
+
+    if(
+        !config.url ||
+        !config.publishableKey ||
+        String(config.url).includes("YOUR_SUPABASE")
+    ){
+        throw new Error(
+            "Please add your Supabase Project URL and Publishable Key to supabase-config.js."
+        );
+    }
+
+    supabaseClient =
+        window.supabase.createClient(
+            config.url,
+            config.publishableKey
+        );
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.auth.getUser();
+
+    if(error){
+        throw error;
+    }
+
+    if(!data.user){
+
+        window.location.href =
+            "auth.html";
+
+        return;
+    }
+
+    currentUser =
+        data.user;
+
+    document.getElementById(
+        "email"
+    ).textContent =
+        currentUser.email || "";
+
+    await loadProfile();
+
+    await loadDashboard();
+}
+
+async function loadProfile(){
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("profiles")
+            .select("display_name")
+            .eq("id", currentUser.id)
+            .maybeSingle();
+
+    if(error){
+        throw error;
+    }
+
+    const displayName =
+        data?.display_name ||
+        currentUser
+            ?.user_metadata
+            ?.display_name ||
+        currentUser.email ||
+        "LaoBirds user";
+
+    document.getElementById(
+        "displayName"
+    ).textContent =
+        displayName;
+}
+
+function findBird(speciesId){
+
+    if(
+        typeof birds === "undefined" ||
+        !Array.isArray(birds)
+    ){
+        return null;
+    }
+
+    return birds.find(
+        bird =>
+            String(bird.id) ===
+            String(speciesId)
+    ) || null;
+}
+
+function formatBird(speciesId){
+
+    const bird =
+        findBird(speciesId);
+
+    if(!bird){
+
+        return {
+            name: String(speciesId),
+            lao: "",
+            scientific: ""
+        };
+    }
+
+    return {
+        name:
+            getText(
+                bird.englishName
+            ) || String(speciesId),
+
+        lao:
+            getText(
+                bird.laoName
+            ),
+
+        scientific:
+            getText(
+                bird.scientificName
+            )
+    };
+}
+
+async function loadDashboard(){
+
+    const {
+        data: checklists,
+        error
+    } =
+        await supabaseClient
+            .from("checklists")
+            .select(`
+                id,
+                location_name,
+                observation_date,
+                start_time,
+                end_time,
+                survey_type,
+                complete,
+                notes,
+                created_at,
+                checklist_observations (
+                    id,
+                    species_id,
+                    count,
+                    notes
+                )
+            `)
+            .eq(
+                "created_by",
+                currentUser.id
+            )
+            .order(
+                "created_at",
+                {
+                    ascending:false
+                }
+            );
+
+    if(error){
+        throw error;
+    }
+
+    const rows =
+        Array.isArray(checklists)
+            ? checklists
+            : [];
+
+    const speciesTotals =
+        new Map();
+
+    const locations =
+        new Set();
+
+    const surveyDays =
+        new Set();
+
+    let completeCount = 0;
+
+    rows.forEach(
+        checklist => {
+
+            if(checklist.location_name){
+                locations.add(
+                    checklist.location_name
+                        .trim()
+                        .toLowerCase()
+                );
+            }
+
+            if(checklist.observation_date){
+                surveyDays.add(
+                    checklist.observation_date
+                );
+            }
+
+            if(checklist.complete){
+                completeCount++;
+            }
+
+            (
+                checklist.checklist_observations ||
+                []
+            ).forEach(
+                observation => {
+
+                    const id =
+                        String(
+                            observation.species_id
+                        );
+
+                    const count =
+                        Number(
+                            observation.count
+                        ) || 0;
+
+                    speciesTotals.set(
+                        id,
+                        (
+                            speciesTotals.get(id) ||
+                            0
+                        ) + count
+                    );
+                }
+            );
+        }
+    );
+
+    document.getElementById(
+        "speciesCount"
+    ).textContent =
+        speciesTotals.size;
+
+    document.getElementById(
+        "checklistCount"
+    ).textContent =
+        completeCount;
+
+    document.getElementById(
+        "locationCount"
+    ).textContent =
+        locations.size;
+
+    document.getElementById(
+        "surveyDayCount"
+    ).textContent =
+        surveyDays.size;
+
+    const checklistIds =
+        rows.map(checklist => checklist.id).filter(Boolean);
+
+    let photoRows = [];
+
+    if(checklistIds.length){
+        const {
+            data: photos,
+            error: photosError
+        } = await supabaseClient
+            .from("photos")
+            .select("id, checklist_id, storage_path, caption, created_at")
+            .in("checklist_id", checklistIds)
+            .order("created_at", {ascending:false});
+
+        if(photosError){
+            throw photosError;
+        }
+
+        photoRows = Array.isArray(photos) ? photos : [];
+    }
+
+    const photosByChecklist = await buildSignedPhotoMap(photoRows);
+
+    renderChecklists(rows, photosByChecklist);
+
+    renderSpecies(speciesTotals);
+}
+
+async function buildSignedPhotoMap(photoRows){
+
+    const map = new Map();
+
+    await Promise.all(
+        photoRows.map(async photo => {
+
+            if(!photo || !photo.checklist_id || !photo.storage_path){
+                return;
+            }
+
+            try{
+                const {
+                    data,
+                    error
+                } = await supabaseClient
+                    .storage
+                    .from("bird-photos")
+                    .createSignedUrl(
+                        photo.storage_path,
+                        3600
+                    );
+
+                if(error || !data?.signedUrl){
+                    console.warn(
+                        "Could not create photo URL:",
+                        photo.storage_path,
+                        error
+                    );
+                    return;
+                }
+
+                const entry = {
+                    id: photo.id,
+                    url: data.signedUrl,
+                    caption: photo.caption || ""
+                };
+
+                if(!map.has(photo.checklist_id)){
+                    map.set(photo.checklist_id, []);
+                }
+
+                map.get(photo.checklist_id).push(entry);
+
+            }catch(error){
+                console.warn(
+                    "Could not prepare photo URL:",
+                    error
+                );
+            }
+        })
+    );
+
+    return map;
+}
+
+function renderChecklists(rows, photosByChecklist){
+
+    const box =
+        document.getElementById(
+            "checklistList"
+        );
+
+    box.innerHTML = "";
+
+    if(!rows.length){
+
+        box.innerHTML = `
+            <div class="empty">
+                ${
+                    currentLanguage === "lo"
+                        ? "ຍັງບໍ່ມີ Checklist. ກົດ “+ ສ້າງແບບສຳຫຼວດໃໝ່” ເພື່ອເລີ່ມ."
+                        : "No checklists yet. Click “+ New Checklist” to start."
+                }
+            </div>
+        `;
+
+        return;
+    }
+
+    rows.slice(0,8).forEach(
+        checklist => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "checklist";
+
+            const observations =
+                Array.isArray(
+                    checklist.checklist_observations
+                )
+                    ? checklist.checklist_observations
+                    : [];
+
+            const totalIndividuals =
+                observations.reduce(
+                    (sum, observation) =>
+                        sum +
+                        (
+                            Number(
+                                observation.count
+                            ) || 0
+                        ),
+                    0
+                );
+
+            const observationHtml =
+                observations
+                    .slice(0,8)
+                    .map(
+                        observation => {
+
+                            const bird =
+                                formatBird(
+                                    observation.species_id
+                                );
+
+                            return `
+                                <li>
+                                    <strong>
+                                        ${escapeHtml(bird.name)}
+                                    </strong>
+                                    ${
+                                        bird.scientific
+                                            ? ` <em>${escapeHtml(bird.scientific)}</em>`
+                                            : ""
+                                    }
+                                    ×
+                                    ${Number(observation.count) || 0}
+                                </li>
+                            `;
+                        }
+                    )
+                    .join("");
+
+            item.innerHTML = `
+                <div class="checklist-head">
+
+                    <div>
+                        <div class="checklist-title">
+                            ${escapeHtml(
+                                checklist.location_name ||
+                                (
+                                    currentLanguage === "lo"
+                                        ? "ບໍ່ລະບຸສະຖານທີ່"
+                                        : "Unnamed location"
+                                )
+                            )}
+                        </div>
+
+                        <div class="checklist-meta">
+                            ${escapeHtml(
+                                checklist.observation_date ||
+                                "—"
+                            )}
+
+                            ·
+
+                            ${escapeHtml(
+                                checklist.start_time ||
+                                "—"
+                            )}
+
+                            –
+
+                            ${escapeHtml(
+                                checklist.end_time ||
+                                "—"
+                            )}
+
+                            <br>
+
+                            ${observations.length}
+                            ${
+                                currentLanguage === "lo"
+                                    ? "ຊະນິດ"
+                                    : "species"
+                            }
+
+                            ·
+
+                            ${totalIndividuals}
+                            ${
+                                currentLanguage === "lo"
+                                    ? "ຕົວ"
+                                    : "individuals"
+                            }
+                        </div>
+
+                    </div>
+
+                    <span class="pill">
+                        ${
+                            checklist.complete
+                                ? (
+                                    currentLanguage === "lo"
+                                        ? "Complete"
+                                        : "Complete"
+                                )
+                                : (
+                                    currentLanguage === "lo"
+                                        ? "Incomplete"
+                                        : "Incomplete"
+                                )
+                        }
+                    </span>
+
+                </div>
+
+                ${
+                    observationHtml
+                        ? `
+                            <ul class="observation-list">
+                                ${observationHtml}
+                            </ul>
+                        `
+                        : ""
+                }
+
+                ${(() => {
+                    const photos =
+                        (photosByChecklist?.get(checklist.id) || [])
+                            .slice(0,8);
+
+                    if(!photos.length){
+                        return "";
+                    }
+
+                    const photoTitle =
+                        currentLanguage === "lo"
+                            ? `ຮູບພາບ (${photos.length})`
+                            : `Photos (${photos.length})`;
+
+                    return `
+                        <div class="photo-caption">
+                            ${escapeHtml(photoTitle)}
+                        </div>
+                        <div class="photo-gallery">
+                            ${photos.map(photo => `
+                                <a
+                                    class="photo-link"
+                                    href="${escapeHtml(photo.url)}"
+                                    target="_blank"
+                                    rel="noopener">
+                                    <img
+                                        src="${escapeHtml(photo.url)}"
+                                        alt="${escapeHtml(
+                                            photo.caption ||
+                                            (currentLanguage === "lo" ? "ຮູບການສຳຫຼວດ" : "Survey photo")
+                                        )}"
+                                        loading="lazy">
+                                </a>
+                            `).join("")}
+                        </div>
+                    `;
+                })()}
+            `;
+
+            box.appendChild(item);
+        }
+    );
+}
+
+function renderSpecies(speciesTotals){
+
+    const box =
+        document.getElementById(
+            "speciesList"
+        );
+
+    box.innerHTML = "";
+
+    if(!speciesTotals.size){
+
+        box.innerHTML = `
+            <div class="empty">
+                ${
+                    currentLanguage === "lo"
+                        ? "ຍັງບໍ່ມີຊະນິດນົກ."
+                        : "No species recorded yet."
+                }
+            </div>
+        `;
+
+        return;
+    }
+
+    const sorted =
+        [...speciesTotals.entries()]
+            .sort(
+                (a,b) =>
+                    b[1] - a[1]
+            )
+            .slice(0,15);
+
+    sorted.forEach(
+        ([speciesId,count]) => {
+
+            const bird =
+                formatBird(speciesId);
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "species-item";
+
+            item.innerHTML = `
+                <div class="species-name">
+
+                    <strong>
+                        ${escapeHtml(bird.name)}
+                    </strong>
+
+                    ${
+                        bird.scientific
+                            ? `
+                                <small>
+                                    ${escapeHtml(
+                                        bird.scientific
+                                    )}
+                                </small>
+                            `
+                            : ""
+                    }
+
+                </div>
+
+                <div class="species-count">
+                    ${count}
+                    ${
+                        currentLanguage === "lo"
+                            ? " ຕົວ"
+                            : " individuals"
+                    }
+                </div>
+            `;
+
+            box.appendChild(item);
+        }
+    );
+}
+
+async function logout(){
+
+    if(!supabaseClient){
+        return;
+    }
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href =
+        "auth.html";
+}
+
+function updateLanguage(){
+
+    document.documentElement.lang =
+        currentLanguage === "lo"
+            ? "lo"
+            : "en";
+
+    document
+        .querySelectorAll(
+            "[data-en][data-lo]"
+        )
+        .forEach(
+            element => {
+
+                element.textContent =
+                    currentLanguage === "lo"
+                        ? element.getAttribute("data-lo")
+                        : element.getAttribute("data-en");
+            }
+        );
+
+    document.getElementById(
+        "laoButton"
+    ).classList.toggle(
+        "active",
+        currentLanguage === "lo"
+    );
+
+    document.getElementById(
+        "englishButton"
+    ).classList.toggle(
+        "active",
+        currentLanguage === "en"
+    );
+}
+
+document
+    .getElementById(
+        "logoutButton"
+    )
+    .addEventListener(
+        "click",
+        logout
+    );
+
+document
+    .getElementById(
+        "laoButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            currentLanguage =
+                "lo";
+
+            localStorage.setItem(
+                "laobirds-language",
+                "lo"
+            );
+
+            updateLanguage();
+
+            if(currentUser){
+                loadDashboard();
+            }
+        }
+    );
+
+document
+    .getElementById(
+        "englishButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            currentLanguage =
+                "en";
+
+            localStorage.setItem(
+                "laobirds-language",
+                "en"
+            );
+
+            updateLanguage();
+
+            if(currentUser){
+                loadDashboard();
+            }
+        }
+    );
+
+updateLanguage();
+
+initialize()
+    .catch(
+        error => {
+
+            showError(
+                error &&
+                error.message
+                    ? error.message
+                    : (
+                        currentLanguage === "lo"
+                            ? "ບໍ່ສາມາດໂຫຼດ My LaoBirds ໄດ້."
+                            : "Could not load My LaoBirds."
+                    )
+            );
+
+            document.getElementById(
+                "displayName"
+            ).textContent =
+                currentLanguage === "lo"
+                    ? "ຕ້ອງເຂົ້າລະບົບ"
+                    : "Login required";
+        }
+    );
+</script>
+
+</body>
+</html>

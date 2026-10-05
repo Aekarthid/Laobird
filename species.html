@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaoBirds | Species Profile</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root{
+            --green:#14573f;
+            --green-dark:#0f4633;
+            --soft:#eef4f1;
+            --line:#e2e9e5;
+            --text:#24332d;
+            --muted:#68776f;
+        }
+
+        body{
+            margin:0;
+            color:var(--text);
+            background:#f5f7f5;
+            font-family:Arial,sans-serif;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+        header{
+            background:#fff;
+            border-bottom:1px solid #e5e5e5;
+        }
+
+        header .header-content{
+            display:flex;
+            align-items:center;
+            width:100%;
+            min-height:85px;
+        }
+
+        .logo{flex-shrink:0}
+
+        .logo a{
+            display:flex;
+            align-items:center;
+            gap:9px;
+            text-decoration:none;
+        }
+
+        .site-logo{
+            height:70px;
+            width:auto;
+            display:block;
+            object-fit:contain;
+        }
+
+        .logo-name{
+            font-size:24px;
+            font-weight:700;
+            color:var(--green);
+            white-space:nowrap;
+            letter-spacing:.2px;
+        }
+
+        header nav{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            margin-left:auto;
+        }
+
+        header nav > a{
+            white-space:nowrap;
+            text-decoration:none;
+            color:#333;
+            font-size:14px;
+            font-weight:500;
+            transition:.2s;
+        }
+
+        header nav > a:hover{color:var(--green)}
+
+        .language-switcher{
+            display:inline-flex;
+            align-items:center;
+            gap:4px;
+            margin-left:10px;
+            white-space:nowrap;
+        }
+
+        .language-switcher button{
+            border:none;
+            background:transparent;
+            cursor:pointer;
+            font-size:14px;
+            padding:7px 8px;
+            border-radius:7px;
+            color:#555;
+        }
+
+        .language-switcher button:hover{
+            background:var(--soft);
+            color:var(--green);
+        }
+
+        .language-switcher button.active{
+            background:var(--green);
+            color:#fff;
+            font-weight:700;
+        }
+
+        /* =========================
+           PAGE
+        ========================= */
+        .species-page{
+            padding:34px 0 70px;
+        }
+
+        .breadcrumb{
+            margin-bottom:16px;
+            color:var(--muted);
+            font-size:13px;
+        }
+
+        .breadcrumb a{
+            color:var(--green);
+            text-decoration:none;
+        }
+
+        .species-hero{
+            display:grid;
+            grid-template-columns:1.05fr .95fr;
+            gap:30px;
+            background:#fff;
+            border:1px solid var(--line);
+            border-radius:18px;
+            padding:22px;
+        }
+
+        .hero-image{
+            width:100%;
+            height:430px;
+            border-radius:14px;
+            object-fit:cover;
+            background:#e8efeb;
+            display:block;
+        }
+
+        .hero-image.empty{
+            background:linear-gradient(135deg,#dfeae4,#c1d4ca);
+        }
+
+        .species-label{
+            display:inline-block;
+            padding:6px 9px;
+            border-radius:999px;
+            background:var(--soft);
+            color:var(--green);
+            font-size:12px;
+            font-weight:700;
+            margin-bottom:12px;
+        }
+
+        .species-title{
+            margin:0 0 8px;
+            color:var(--green);
+            font-size:42px;
+            line-height:1.1;
+        }
+
+        .species-lao{
+            margin:0 0 8px;
+            color:#45564e;
+            font-size:18px;
+        }
+
+        .species-scientific{
+            margin:0 0 22px;
+            font-size:20px;
+            color:#5e6d66;
+            font-style:italic;
+        }
+
+        .facts{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:12px;
+        }
+
+        .fact{
+            border:1px solid var(--line);
+            border-radius:12px;
+            padding:13px;
+            background:#fbfcfb;
+        }
+
+        .fact small{
+            display:block;
+            color:var(--muted);
+            margin-bottom:5px;
+            font-size:12px;
+        }
+
+        .fact strong{
+            color:#30423a;
+            font-size:14px;
+        }
+
+        .status-row{
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+            margin-top:16px;
+        }
+
+        .status-chip{
+            display:inline-flex;
+            align-items:center;
+            padding:7px 10px;
+            border-radius:999px;
+            font-size:12px;
+            font-weight:700;
+            background:var(--soft);
+            color:var(--green);
+        }
+
+        .list-i{background:#fdeaea;color:#9b2d2d}
+        .list-ii{background:#fff2d9;color:#97651a}
+        .list-iii{background:#e9f4e8;color:#2e7440}
+        .not-listed{background:#eef2f0;color:#5c6d65}
+
+        /* =========================
+           SECTIONS
+        ========================= */
+        .profile-section{
+            margin-top:22px;
+            background:#fff;
+            border:1px solid var(--line);
+            border-radius:18px;
+            padding:24px;
+        }
+
+        .profile-section h2{
+            margin:0 0 16px;
+            color:var(--green);
+            font-size:25px;
+        }
+
+        .section-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:22px;
+        }
+
+        .identification-image{
+            width:100%;
+            min-height:320px;
+            object-fit:cover;
+            border-radius:14px;
+            background:#e8efeb;
+            display:block;
+        }
+
+        .identification-image.empty{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            min-height:320px;
+            color:var(--muted);
+        }
+
+        .feature-list{
+            display:grid;
+            gap:10px;
+        }
+
+        .feature-item{
+            padding:14px;
+            border:1px solid var(--line);
+            border-radius:12px;
+            background:#fbfcfb;
+        }
+
+        .feature-item strong{
+            display:block;
+            color:var(--green);
+            margin-bottom:6px;
+        }
+
+        .feature-item p{
+            margin:0;
+            color:#52625a;
+            line-height:1.65;
+        }
+
+        .key-features{
+            margin:0;
+            padding-left:22px;
+            line-height:1.8;
+            color:#52625a;
+        }
+
+        .similar-list{
+            display:grid;
+            gap:10px;
+        }
+
+        .similar-item{
+            border:1px solid var(--line);
+            border-radius:12px;
+            padding:13px 15px;
+            background:#fbfcfb;
+        }
+
+        .text-block{
+            color:#52625a;
+            line-height:1.75;
+            white-space:pre-line;
+        }
+
+        .audio-box{
+            background:#163a2e;
+            border-radius:14px;
+            padding:20px;
+            color:#fff;
+        }
+
+        .audio-box audio{
+            width:100%;
+        }
+
+        .map-placeholder{
+            padding:35px 20px;
+            border:1px dashed #bdcbc3;
+            border-radius:14px;
+            text-align:center;
+            color:var(--muted);
+            background:#f8faf9;
+        }
+
+        .source-note{
+            margin-top:12px;
+            font-size:12px;
+            color:var(--muted);
+        }
+
+        .not-available{
+            color:var(--muted);
+            background:#f8faf9;
+            border:1px dashed #c6d1cc;
+            padding:16px;
+            border-radius:12px;
+        }
+
+        .back-link{
+            display:inline-block;
+            margin-top:20px;
+            text-decoration:none;
+            color:var(--green);
+            font-weight:700;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+        footer{
+            margin-top:55px;
+            background:#143a2d;
+            color:#cfe0d8;
+            padding:34px 0;
+        }
+
+        .footer-content{
+            display:flex;
+            align-items:flex-start;
+            gap:22px;
+        }
+
+        .footer-logo img{
+            width:95px;
+            height:auto;
+            display:block;
+        }
+
+        .footer-info{flex:1}
+
+        .footer-info h3{
+            margin:0 0 8px;
+            color:#fff;
+        }
+
+        .footer-info p{
+            margin:6px 0;
+            line-height:1.6;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+        @media(max-width:1100px){
+            header .header-content{
+                flex-wrap:wrap;
+                padding-top:10px;
+                padding-bottom:10px;
+            }
+
+            header nav{
+                flex-wrap:wrap;
+                gap:10px;
+                margin-left:0;
+                margin-top:8px;
+            }
+
+            .language-switcher{margin-left:0}
+        }
+
+        @media(max-width:800px){
+            .site-logo{height:55px}
+            .logo-name{font-size:20px}
+
+            .species-hero,
+            .section-grid{
+                grid-template-columns:1fr;
+            }
+
+            .hero-image{height:320px}
+            .species-title{font-size:34px}
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="container header-content">
+
+        <div class="logo">
+            <a href="index.html">
+                <img src="logo.png" alt="LaoBirds Logo" class="site-logo">
+                <span class="logo-name">LaoBirds</span>
+            </a>
+        </div>
+
+        <!-- ONE navigation + ONE language switcher -->
+        <nav>
+            <a href="index.html" data-en="Home" data-lo="ໜ້າຫຼັກ">Home</a>
+            <a href="birds.html" data-en="Birds" data-lo="ນົກ">Birds</a>
+            <a href="map.html" data-en="Map" data-lo="ແຜນທີ່">Map</a>
+            <a href="hotspots.html" data-en="Hotspots" data-lo="ຈຸດຊົມນົກ">Hotspots</a>
+            <a href="observations.html" data-en="Observations" data-lo="ການບັນທຶກ">Observations</a>
+            <a href="iucn.html" data-en="IUCN List" data-lo="ບັນຊີ IUCN">IUCN List</a>
+            <a href="laos-list.html" data-en="Laos List" data-lo="ບັນຊີນົກລາວ">Laos List</a>
+
+            <div class="language-switcher">
+                <button id="laoButton" type="button">🇱🇦 ລາວ</button>
+                <span>|</span>
+                <button id="englishButton" type="button">🇬🇧 English</button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main class="species-page">
+    <div class="container">
+
+        <div class="breadcrumb">
+            <a href="index.html">Home</a>
+            <span> / </span>
+            <a href="birds.html" data-en="Birds" data-lo="ນົກ">Birds</a>
+            <span> / </span>
+            <span data-en="Species Profile" data-lo="ຂໍ້ມູນລາຍຊະນິດ">Species Profile</span>
+        </div>
+
+        <section class="species-hero">
+
+            <img id="heroImage" class="hero-image empty" alt="Bird">
+
+            <div>
+                <div class="species-label"
+                     data-en="Species Profile"
+                     data-lo="ຂໍ້ມູນລາຍຊະນິດ">
+                    Species Profile
+                </div>
+
+                <h1 id="englishName" class="species-title">Bird</h1>
+                <p id="laoName" class="species-lao"></p>
+                <p id="scientificName" class="species-scientific"></p>
+
+                <div class="facts">
+                    <div class="fact">
+                        <small data-en="Family" data-lo="ວົງສະກຸນ">Family</small>
+                        <strong id="family">—</strong>
+                    </div>
+
+                    <div class="fact">
+                        <small data-en="Order" data-lo="ອັນດັບ">Order</small>
+                        <strong id="order">—</strong>
+                    </div>
+
+                    <div class="fact">
+                        <small data-en="Habitat" data-lo="ຖິ່ນອາໄສ">Habitat</small>
+                        <strong id="habitat">—</strong>
+                    </div>
+
+                    <div class="fact">
+                        <small data-en="LaoBirds ID" data-lo="ລະຫັດ LaoBirds">LaoBirds ID</small>
+                        <strong id="birdId">—</strong>
+                    </div>
+                </div>
+
+                <div id="statusRow" class="status-row"></div>
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <h2 data-en="How to Identify" data-lo="ວິທີຈຳແນກ">How to Identify</h2>
+
+            <div class="section-grid">
+                <div>
+                    <img id="identificationImage"
+                         class="identification-image empty"
+                         alt="Identification image">
+                </div>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <strong data-en="Head & Eye" data-lo="ຫົວ ແລະ ຕາ">Head & Eye</strong>
+                        <p id="headFeature"></p>
+                    </div>
+
+                    <div class="feature-item">
+                        <strong data-en="Bill" data-lo="ປາກ">Bill</strong>
+                        <p id="billFeature"></p>
+                    </div>
+
+                    <div class="feature-item">
+                        <strong data-en="Wing" data-lo="ປີກ">Wing</strong>
+                        <p id="wingFeature"></p>
+                    </div>
+
+                    <div class="feature-item">
+                        <strong data-en="Breast" data-lo="ໜ້າເອິກ">Breast</strong>
+                        <p id="breastFeature"></p>
+                    </div>
+
+                    <div class="feature-item">
+                        <strong data-en="Tail" data-lo="ຫາງ">Tail</strong>
+                        <p id="tailFeature"></p>
+                    </div>
+
+                    <div class="feature-item">
+                        <strong data-en="Overall Features" data-lo="ລັກສະນະໂດຍລວມ">Overall Features</strong>
+                        <p id="eyeFeature"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <h2 data-en="Key Features" data-lo="ຈຸດເດັ່ນສຳຄັນ">Key Features</h2>
+            <ul id="keyFeatures" class="key-features"></ul>
+            <div id="keyFeaturesEmpty" class="not-available" style="display:none;"></div>
+        </section>
+
+        <section class="profile-section">
+            <h2 data-en="Habitat & Distribution" data-lo="ຖິ່ນອາໄສ ແລະ ການກະຈາຍພັນ">Habitat & Distribution</h2>
+
+            <div id="habitatDescription" class="text-block"></div>
+
+            <div id="distributionBox" class="map-placeholder" style="margin-top:16px;">
+                <span data-en="Distribution map will be added later."
+                      data-lo="ແຜນທີ່ການກະຈາຍພັນຈະເພີ່ມໃນພາຍຫຼັງ.">
+                    Distribution map will be added later.
+                </span>
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <h2 data-en="Similar Species" data-lo="ຊະນິດທີ່ຄ້າຍຄືກັນ">Similar Species</h2>
+            <div id="similarSpecies" class="similar-list"></div>
+        </section>
+
+        <section class="profile-section">
+            <h2 data-en="Bird Sound" data-lo="ສຽງນົກ">Bird Sound</h2>
+
+            <div id="soundContainer" class="audio-box" style="display:none;">
+                <audio id="birdSound" controls></audio>
+            </div>
+
+            <div id="soundEmpty" class="not-available"
+                 data-en="Bird sound will be added later."
+                 data-lo="ສຽງນົກຈະເພີ່ມໃນພາຍຫຼັງ.">
+                Bird sound will be added later.
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <h2 data-en="Lao Wildlife List" data-lo="ບັນຊີສັດປ່າລາວ">Lao Wildlife List</h2>
+
+            <div id="laosListBox" class="not-available"></div>
+
+            <p class="source-note"
+               data-en="List information is matched from the Lao wildlife list used by LaoBirds."
+               data-lo="ຂໍ້ມູນບັນຊີແມ່ນຈັບຄູ່ຈາກບັນຊີສັດປ່າລາວທີ່ LaoBirds ໃຊ້.">
+                List information is matched from the Lao wildlife list used by LaoBirds.
+            </p>
+        </section>
+
+        <section class="profile-section">
+            <h2 data-en="IUCN Status" data-lo="ສະຖານະ IUCN">IUCN Status</h2>
+            <div id="iucnBox" class="not-available"
+                 data-en="IUCN information will be added later."
+                 data-lo="ຂໍ້ມູນ IUCN ຈະເພີ່ມໃນພາຍຫຼັງ.">
+                IUCN information will be added later.
+            </div>
+        </section>
+
+        <a href="birds.html" class="back-link"
+           data-en="← Back to Birds"
+           data-lo="← ກັບໄປທີ່ໜ້ານົກ">
+            ← Back to Birds
+        </a>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container footer-content">
+        <div class="footer-logo">
+            <img src="logo.png" alt="LaoBirds Logo">
+        </div>
+
+        <div class="footer-info">
+            <h3>LaoBirds</h3>
+
+            <p data-en="A bird observation and learning platform for Laos."
+               data-lo="ເວັບໄຊສຳລັບຮຽນຮູ້ ແລະ ບັນທຶກການພົບເຫັນນົກໃນປະເທດລາວ.">
+                A bird observation and learning platform for Laos.
+            </p>
+
+            <p>© LaoBirds</p>
+        </div>
+    </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="laos-list-data.js"></script>
+
+<script>
+    let currentLanguage =
+        localStorage.getItem("laobirds-language") || "en";
+
+    const rareBridge = [
+        {
+            id:"LB-001",
+            englishName:"Green Peafowl",
+            laoName:"ນົກຍູງ",
+            scientificName:"Pavo muticus",
+            mainImage:"images/rare/rare (1).png"
+        },
+        {
+            id:"LB-002",
+            englishName:"Silver Pheasant",
+            laoName:"ໄກ່ຂວາຫຼວງ (ໄກ້ຂວາຫຼວງຫຼັງຂາວ)",
+            scientificName:"Lophura nycthemera",
+            mainImage:"images/rare/rare (2).png"
+        },
+        {
+            id:"LB-003",
+            englishName:"Great Hornbill",
+            laoName:"ນົກກົດຄໍຄຳ",
+            scientificName:"Buceros bicornis",
+            mainImage:"images/rare/rare (3).png"
+        },
+        {
+            id:"LB-004",
+            englishName:"Hawk",
+            laoName:"ແຫຼວມຸມ",
+            scientificName:"Accipitridae",
+            mainImage:"images/rare/rare (4).jpg"
+        },
+        {
+            id:"LB-005",
+            englishName:"Baya Weaver",
+            laoName:"ນົກກະຈອກຟ້າເອີກເຫຼືອງ",
+            scientificName:"Ploceus philippinus",
+            mainImage:"images/rare/rare (5).png"
+        },
+        {
+            id:"LB-006",
+            englishName:"Imperial Eagle",
+            laoName:"ແຫຼວອິນຊີປານ້ອຍ",
+            scientificName:"Aquila heliaca",
+            mainImage:"images/rare/rare (6).png"
+        },
+        {
+            id:"LB-007",
+            englishName:"Red-billed Blue Magpie",
+            laoName:"ນົກສີດາ",
+            scientificName:"Urocissa erythroryncha",
+            mainImage:"images/rare/rare (7).png"
+        },
+        {
+            id:"LB-008",
+            englishName:"Oriental Darter",
+            laoName:"ນົກຄໍງູ",
+            scientificName:"Anhinga melanogaster",
+            mainImage:"images/rare/rare (8).png"
+        },
+        {
+            id:"LB-009",
+            englishName:"Lesser Fish Eagle",
+            laoName:"ແຫຼວອິນຊີ",
+            scientificName:"Ichthyophaga humilis",
+            mainImage:"images/rare/rare (9).png"
+        },
+        {
+            id:"LB-010",
+            englishName:"Garganey",
+            laoName:"ນົກເປັດລາຍ",
+            scientificName:"Spatula querquedula",
+            mainImage:"images/rare/rare (10).png"
+        }
+    ];
+
+    function getText(value){
+        if(value === undefined || value === null) return "";
+
+        if(typeof value === "object"){
+            return value[currentLanguage] || value.en || value.lo || "";
+        }
+
+        return String(value);
+    }
+
+    function normalize(value){
+        return String(value || "")
+            .toLowerCase()
+            .normalize("NFC")
+            .trim();
+    }
+
+    function safeArray(value){
+        return Array.isArray(value) ? value : [];
+    }
+
+    function findBird(){
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+
+        if(typeof birds !== "undefined" && Array.isArray(birds)){
+            const found = birds.find(b => String(b.id) === String(id));
+            if(found) return found;
+        }
+
+        const rareFound =
+            rareBridge.find(b => String(b.id) === String(id));
+
+        if(rareFound) return rareFound;
+
+        return null;
+    }
+
+    function findLaosListEntry(bird){
+        if(typeof laosList === "undefined" || !Array.isArray(laosList)){
+            return null;
+        }
+
+        const scientific = normalize(getText(bird.scientificName));
+        const english = normalize(getText(bird.englishName));
+
+        return laosList.find(entry => {
+            const eScientific = normalize(entry.scientific_name);
+            const eEnglish = normalize(entry.english_name);
+
+            return (
+                (scientific && eScientific && scientific === eScientific) ||
+                (english && eEnglish && english === eEnglish)
+            );
+        }) || null;
+    }
+
+    function listClass(list){
+        if(list === "I") return "status-chip list-i";
+        if(list === "II") return "status-chip list-ii";
+        if(list === "III") return "status-chip list-iii";
+        return "status-chip not-listed";
+    }
+
+    function notAvailableText(){
+        return currentLanguage === "lo"
+            ? "ຂໍ້ມູນຈະເພີ່ມໃນພາຍຫຼັງ."
+            : "Information will be added later.";
+    }
+
+    function fillArrayList(targetId, values){
+        const target = document.getElementById(targetId);
+        target.innerHTML = "";
+
+        if(!values.length){
+            target.style.display = "none";
+            const emptyId = targetId + "Empty";
+            const empty = document.getElementById(emptyId);
+            if(empty){
+                empty.textContent = notAvailableText();
+                empty.style.display = "block";
+            }
+            return;
+        }
+
+        target.style.display = "";
+        const empty = document.getElementById(targetId + "Empty");
+        if(empty) empty.style.display = "none";
+
+        values.forEach(value => {
+            const li = document.createElement("li");
+            li.textContent = getText(value);
+            target.appendChild(li);
+        });
+    }
+
+    function renderIdentification(bird){
+        const info = bird.identification || {};
+
+        const fields = [
+            ["headFeature","head"],
+            ["eyeFeature","eye"],
+            ["billFeature","bill"],
+            ["wingFeature","wing"],
+            ["breastFeature","breast"],
+            ["tailFeature","tail"]
+        ];
+
+        fields.forEach(([elementId,key]) => {
+            const value = getText(info[key]);
+            document.getElementById(elementId).textContent =
+                value || notAvailableText();
+        });
+
+        const keyTarget = document.getElementById("keyFeatures");
+        keyTarget.innerHTML = "";
+
+        const features = safeArray(bird.keyFeatures);
+
+        if(!features.length){
+            keyTarget.style.display = "none";
+            document.getElementById("keyFeaturesEmpty").style.display = "block";
+            document.getElementById("keyFeaturesEmpty").textContent =
+                notAvailableText();
+        }else{
+            keyTarget.style.display = "";
+            document.getElementById("keyFeaturesEmpty").style.display = "none";
+
+            features.forEach(feature => {
+                const li = document.createElement("li");
+                li.textContent = getText(feature);
+                keyTarget.appendChild(li);
+            });
+        }
+    }
+
+    function renderSimilarSpecies(bird){
+        const target = document.getElementById("similarSpecies");
+        target.innerHTML = "";
+
+        const items = safeArray(bird.similarSpecies);
+
+        if(!items.length){
+            target.innerHTML =
+                `<div class="not-available">${notAvailableText()}</div>`;
+            return;
+        }
+
+        items.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "similar-item";
+            div.textContent = getText(item);
+            target.appendChild(div);
+        });
+    }
+
+    function renderSound(bird){
+        const sound = bird.sound || "";
+
+        if(sound){
+            const container = document.getElementById("soundContainer");
+            const audio = document.getElementById("birdSound");
+            const empty = document.getElementById("soundEmpty");
+
+            audio.src = sound;
+            container.style.display = "block";
+            empty.style.display = "none";
+        }
+    }
+
+    function renderLaosList(bird){
+        const box = document.getElementById("laosListBox");
+        const entry = findLaosListEntry(bird);
+
+        if(!entry){
+            box.className = "not-available";
+            box.textContent = currentLanguage === "lo"
+                ? "ບໍ່ພົບລາຍການຂອງນົກນີ້ໃນບັນຊີສັດປ່າລາວປັດຈຸບັນ."
+                : "This bird is not currently matched to an entry in the Lao wildlife list.";
+            return;
+        }
+
+        box.className = "";
+        box.innerHTML = `
+            <span class="${listClass(entry.laos_list)}">
+                ${currentLanguage === "lo" ? "ບັນຊີ" : "List"} ${entry.laos_list}
+            </span>
+
+            <p style="margin:14px 0 6px;font-weight:700;color:#30423a;">
+                ${currentLanguage === "lo" ? "Category" : "Category"}:
+                ${entry.category || "—"}
+            </p>
+
+            <p style="margin:0;color:#5c6d65;">
+                ${currentLanguage === "lo" ? "Official list No." : "Official list No."}:
+                ${entry.official_list_no ?? "—"}
+            </p>
+        `;
+    }
+
+    function renderIucn(bird){
+        const box = document.getElementById("iucnBox");
+
+        const status =
+            getText(bird.iucnStatus || bird.iucnCategory);
+
+        if(status){
+            box.className = "status-chip";
+            box.textContent = status;
+        }else{
+            box.className = "not-available";
+            box.textContent = notAvailableText();
+        }
+    }
+
+    function renderPage(){
+        const bird = findBird();
+
+        if(!bird){
+            document.title = "LaoBirds | Bird not found";
+
+            document.querySelector(".species-page").innerHTML = `
+                <div class="container">
+                    <div class="profile-section">
+                        <h1 style="color:#14573f;">
+                            ${currentLanguage === "lo" ? "ບໍ່ພົບຊະນິດນົກ" : "Bird not found"}
+                        </h1>
+
+                        <p>
+                            ${currentLanguage === "lo"
+                                ? "ບໍ່ພົບນົກຕາມ ID ທີ່ສົ່ງມາ."
+                                : "No bird was found for the requested ID."}
+                        </p>
+
+                        <a href="birds.html" class="back-link">
+                            ${currentLanguage === "lo" ? "← ກັບໄປຫານົກ" : "← Back to Birds"}
+                        </a>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        const englishName = getText(bird.englishName);
+        const laoName = getText(bird.laoName);
+        const scientificName = getText(bird.scientificName);
+
+        document.title = `LaoBirds | ${englishName}`;
+
+        document.getElementById("englishName").textContent =
+            englishName || "Bird";
+
+        document.getElementById("laoName").textContent =
+            laoName;
+
+        document.getElementById("scientificName").textContent =
+            scientificName;
+
+        document.getElementById("family").textContent =
+            getText(bird.family) || "—";
+
+        document.getElementById("order").textContent =
+            getText(bird.order) || "—";
+
+        document.getElementById("habitat").textContent =
+            getText(bird.habitat) || "—";
+
+        document.getElementById("birdId").textContent =
+            bird.id || "—";
+
+        const heroImage = document.getElementById("heroImage");
+
+        if(bird.mainImage){
+            heroImage.src = bird.mainImage;
+            heroImage.classList.remove("empty");
+        }else{
+            heroImage.removeAttribute("src");
+            heroImage.classList.add("empty");
+        }
+
+        const identificationImage =
+            document.getElementById("identificationImage");
+
+        if(bird.identificationImage){
+            identificationImage.src = bird.identificationImage;
+            identificationImage.classList.remove("empty");
+        }else{
+            identificationImage.removeAttribute("src");
+            identificationImage.classList.add("empty");
+        }
+
+        renderIdentification(bird);
+        renderSimilarSpecies(bird);
+        renderSound(bird);
+        renderLaosList(bird);
+        renderIucn(bird);
+
+        const habitatDescription =
+            getText(bird.habitatDescription);
+
+        document.getElementById("habitatDescription").textContent =
+            habitatDescription || notAvailableText();
+    }
+
+    function updateLanguage(){
+        document.documentElement.lang =
+            currentLanguage === "lo" ? "lo" : "en";
+
+        document.querySelectorAll("[data-en][data-lo]")
+            .forEach(element => {
+                element.textContent =
+                    currentLanguage === "lo"
+                        ? element.getAttribute("data-lo")
+                        : element.getAttribute("data-en");
+            });
+
+        document.getElementById("laoButton")
+            .classList.toggle("active", currentLanguage === "lo");
+
+        document.getElementById("englishButton")
+            .classList.toggle("active", currentLanguage === "en");
+
+        renderPage();
+    }
+
+    document.getElementById("laoButton")
+        .addEventListener("click", () => {
+            currentLanguage = "lo";
+            localStorage.setItem("laobirds-language", "lo");
+            updateLanguage();
+        });
+
+    document.getElementById("englishButton")
+        .addEventListener("click", () => {
+            currentLanguage = "en";
+            localStorage.setItem("laobirds-language", "en");
+            updateLanguage();
+        });
+
+    renderPage();
+    updateLanguage();
+</script>
+
+</body>
+</html>

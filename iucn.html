@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>LaoBirds - IUCN List</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+
+    <style>
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        header .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            min-height: 85px;
+        }
+
+
+        /* LOGO */
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none;
+        }
+
+        .site-logo {
+            height: 70px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .logo-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #14573f;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+
+        /* =========================================
+           NAVIGATION
+        ========================================= */
+
+        header nav {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-left: 18px;
+            width: auto;
+        }
+
+        header nav > a {
+            white-space: nowrap;
+            text-decoration: none;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        header nav > a:hover {
+            color: #14573f;
+        }
+
+
+        /* =========================================
+           LANGUAGE
+        ========================================= */
+
+        .language-switcher {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .language-switcher button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 7px 8px;
+            border-radius: 7px;
+            color: #555555;
+            transition: 0.2s;
+        }
+
+        .language-switcher button:hover {
+            background: #eef4f1;
+            color: #14573f;
+        }
+
+        .language-switcher button.active {
+            background: #14573f;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+
+        .iucn-page-header {
+            margin-top: 45px;
+            margin-bottom: 30px;
+        }
+
+        .iucn-page-header h1 {
+            font-size: 42px;
+            color: #1d5c45;
+            margin-bottom: 10px;
+        }
+
+        .iucn-page-header p {
+            color: #666666;
+            font-size: 18px;
+            max-width: 850px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           INFORMATION BOX
+        ========================================= */
+
+        .iucn-info {
+            background: #f4f8f5;
+            border-left: 4px solid #1d5c45;
+            padding: 18px 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .iucn-info strong {
+            color: #14573f;
+        }
+
+
+        /* =========================================
+           SEARCH
+        ========================================= */
+
+        .iucn-search {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 15px 18px;
+            border: 1px solid #dddddd;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 25px;
+        }
+
+        .iucn-search:focus {
+            border-color: #1d5c45;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .iucn-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+        }
+
+        .iucn-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        .iucn-table th {
+            background: #1d5c45;
+            color: #ffffff;
+            padding: 14px 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .iucn-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #eeeeee;
+            vertical-align: middle;
+        }
+
+        .iucn-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .iucn-table tr:hover td {
+            background: #f8fbf9;
+        }
+
+
+        /* =========================================
+           STATUS
+        ========================================= */
+
+        .status {
+            display: inline-block;
+            min-width: 42px;
+            text-align: center;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .status-CR {
+            background: #b71c1c;
+        }
+
+        .status-EN {
+            background: #d84315;
+        }
+
+        .status-VU {
+            background: #ef6c00;
+        }
+
+        .status-NT {
+            background: #f9a825;
+            color: #222222;
+        }
+
+        .status-LC {
+            background: #388e3c;
+        }
+
+        .status-DD {
+            background: #757575;
+        }
+
+        .status-NE {
+            background: #9e9e9e;
+        }
+
+        .status-EX {
+            background: #000000;
+        }
+
+        .status-EW {
+            background: #424242;
+        }
+
+        .status-other {
+            background: #546e7a;
+        }
+
+
+        /* =========================================
+           VIEW BUTTON
+        ========================================= */
+
+        .iucn-button {
+            display: inline-block;
+            background: #1d5c45;
+            color: white;
+            text-decoration: none;
+            padding: 8px 13px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .iucn-button:hover {
+            opacity: 0.85;
+        }
+
+
+        /* =========================================
+           COUNT
+        ========================================= */
+
+        .iucn-count {
+            margin-bottom: 15px;
+            color: #666666;
+        }
+
+
+        /* =========================================
+           LOADING / ERROR / EMPTY
+        ========================================= */
+
+        .iucn-message {
+            text-align: center;
+            padding: 50px 20px;
+            color: #777777;
+        }
+
+        .iucn-error {
+            display: none;
+            background: #fff4f4;
+            color: #a33;
+            border: 1px solid #ecc;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        .footer-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 50px;
+        }
+
+        .footer-logo img {
+            width: 200px;
+            height: auto;
+            display: block;
+        }
+
+        .footer-info {
+            flex: 1;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1100px) {
+
+            header .header-content {
+                flex-wrap: wrap;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            header nav {
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            .language-switcher {
+                margin-left: 0;
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .site-logo {
+                height: 55px;
+            }
+
+            .logo-name {
+                font-size: 20px;
+            }
+
+            header nav {
+                justify-content: flex-start;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .iucn-page-header h1 {
+                font-size: 34px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header>
+
+        <div class="container header-content">
+
+
+            <!-- LOGO -->
+
+            <div class="logo">
+
+    <a href="index.html">
+
+        <img
+            src="logo.png"
+            alt="LaoBirds Logo"
+            class="site-logo">
+
+        <span class="logo-name">
+            LaoBirds
+        </span>
+
+    </a>
+
+</div>
+
+
+            <!-- NAVIGATION -->
+
+           <nav>
+
+    <a
+        href="index.html"
+        data-en="Home"
+        data-lo="ໜ້າຫຼັກ">
+        Home
+    </a>
+
+    <a
+        href="birds.html"
+        data-en="Birds"
+        data-lo="ນົກ">
+        Birds
+    </a>
+
+    <a
+        href="map.html"
+        data-en="Map"
+        data-lo="ແຜນທີ່">
+        Map
+    </a>
+
+    <a
+        href="hotspots.html"
+        data-en="Hotspots"
+        data-lo="ຈຸດຊົມນົກ">
+        Hotspots
+    </a>
+
+    <a
+        href="observations.html"
+        data-en="Observations"
+        data-lo="ການບັນທຶກ">
+        Observations
+    </a>
+
+    <a
+        href="iucn.html"
+        data-en="IUCN List"
+        data-lo="ບັນຊີ IUCN">
+        IUCN List
+    </a>
+
+    <a
+        href="laos-list.html"
+        data-en="Laos List"
+        data-lo="ບັນຊີນົກລາວ">
+        Laos List
+    </a>
+
+    <div class="language-switcher">
+
+        <button
+            id="laoButton"
+            type="button">
+            🇱🇦 ລາວ
+        </button>
+
+        <span>|</span>
+
+        <button
+            id="englishButton"
+            type="button">
+            🇬🇧 English
+        </button>
+
+    </div>
+
+</nav>
+            
+
+                <!-- LANGUAGE -->
+
+                <div class="language-switcher">
+
+                    <button
+                        id="laoButton"
+                        type="button">
+                        🇱🇦 ລາວ
+                    </button>
+
+                    <span>|</span>
+
+                    <button
+                        id="englishButton"
+                        type="button">
+                        🇬🇧 English
+                    </button>
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main>
+
+        <div class="container">
+
+
+            <!-- PAGE HEADER -->
+
+            <section class="iucn-page-header">
+
+                <h1
+                    data-en="IUCN Red List – Birds of Laos"
+                    data-lo="ບັນຊີແດງ IUCN – ນົກໃນປະເທດລາວ">
+
+                    IUCN Red List – Birds of Laos
+
+                </h1>
+
+
+                <p
+                    data-en="Explore the IUCN Red List conservation status of bird species associated with Laos."
+                    data-lo="ສຳຫຼວດສະຖານະການອະນຸລັກຂອງນົກໃນປະເທດລາວຕາມບັນຊີແດງ IUCN.">
+
+                    Explore the IUCN Red List conservation status
+                    of bird species associated with Laos.
+
+                </p>
+
+            </section>
+
+
+            <!-- INFORMATION -->
+
+            <div class="iucn-info">
+
+                <strong
+                    data-en="Source:"
+                    data-lo="ແຫຼ່ງຂໍ້ມູນ:">
+                    Source:
+                </strong>
+
+                IUCN Red List of Threatened Species.
+
+
+                <br>
+
+
+                <strong
+                    data-en="Country:"
+                    data-lo="ປະເທດ:">
+                    Country:
+                </strong>
+
+                Laos (LA)
+
+
+                <br>
+
+
+                <strong
+                    data-en="Data version:"
+                    data-lo="ຮຸ່ນຂໍ້ມູນ:">
+                    Data version:
+                </strong>
+
+                <span id="iucnVersion">
+                    —
+                </span>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                id="iucnError"
+                class="iucn-error">
+
+                Unable to load IUCN data.
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <input
+                type="text"
+                id="iucnSearch"
+                class="iucn-search"
+                placeholder="Search species..."
+                data-placeholder-en="Search species..."
+                data-placeholder-lo="ຄົ້ນຫາຊະນິດນົກ...">
+
+
+            <!-- COUNT -->
+
+            <div
+                id="iucnCount"
+                class="iucn-count">
+
+                Loading IUCN records...
+
+            </div>
+
+
+            <!-- TABLE -->
+
+            <div class="iucn-table-wrapper">
+
+                <table class="iucn-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th
+                                data-en="Species"
+                                data-lo="ຊະນິດນົກ">
+                                Species
+                            </th>
+
+                            <th
+                                data-en="IUCN Status"
+                                data-lo="ສະຖານະ IUCN">
+                                IUCN Status
+                            </th>
+
+                            <th
+                                data-en="Assessment Year"
+                                data-lo="ປີປະເມີນ">
+                                Assessment Year
+                            </th>
+
+                            <th
+                                data-en="Criteria"
+                                data-lo="ເກນການປະເມີນ">
+                                Criteria
+                            </th>
+
+                            <th
+                                data-en="Source"
+                                data-lo="ແຫຼ່ງຂໍ້ມູນ">
+                                Source
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="iucnTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- EMPTY / LOADING -->
+
+            <div
+                id="iucnMessage"
+                class="iucn-message">
+
+                Loading...
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <div class="container footer-content">
+
+
+           <div class="footer-logo">
+    <a href="index.html" aria-label="LaoBirds Home">
+        <img
+            src="logo.png"
+            alt="LaoBirds Logo">
+    </a>
+</div>
+
+
+            <div class="footer-info">
+
+                <h3>
+                    LaoBirds
+                </h3>
+
+
+                <p
+                    data-en="A bird observation and learning platform for Laos."
+                    data-lo="ເວັບໄຊສຳລັບຮຽນຮູ້ ແລະ ບັນທຶກການພົບເຫັນນົກໃນປະເທດລາວ.">
+
+                    A bird observation and learning platform for Laos.
+
+                </p>
+
+
+                <p>
+                    © LaoBirds
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         LANGUAGE + IUCN SYSTEM
+    ========================================== -->
+
+    <script>
+
+
+        /* ========================================
+           CONFIGURATION
+        ======================================== */
+
+        /*
+            IMPORTANT:
+
+            Do NOT put your IUCN API token here.
+
+            This page expects LaoBirds to have
+            a backend endpoint:
+
+            /api/iucn-laos
+
+            The backend will communicate with:
+
+            https://api.iucnredlist.org/api/v4
+
+            using your private IUCN token.
+        */
+
+        const IUCN_API_URL =
+            "/api/iucn-laos";
+
+
+        /* ========================================
+           LANGUAGE
+        ======================================== */
+
+        let currentLanguage =
+            localStorage.getItem(
+                "laobirds-language"
+            ) || "en";
+
+
+        /* ========================================
+           SAMPLE DATA STRUCTURE
+        ======================================== */
+
+        /*
+            The backend should return:
+
+            {
+                "red_list_version": "2026-1",
+
+                "species": [
+
+                    {
+                        "sis_taxon_id": 123456,
+
+                        "scientific_name":
+                            "Example species",
+
+                        "red_list_category_code":
+                            "VU",
+
+                        "year_published":
+                            2026,
+
+                        "assessment_date":
+                            "2025-01-01",
+
+                        "criteria":
+                            "B1ab(iii)",
+
+                        "url":
+                            "https://www.iucnredlist.org/species/..."
+                    }
+
+                ]
+            }
+        */
+
+
+        /* ========================================
+           GET TEXT
+        ======================================== */
+
+        function getText(value) {
+
+            if (
+                value === undefined ||
+                value === null
+            ) {
+
+                return "";
+
+            }
+
+
+            if (typeof value === "object") {
+
+                return value[currentLanguage]
+                    || value.en
+                    || value.lo
+                    || "";
+
+            }
+
+
+            return value;
+
+        }
+
+
+        /* ========================================
+           STATUS NAME
+        ======================================== */
+
+        function getStatusName(code) {
+
+            const statuses = {
+
+                EX: {
+                    en: "Extinct",
+                    lo: "ສູນພັນ"
+                },
+
+                EW: {
+                    en: "Extinct in the Wild",
+                    lo: "ສູນພັນໃນທຳມະຊາດ"
+                },
+
+                CR: {
+                    en: "Critically Endangered",
+                    lo: "ໃກ້ສູນພັນຢ່າງວິກິດ"
+                },
+
+                EN: {
+                    en: "Endangered",
+                    lo: "ໃກ້ສູນພັນ"
+                },
+
+                VU: {
+                    en: "Vulnerable",
+                    lo: "ມີຄວາມສ່ຽງ"
+                },
+
+                NT: {
+                    en: "Near Threatened",
+                    lo: "ໃກ້ຖືກຄຸກຄາມ"
+                },
+
+                LC: {
+                    en: "Least Concern",
+                    lo: "ກັງວົນໜ້ອຍ"
+                },
+
+                DD: {
+                    en: "Data Deficient",
+                    lo: "ຂໍ້ມູນບໍ່ພຽງພໍ"
+                },
+
+                NE: {
+                    en: "Not Evaluated",
+                    lo: "ຍັງບໍ່ໄດ້ປະເມີນ"
+
+                }
+
+            };
+
+
+            return statuses[code]
+                ? getText(statuses[code])
+                : code || "—";
+
+        }
+
+
+        /* ========================================
+           STATUS CLASS
+        ======================================== */
+
+        function getStatusClass(code) {
+
+            const allowed = [
+                "CR",
+                "EN",
+                "VU",
+                "NT",
+                "LC",
+                "DD",
+                "NE",
+                "EX",
+                "EW"
+            ];
+
+
+            if (
+                allowed.includes(code)
+            ) {
+
+                return "status-" + code;
+
+            }
+
+
+            return "status-other";
+
+        }
+
+
+        /* ========================================
+           ESCAPE HTML
+        ======================================== */
+
+        function escapeHtml(value) {
+
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* ========================================
+           DISPLAY IUCN DATA
+        ======================================== */
+
+        function displayIucnData(
+            speciesList
+        ) {
+
+            const tableBody =
+                document.getElementById(
+                    "iucnTableBody"
+                );
+
+
+            const message =
+                document.getElementById(
+                    "iucnMessage"
+                );
+
+
+            const count =
+                document.getElementById(
+                    "iucnCount"
+                );
+
+
+            tableBody.innerHTML = "";
+
+
+            if (
+                !speciesList ||
+                speciesList.length === 0
+            ) {
+
+                message.style.display =
+                    "block";
+
+                message.textContent =
+                    currentLanguage === "lo"
+                        ? "ບໍ່ພົບຂໍ້ມູນ IUCN."
+                        : "No IUCN records found.";
+
+                count.textContent = "";
+
+                return;
+
+            }
+
+
+            message.style.display =
+                "none";
+
+
+            count.textContent =
+                currentLanguage === "lo"
+                    ? "ພົບ " +
+                      speciesList.length +
+                      " ລາຍການ"
+                    : speciesList.length +
+                      " records found";
+
+
+            speciesList.forEach(
+                function(species) {
+
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const scientificName =
+                        species.scientific_name
+                        || "—";
+
+
+                    const statusCode =
+                        species.red_list_category_code
+                        || "—";
+
+
+                    const statusName =
+                        getStatusName(
+                            statusCode
+                        );
+
+
+                    const year =
+                        species.year_published
+                        || "—";
+
+
+                    const criteria =
+                        species.criteria
+                        || "—";
+
+
+                    const url =
+                        species.url
+                        || "#";
+
+
+                    row.innerHTML = `
+
+                        <td>
+
+                            <strong>
+                                ${escapeHtml(
+                                    scientificName
+                                )}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="status ${getStatusClass(
+                                    statusCode
+                                )}">
+
+                                ${escapeHtml(
+                                    statusCode
+                                )}
+
+                            </span>
+
+                            <br>
+
+                            <small>
+                                ${escapeHtml(
+                                    statusName
+                                )}
+                            </small>
+
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(year)}
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(criteria)}
+                        </td>
+
+
+                        <td>
+
+                            <a
+                                class="iucn-button"
+                                href="${escapeHtml(url)}"
+                                target="_blank"
+                                rel="noopener noreferrer">
+
+                                IUCN
+
+                            </a>
+
+                        </td>
+
+                    `;
+
+
+                    tableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* ========================================
+           LOAD IUCN DATA
+        ======================================== */
+
+        async function loadIucnData() {
+
+            const message =
+                document.getElementById(
+                    "iucnMessage"
+                );
+
+
+            const errorBox =
+                document.getElementById(
+                    "iucnError"
+                );
+
+
+            try {
+
+                message.style.display =
+                    "block";
+
+
+                message.textContent =
+                    currentLanguage === "lo"
+                        ? "ກຳລັງໂຫຼດຂໍ້ມູນ IUCN..."
+                        : "Loading IUCN data...";
+
+
+                errorBox.style.display =
+                    "none";
+
+
+                const response =
+                    await fetch(
+                        IUCN_API_URL
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "HTTP " +
+                        response.status
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                /* VERSION */
+
+                document
+                    .getElementById(
+                        "iucnVersion"
+                    )
+                    .textContent =
+                    data.red_list_version
+                    || "—";
+
+
+                /* DATA */
+
+                window.iucnSpecies =
+                    Array.isArray(
+                        data.species
+                    )
+                        ? data.species
+                        : [];
+
+
+                displayIucnData(
+                    window.iucnSpecies
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "IUCN error:",
+                    error
+                );
+
+
+                message.style.display =
+                    "none";
+
+
+                errorBox.style.display =
+                    "block";
+
+
+                errorBox.textContent =
+                    currentLanguage === "lo"
+                        ? "ບໍ່ສາມາດໂຫຼດຂໍ້ມູນ IUCN ໄດ້."
+                        : "Unable to load IUCN data.";
+
+            }
+
+        }
+
+
+        /* ========================================
+           SEARCH
+        ======================================== */
+
+        document
+            .getElementById("iucnSearch")
+            .addEventListener(
+                "input",
+                function() {
+
+
+                    const search =
+                        this.value
+                            .toLowerCase()
+                            .trim();
+
+
+                    const filtered =
+                        (
+                            window.iucnSpecies
+                            || []
+                        ).filter(
+                            function(species) {
+
+                                const name =
+                                    (
+                                        species.scientific_name
+                                        || ""
+                                    ).toLowerCase();
+
+
+                                const code =
+                                    (
+                                        species.red_list_category_code
+                                        || ""
+                                    ).toLowerCase();
+
+
+                                return (
+                                    name.includes(search) ||
+                                    code.includes(search)
+                                );
+
+                            }
+                        );
+
+
+                    displayIucnData(
+                        filtered
+                    );
+
+                }
+            );
+
+
+        /* ========================================
+           LANGUAGE UPDATE
+        ======================================== */
+
+        function updatePageLanguage() {
+
+
+            document.documentElement.lang =
+                currentLanguage === "lo"
+                    ? "lo"
+                    : "en";
+
+
+            const elements =
+                document.querySelectorAll(
+                    "[data-en][data-lo]"
+                );
+
+
+            elements.forEach(
+                function(element) {
+
+                    element.textContent =
+                        currentLanguage === "lo"
+                            ? element.getAttribute(
+                                "data-lo"
+                            )
+                            : element.getAttribute(
+                                "data-en"
+                            );
+
+                }
+            );
+
+
+            /* SEARCH */
+
+            const search =
+                document.getElementById(
+                    "iucnSearch"
+                );
+
+
+            search.placeholder =
+                currentLanguage === "lo"
+                    ? search.getAttribute(
+                        "data-placeholder-lo"
+                    )
+                    : search.getAttribute(
+                        "data-placeholder-en"
+                    );
+
+
+            /* BUTTON STATUS */
+
+            document
+                .getElementById("laoButton")
+                .classList.remove("active");
+
+
+            document
+                .getElementById("englishButton")
+                .classList.remove("active");
+
+
+            if (
+                currentLanguage === "lo"
+            ) {
+
+                document
+                    .getElementById("laoButton")
+                    .classList.add("active");
+
+            } else {
+
+                document
+                    .getElementById("englishButton")
+                    .classList.add("active");
+
+            }
+
+
+            /* REFRESH */
+
+            if (
+                window.iucnSpecies
+            ) {
+
+                displayIucnData(
+                    window.iucnSpecies
+                );
+
+            }
+
+        }
+
+
+        /* ========================================
+           CHANGE LANGUAGE
+        ======================================== */
+
+        function changeLanguage(
+            language
+        ) {
+
+            currentLanguage =
+                language;
+
+
+            localStorage.setItem(
+                "laobirds-language",
+                language
+            );
+
+
+            updatePageLanguage();
+
+        }
+
+
+        /* ========================================
+           LANGUAGE BUTTONS
+        ======================================== */
+
+        document
+            .getElementById("laoButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    changeLanguage("lo");
+
+                }
+            );
+
+
+        document
+            .getElementById("englishButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    changeLanguage("en");
+
+                }
+            );
+
+
+        /* ========================================
+           START
+        ======================================== */
+
+        window.iucnSpecies = [];
+
+        updatePageLanguage();
+
+        loadIucnData();
+
+
+    </script>
+
+
+</body>
+
+</html>

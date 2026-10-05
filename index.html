@@ -1,128 +1,1281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LaoBirds — Prototype</title>
-<style>
-:root{--green:#176b4d;--green2:#22865f;--cream:#f5f7f3;--dark:#17352b;--muted:#6c7b74;--card:#fff;--line:#e3e9e5}
-*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--cream);color:var(--dark)}
-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
-.nav{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;gap:26px}
-.logo{font-size:23px;font-weight:800;color:var(--green);display:flex;align-items:center;gap:8px}
-.logo span{font-size:27px}.nav a{color:#40524a;text-decoration:none;font-weight:600;font-size:14px}.nav a:hover{color:var(--green)}
-.spacer{flex:1}.btn{border:0;border-radius:10px;padding:10px 15px;font-weight:700;cursor:pointer}.login{background:#edf4f0;color:var(--green)}
-.hero{background:linear-gradient(135deg,#123e30,#1f7654);color:#fff;padding:70px 20px 76px}
-.hero-inner{max-width:1180px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:12px;opacity:.75}
-h1{font-size:52px;line-height:1.02;margin:12px 0}.hero p{font-size:18px;max-width:600px;color:#dbeae3}
-.search{display:flex;max-width:650px;background:#fff;border-radius:14px;padding:6px;margin-top:28px;box-shadow:0 10px 30px #08291d55}
-.search input{flex:1;border:0;outline:0;padding:13px;font-size:15px}.search button{background:var(--green2);color:white;border-radius:10px}
-main{max-width:1180px;margin:auto;padding:34px 20px 70px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:18px 0}.section-head h2{margin:0;font-size:25px}.muted{color:var(--muted);font-size:14px}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 3px 12px #183d2b0a}.bird-img{height:155px;background:linear-gradient(135deg,#d9e8de,#b8d0c1);display:flex;align-items:center;justify-content:center;font-size:60px}.card-body{padding:15px}.card h3{margin:0 0 5px;font-size:17px}.latin{font-style:italic;color:var(--muted);font-size:13px}.tag{display:inline-block;background:#eaf4ef;color:var(--green);font-size:11px;font-weight:700;border-radius:20px;padding:5px 8px;margin-top:10px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:10px 0 36px}.stat{background:#fff;border:1px solid var(--line);padding:20px;border-radius:14px}.stat b{display:block;font-size:28px;color:var(--green)}.stat span{font-size:13px;color:var(--muted)}
-.map{height:360px;border-radius:18px;background:#dce8df;position:relative;overflow:hidden;border:1px solid #cbd9d0;background-image:linear-gradient(30deg,#d4e3d8 12%,transparent 12.5%,transparent 87%,#d4e3d8 87.5%),linear-gradient(150deg,#d4e3d8 12%,transparent 12.5%,transparent 87%,#d4e3d8 87.5%);background-size:80px 80px}
-.map:before{content:"LAOS";position:absolute;left:45%;top:35%;font-size:48px;font-weight:800;color:#aac2b2;letter-spacing:5px}
-.pin{position:absolute;width:18px;height:18px;background:#d9544d;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px #3335}.p1{left:43%;top:25%}.p2{left:53%;top:42%}.p3{left:47%;top:62%}.p4{left:61%;top:55%}.p5{left:38%;top:50%}
-.activity{display:grid;grid-template-columns:1.5fr 1fr;gap:22px}.list{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}.obs{padding:16px;border-bottom:1px solid var(--line);display:flex;gap:14px}.obs:last-child{border-bottom:0}.obs .icon{font-size:30px}.obs strong{display:block}.obs small{color:var(--muted)}
-.cta{background:#e4f0e9;border-radius:18px;padding:25px}.cta h3{margin-top:0}.primary{background:var(--green);color:#fff}
-footer{background:#143a2d;color:#cfe0d8;padding:30px 20px}.foot{max-width:1180px;margin:auto;display:flex;justify-content:space-between;font-size:13px}
-.modal{display:none;position:fixed;inset:0;background:#0007;z-index:30;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modalbox{background:#fff;border-radius:18px;max-width:520px;width:100%;padding:25px}.close{float:right;border:0;background:none;font-size:24px;cursor:pointer}
-@media(max-width:850px){.cards{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.activity{grid-template-columns:1fr}.nav a{display:none}h1{font-size:40px}}
-@media(max-width:520px){.cards{grid-template-columns:1fr 1fr;gap:10px}.bird-img{height:115px}.hero{padding-top:45px}.foot{display:block}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LaoBirds - Birds of Laos</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================================
+           FONT
+           Lao uses Phetsarath OT when installed.
+           English keeps the normal system font.
+        ========================================= */
+        html[lang="lo"] body,
+        html[lang="lo"] body button,
+        html[lang="lo"] body input,
+        html[lang="lo"] body select,
+        html[lang="lo"] body textarea,
+        html[lang="lo"] body a {
+            font-family: "Phetsarath OT", "Noto Sans Lao", sans-serif !important;
+        }
+
+        html[lang="en"] body,
+        html[lang="en"] body button,
+        html[lang="en"] body input,
+        html[lang="en"] body select,
+        html[lang="en"] body textarea,
+        html[lang="en"] body a {
+            font-family: Arial, sans-serif;
+        }
+
+        /* =========================================
+           HEADER
+        ========================================= */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        header .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            min-height: 85px;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none;
+        }
+
+        .site-logo {
+            height: 70px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .logo-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #14573f;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+        header nav {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-left: 18px;
+            width: 100%;
+            flex: 1;
+        }
+
+        header nav > a {
+            white-space: nowrap;
+            text-decoration: none;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        header nav > a:hover {
+            color: #14573f;
+        }
+
+        .nav-actions {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .login-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 15px;
+            border-radius: 8px;
+            background: #14573f;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            background: #0f4633;
+            color: #ffffff;
+        }
+
+        .language-switcher {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-left: 2px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .language-switcher button {
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1.2;
+            padding: 7px 9px;
+            border-radius: 8px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .language-switcher button span {
+            font-size: 13px;
+        }
+
+        .language-switcher button:hover {
+            background: #eef4f1;
+            transform: translateY(-1px);
+        }
+
+        .language-switcher button.active {
+            background: #eef4f1;
+            border-color: #cddbd3;
+        }
+
+        .language-divider {
+            color: #b4beb9;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        /* =========================================
+           HERO
+        ========================================= */
+        .hero {
+            padding: 100px 0;
+            background:
+                linear-gradient(
+                    rgba(20, 70, 50, 0.75),
+                    rgba(20, 70, 50, 0.75)
+                ),
+                url("https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=1800&q=80");
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            max-width: 700px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 21px;
+            max-width: 650px;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #1d5c45;
+            color: white;
+            padding: 13px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero .button {
+            background: white;
+            color: #1d5c45;
+        }
+
+        .button:hover {
+            opacity: 0.85;
+        }
+
+        /* =========================================
+           FEATURED BIRD
+        ========================================= */
+        .bird-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .bird-card img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .bird-card h2 {
+            color: #14573f;
+        }
+
+        /* =========================================
+           HIGHLIGHT SECTIONS
+        ========================================= */
+        .highlight-section {
+            padding: 55px 0;
+        }
+
+        .highlight-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .highlight-header h2 {
+            color: #14573f;
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .slider-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .slider-button {
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 50%;
+            background: #14573f;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .slider-button:hover {
+            opacity: 0.85;
+        }
+
+        .slider-window {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .slider-track {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        .highlight-card {
+            flex: 0 0 calc(25% - 15px);
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+            cursor: default;
+        }
+
+        .highlight-card.clickable {
+            cursor: pointer;
+        }
+
+        .highlight-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+            background: #e8efeb;
+        }
+
+        .highlight-card-content {
+            padding: 16px;
+        }
+
+        .highlight-card h3 {
+            margin: 0 0 6px 0;
+            color: #14573f;
+            font-size: 19px;
+        }
+
+        .highlight-card .scientific {
+            font-style: italic;
+            color: #777777;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #eef4f1;
+            color: #14573f;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .empty-highlight {
+            background: #f7faf8;
+            border: 1px dashed #b8c8bf;
+            border-radius: 12px;
+            padding: 35px 25px;
+            text-align: center;
+            color: #666666;
+            width: 100%;
+        }
+
+        /* =========================================
+           RARE PHOTO NOTE
+        ========================================= */
+        .rare-note {
+            margin: -4px 0 18px;
+            color: #6b7872;
+            font-size: 13px;
+        }
+
+        /* =========================================
+           ABOUT / CONTACT / FOOTER
+        ========================================= */
+        .about-section,
+        .contact-section {
+            padding: 50px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            gap: 34px;
+        }
+
+        .footer-logo {
+            flex: 0 0 auto;
+        }
+
+        .footer-logo img {
+            width: 150px;
+            height: auto;
+            display: block;
+        }
+
+        .footer-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .footer-info h3 {
+            margin: 0 0 10px;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .footer-info p {
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+        @media (max-width: 1100px) {
+            header .header-content {
+                flex-wrap: wrap;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            header nav {
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            .nav-actions {
+                margin-left: 0;
+            }
+
+            .language-switcher {
+                margin-left: 0;
+            }
+
+            .highlight-card {
+                flex: 0 0 calc(33.333% - 14px);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .site-logo {
+                height: 55px;
+            }
+
+            .logo-name {
+                font-size: 20px;
+            }
+
+            header nav {
+                justify-content: flex-start;
+            }
+
+            .nav-actions {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 4px;
+            }
+
+            .hero {
+                padding: 70px 0;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .bird-card {
+                grid-template-columns: 1fr;
+            }
+
+            .bird-card img {
+                height: 280px;
+            }
+
+            .highlight-card {
+                flex: 0 0 calc(50% - 10px);
+            }
+
+            .footer-content {
+                align-items: center;
+                gap: 18px;
+            }
+
+            .footer-logo img {
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .highlight-card {
+                flex: 0 0 100%;
+            }
+
+            .highlight-header h2 {
+                font-size: 23px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header><nav class="nav">
-<div class="logo"><span>🐦</span> LaoBirds</div>
-<a href="#birds">Birds</a><a href="#map">Map</a><a href="#observations">Observations</a><a href="#hotspots">Hotspots</a><a href="#contact">Contact</a>
-<div class="spacer"></div><button class="btn login" onclick="openModal()">Sign in</button>
-</nav></header>
 
-<section class="hero"><div class="hero-inner">
-<div class="eyebrow">Birds & Biodiversity of Laos</div>
-<h1>Discover the birds<br>of Laos.</h1>
-<p>Explore birds, observations, hotspots and biodiversity records from across Lao PDR.</p>
-<div class="search"><input id="search" placeholder="Search bird name, species or family..." oninput="filterBirds()"><button class="btn" onclick="document.getElementById('birds').scrollIntoView({behavior:'smooth'})">Search</button></div>
-</div></section>
+<header>
+    <div class="container header-content">
 
-<main>
-<div class="stats">
-<div class="stat"><b>240+</b><span>Bird species</span></div>
-<div class="stat"><b>1,280+</b><span>Observations</span></div>
-<div class="stat"><b>85</b><span>Birding hotspots</span></div>
-<div class="stat"><b>320+</b><span>Registered users</span></div>
-</div>
+        <div class="logo">
+            <a href="index.html">
+                <img src="logo.png" alt="LaoBirds Logo" class="site-logo">
+                <span class="logo-name">LaoBirds</span>
+            </a>
+        </div>
 
-<section id="birds"><div class="section-head"><div><h2>Explore Birds</h2><div class="muted">Example data for the prototype</div></div></div>
-<div class="cards" id="birdCards"></div></section>
+        <!-- ONE language switcher -->
+        <nav>
+            <a href="index.html" data-en="Home" data-lo="ໜ້າຫຼັກ">Home</a>
+            <a href="birds.html" data-en="Birds" data-lo="ນົກ">Birds</a>
+            <a href="map.html" data-en="Map" data-lo="ແຜນທີ່">Map</a>
+            <a href="hotspots.html" data-en="Hotspots" data-lo="ຈຸດຊົມນົກ">Hotspots</a>
+            <a href="my-laobirds.html" data-en="My LaoBirds" data-lo="My LaoBirds">My LaoBirds</a>
+            <a href="iucn.html" data-en="IUCN List" data-lo="ບັນຊີ IUCN">IUCN List</a>
+            <a href="laos-list.html" data-en="Laos List" data-lo="ບັນຊີນົກລາວ">Laos List</a>
 
-<section id="map" style="margin-top:45px"><div class="section-head"><div><h2>Observation Map</h2><div class="muted">Example observation locations across Laos</div></div></div>
-<div class="map"><i class="pin p1"></i><i class="pin p2"></i><i class="pin p3"></i><i class="pin p4"></i><i class="pin p5"></i></div></section>
+            <div class="nav-actions">
+                <a
+                    href="auth.html"
+                    class="login-button"
+                    data-en="Login"
+                    data-lo="ເຂົ້າລະບົບ"
+                >
+                    Login
+                </a>
 
-<section id="observations" style="margin-top:45px"><div class="section-head"><div><h2>Recent Observations</h2><div class="muted">Latest community records</div></div><button class="btn primary" onclick="openModal('Record an Observation')">+ Record Observation</button></div>
-<div class="activity">
-<div class="list">
-<div class="obs"><div class="icon">🦜</div><div><strong>Great Hornbill</strong><small>Buceros bicornis · Luang Prabang · Today</small></div></div>
-<div class="obs"><div class="icon">🐓</div><div><strong>Red Junglefowl</strong><small>Gallus gallus · Oudomxay · Yesterday</small></div></div>
-<div class="obs"><div class="icon">🦅</div><div><strong>Mountain Hawk-Eagle</strong><small>Nisaetus nipalensis · Xieng Khouang · 2 days ago</small></div></div>
-</div>
-<div class="cta" id="hotspots"><h3>Find a birding hotspot</h3><p class="muted">Explore places where birds have been recorded by the LaoBirds community.</p><button class="btn primary" onclick="alert('Hotspots module — prototype')">Explore Hotspots</button></div>
-</div></section>
+                <div class="language-switcher" aria-label="Language">
+                    <button
+                        id="laoButton"
+                        type="button"
+                        title="ພາສາລາວ"
+                        aria-label="ພາສາລາວ"
+                    >🇱🇦 <span>ລາວ</span></button>
 
-<section id="contact" style="margin-top:45px">
-  <div class="section-head">
-    <div>
-      <h2>Contact</h2>
-      <div class="muted">LaoBirds project contact</div>
+                    <span class="language-divider">|</span>
+
+                    <button
+                        id="englishButton"
+                        type="button"
+                        title="English"
+                        aria-label="English"
+                    >🇬🇧 <span>English</span></button>
+                </div>
+            </div>
+        </nav>
+
     </div>
-  </div>
-  <div class="activity">
-    <div class="list">
-      <div class="obs">
-        <div class="icon">👤</div>
-        <div><strong>CHONGVILAY Ekathit</strong><small>Project / Website contact</small></div>
-      </div>
-      <div class="obs">
-        <div class="icon">📞</div>
-        <div><strong>92996627</strong><small>Phone</small></div>
-      </div>
-      <div class="obs">
-        <div class="icon">✉️</div>
-        <div><strong>chongvilai@gmail.com</strong><small>Email</small></div>
-      </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <h1
+            data-en="Discover the Birds of Laos"
+            data-lo="ຄົ້ນພົບໂລກຂອງນົກໃນປະເທດລາວ"
+        >
+            Discover the Birds of Laos
+        </h1>
+
+        <p
+            data-en="Learn, observe and explore the birds of Laos."
+            data-lo="ຮຽນຮູ້, ສັງເກດ ແລະ ສຳຫຼວດນົກໃນປະເທດລາວ."
+        >
+            Learn, observe and explore the birds of Laos.
+        </p>
+
+        <a
+            href="birds.html"
+            class="button"
+            data-en="Explore Birds"
+            data-lo="ສຳຫຼວດນົກ"
+        >
+            Explore Birds
+        </a>
     </div>
-    <div class="cta">
-      <h3>LaoBirds</h3>
-      <p class="muted">A bird biodiversity platform dedicated to documenting, learning about and sharing the birds of Laos.</p>
-      <button class="btn primary" onclick="location.href='mailto:chongvilai@gmail.com'">Contact Me</button>
-    </div>
-  </div>
 </section>
 
-</main>
+<section class="content-section">
+    <div class="container">
 
-<footer><div class="foot"><div><b>🐦 LaoBirds</b><br>Bird biodiversity platform for Laos<br><span style='opacity:.75'>CHONGVILAY Ekathit · 92996627 · chongvilai@gmail.com</span></div><div>About · Data · Community · Contact</div></div></footer>
+        <h2
+            data-en="Featured Bird"
+            data-lo="ນົກແນະນຳ"
+        >
+            Featured Bird
+        </h2>
 
-<div class="modal" id="modal"><div class="modalbox"><button class="close" onclick="closeModal()">×</button><h2 id="modalTitle">Sign in</h2><p class="muted">This is a prototype. The real account and database system will be connected later.</p><input style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:8px 0" placeholder="Email"><input style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:8px 0" placeholder="Password" type="password"><button class="btn primary" style="width:100%;margin-top:8px">Continue</button></div></div>
+        <div class="bird-card">
+
+            <img
+                id="featuredBirdImage"
+                src="https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=1000&q=80"
+                alt="Featured Bird"
+            >
+
+            <div>
+
+                <h2 id="featuredEnglishName">
+                    Example Bird
+                </h2>
+
+                <p id="featuredScientificName">
+                    Example species
+                </p>
+
+                <p
+                    data-en="Featured bird information will be connected to the LaoBirds database."
+                    data-lo="ຂໍ້ມູນນົກແນະນຳຈະເຊື່ອມຕໍ່ກັບຖານຂໍ້ມູນ LaoBirds."
+                >
+                    Featured bird information will be connected to the LaoBirds database.
+                </p>
+
+                <a
+                    id="featuredBirdButton"
+                    href="birds.html"
+                    class="button"
+                    data-en="View Bird Profile"
+                    data-lo="ເບິ່ງຂໍ້ມູນນົກ"
+                >
+                    View Bird Profile
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- =========================================
+     THREATENED BIRDS
+========================================== -->
+<section class="highlight-section">
+    <div class="container">
+
+        <div class="highlight-header">
+            <h2
+                data-en="Threatened Birds in Laos"
+                data-lo="ນົກທີ່ຖືກຄຸກຄາມໃນປະເທດລາວ"
+            >
+                Threatened Birds in Laos
+            </h2>
+
+            <div class="slider-controls">
+                <button id="threatenedPrev" class="slider-button" type="button">←</button>
+                <button id="threatenedNext" class="slider-button" type="button">→</button>
+            </div>
+        </div>
+
+        <div class="slider-window">
+            <div id="threatenedTrack" class="slider-track"></div>
+        </div>
+
+    </div>
+</section>
+
+<!-- =========================================
+     RARE BIRDS
+========================================== -->
+<section class="highlight-section">
+    <div class="container">
+
+        <div class="highlight-header">
+            <div>
+                <h2
+                    data-en="Rare & Hard-to-find Birds in Laos"
+                    data-lo="ນົກຫາຍາກ ແລະ ພົບເຫັນຍາກໃນລາວ"
+                >
+                    Rare & Hard-to-find Birds in Laos
+                </h2>
+
+                <p
+                    class="rare-note"
+                    data-en="Your field photos can be added here. The 10 image slots below are ready for your photos."
+                    data-lo="ຮູບພາບຈາກການສຳຫຼວດຂອງທ່ານສາມາດເພີ່ມຢູ່ນີ້. ດ້ານລຸ່ມມີ 10 ຊ່ອງສຳລັບຮູບພາບ."
+                >
+                    Your field photos can be added here. The 10 image slots below are ready for your photos.
+                </p>
+            </div>
+
+            <div class="slider-controls">
+                <button id="rarePrev" class="slider-button" type="button">←</button>
+                <button id="rareNext" class="slider-button" type="button">→</button>
+            </div>
+        </div>
+
+        <div class="slider-window">
+            <div id="rareTrack" class="slider-track"></div>
+        </div>
+
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="container">
+
+        <h2
+            data-en="About LaoBirds"
+            data-lo="ກ່ຽວກັບ LaoBirds"
+        >
+            About LaoBirds
+        </h2>
+
+        <p
+            data-en="LaoBirds is a platform for learning about, observing and documenting birds in Laos."
+            data-lo="LaoBirds ແມ່ນເວັບໄຊສຳລັບຮຽນຮູ້, ສັງເກດ ແລະ ບັນທຶກຂໍ້ມູນນົກໃນປະເທດລາວ."
+        >
+            LaoBirds is a platform for learning about, observing and documenting birds in Laos.
+        </p>
+
+        <p
+            data-en="The platform will eventually include bird identification, photographs, sounds, observations, maps and distribution information."
+            data-lo="ໃນອະນາຄົດ ເວັບໄຊຈະປະກອບມີການຈຳແນກນົກ, ຮູບພາບ, ສຽງນົກ, ການບັນທຶກ, ແຜນທີ່ ແລະ ຂໍ້ມູນການກະຈາຍພັນ."
+        >
+            The platform will eventually include bird identification, photographs, sounds, observations, maps and distribution information.
+        </p>
+
+    </div>
+</section>
+
+<section class="contact-section">
+    <div class="container">
+
+        <h2
+            data-en="Contact"
+            data-lo="ຕິດຕໍ່"
+        >
+            Contact
+        </h2>
+
+        <p>CHONGVILAY Ekathit</p>
+        <p>Phone: +85620 92996627</p>
+        <p>Email: chongvilai@gmail.com</p>
+
+    </div>
+</section>
+
+<footer>
+    <div class="container footer-content">
+
+        <div class="footer-logo">
+            <img src="logo.png" alt="LaoBirds Logo">
+        </div>
+
+        <div class="footer-info">
+
+            <h3>LaoBirds</h3>
+
+            <p
+                data-en="A bird observation and learning platform for Laos."
+                data-lo="ເວັບໄຊສຳລັບຮຽນຮູ້ ແລະ ບັນທຶກການພົບເຫັນນົກໃນປະເທດລາວ."
+            >
+                A bird observation and learning platform for Laos.
+            </p>
+
+            <p>© LaoBirds</p>
+
+        </div>
+    </div>
+</footer>
+
+<script src="data.js"></script>
 
 <script>
-const birds=[
-["Great Hornbill","Buceros bicornis","🦜","Hornbill"],
-["Red Junglefowl","Gallus gallus","🐓","Pheasant"],
-["White-throated Kingfisher","Halcyon smyrnensis","🐦","Kingfisher"],
-["Mountain Hawk-Eagle","Nisaetus nipalensis","🦅","Eagle"],
-["Green Peafowl","Pavo muticus","🦚","Pheasant"],
-["Oriental Pied Hornbill","Anthracoceros albirostris","🦜","Hornbill"],
-["Asian Barred Owlet","Glaucidium cuculoides","🦉","Owl"],
-["Black-naped Monarch","Hypothymis azurea","🐦","Flycatcher"]
+    /* =========================================
+       LANGUAGE
+    ========================================= */
+
+    let currentLanguage =
+        localStorage.getItem("laobirds-language") || "en";
+
+    function getText(value) {
+
+        if (value === undefined || value === null) {
+            return "";
+        }
+
+        if (typeof value === "object") {
+            return value[currentLanguage] || value.en || value.lo || "";
+        }
+
+        return value;
+    }
+
+    /* =========================================
+       FEATURED BIRD
+    ========================================= */
+
+    function loadFeaturedBird() {
+
+        if (
+            typeof birds === "undefined" ||
+            !Array.isArray(birds) ||
+            birds.length === 0
+        ) {
+            return;
+        }
+
+        const bird = birds[0];
+
+        document
+            .getElementById("featuredEnglishName")
+            .textContent = getText(bird.englishName);
+
+        document
+            .getElementById("featuredScientificName")
+            .textContent = getText(bird.scientificName);
+
+        if (bird.mainImage) {
+            document
+                .getElementById("featuredBirdImage")
+                .src = bird.mainImage;
+        }
+
+        /*
+            Important:
+            The profile button follows the actual bird ID.
+            It is NOT permanently locked to id=001.
+        */
+        document
+            .getElementById("featuredBirdButton")
+            .href =
+                "species.html?id=" +
+                encodeURIComponent(bird.id);
+    }
+
+    /* =========================================
+       RARE BIRD PHOTOS
+       Actual files are in images/rare/
+       rare (1).png ... rare (10).png
+       ========================================= */
+
+    const rareBirds = [
+    {
+        image: "images/rare/rare (1).png",
+        id: "LB-001",
+        englishName: "Green Peafowl",
+        laoName: "ນົກຍູງ",
+        scientificName: "Pavo muticus",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    },
+    {
+        image: "images/rare/rare (2).png",
+        id: "LB-002",
+        englishName: "Silver Pheasant",
+        laoName: "ໄກ່ຂວາຫຼວງ (ໄກ້ຂວາຫຼວງຫຼັງຂາວ)",
+        scientificName: "Lophura nycthemera",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    },
+    {
+        image: "images/rare/rare (3).png",
+        id: "LB-003",
+        englishName: "Great Hornbill",
+        laoName: "ນົກກົດຄໍຄຳ",
+        scientificName: "Buceros bicornis",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    },
+    {
+        image: "images/rare/rare (4).jpg",
+        id: "LB-004",
+        englishName: "Hawk",
+        laoName: "ແຫຼວມຸມ",
+        scientificName: "Accipitridae",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    },
+    {
+        image: "images/rare/rare (5).png",
+        id: "LB-005",
+        englishName: "Baya Weaver",
+        laoName: "ນົກກະຈອກຟ້າເອີກເຫຼືອງ",
+        scientificName: "Ploceus philippinus",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    },
+    {
+        image: "images/rare/rare (6).png",
+        id: "LB-006",
+        englishName: "Imperial Eagle",
+        laoName: "ແຫຼວອິນຊີປານ້ອຍ",
+        scientificName: "Aquila heliaca",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    },
+    {
+        image: "images/rare/rare (7).png",
+        id: "LB-007",
+        englishName: "Red-billed Blue Magpie",
+        laoName: "ນົກສີດາ",
+        scientificName: "Urocissa erythroryncha",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    },
+    {
+        image: "images/rare/rare (8).png",
+        id: "LB-008",
+        englishName: "Oriental Darter",
+        laoName: "ນົກຄໍງູ",
+        scientificName: "Anhinga melanogaster",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    },
+    {
+        image: "images/rare/rare (9).png",
+        id: "LB-009",
+        englishName: "Lesser Fish Eagle",
+        laoName: "ແຫຼວອິນຊີ",
+        scientificName: "Ichthyophaga humilis",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    },
+    {
+        image: "images/rare/rare (10).png",
+        id: "LB-010",
+        englishName: "Garganey",
+        laoName: "ນົກເປັດລາຍ",
+        scientificName: "Spatula querquedula",
+        labelEn: "Rare / hard-to-find",
+        labelLo: "ຫາຍາກ / ພົບເຫັນຍາກ"
+    }
 ];
-function renderBirds(list=birds){
-document.getElementById('birdCards').innerHTML=list.map((b,i)=>`<article class="card" onclick="openModal('${b[0]}')"><div class="bird-img">${b[2]}</div><div class="card-body"><h3>${b[0]}</h3><div class="latin">${b[1]}</div><span class="tag">${b[3]}</span></div></article>`).join('');
-}
-function filterBirds(){const q=document.getElementById('search').value.toLowerCase();renderBirds(birds.filter(b=>b.join(' ').toLowerCase().includes(q)))}
-function openModal(title='Sign in'){document.getElementById('modalTitle').textContent=title;document.getElementById('modal').classList.add('open')}
-function closeModal(){document.getElementById('modal').classList.remove('open')}
-renderBirds();
+
+    function createRareCard(bird) {
+
+        const card = document.createElement("article");
+        card.className = "highlight-card";
+
+        const image = document.createElement("img");
+        image.src = bird.image;
+        image.alt = bird.englishName;
+
+        /* Show a clean placeholder until the real image is present. */
+        image.onerror = function () {
+            this.removeAttribute("src");
+            this.style.display = "block";
+            this.style.background =
+                "linear-gradient(135deg,#d9e8de,#b8d0c1)";
+        };
+
+        const content = document.createElement("div");
+        content.className = "highlight-card-content";
+
+        const title = document.createElement("h3");
+
+        title.textContent =
+            currentLanguage === "lo"
+                ? bird.laoName
+                : bird.englishName;
+
+        const scientific = document.createElement("div");
+        scientific.className = "scientific";
+        scientific.textContent = bird.scientificName || "";
+
+        const badge = document.createElement("span");
+        badge.className = "status-badge";
+        badge.textContent =
+            currentLanguage === "lo"
+                ? bird.labelLo
+                : bird.labelEn;
+
+        content.appendChild(title);
+        content.appendChild(scientific);
+        content.appendChild(badge);
+
+        card.appendChild(image);
+        card.appendChild(content);
+
+        /*
+            We will activate profile links later,
+            after each rare bird receives its real ID.
+        */
+        if (bird.id) {
+
+            card.classList.add("clickable");
+
+            card.addEventListener("click", function () {
+                window.location.href =
+                    "species.html?id=" +
+                    encodeURIComponent(bird.id);
+            });
+        }
+
+        return card;
+    }
+
+    function renderRareBirds() {
+
+        const track =
+            document.getElementById("rareTrack");
+
+        track.innerHTML = "";
+
+        rareBirds.forEach(function (bird) {
+            track.appendChild(createRareCard(bird));
+        });
+    }
+
+    /* =========================================
+       THREATENED SECTION
+    ========================================= */
+
+    function renderThreatenedBirds() {
+
+        const track =
+            document.getElementById("threatenedTrack");
+
+        track.innerHTML = "";
+
+        if (
+            typeof birds === "undefined" ||
+            !Array.isArray(birds)
+        ) {
+            return;
+        }
+
+        const threatened =
+            birds.filter(function (bird) {
+                return (
+                    bird.iucnStatus ||
+                    bird.iucnCategory
+                );
+            });
+
+        if (threatened.length === 0) {
+
+            const empty =
+                document.createElement("div");
+
+            empty.className = "empty-highlight";
+
+            empty.textContent =
+                currentLanguage === "lo"
+                    ? "ຂໍ້ມູນ IUCN ຈະສະແດງຢູ່ບ່ອນນີ້ເມື່ອເຊື່ອມຖານຂໍ້ມູນ."
+                    : "IUCN conservation data will appear here when connected.";
+
+            track.appendChild(empty);
+            return;
+        }
+
+        threatened.forEach(function (bird) {
+
+            const card =
+                document.createElement("article");
+
+            card.className = "highlight-card clickable";
+
+            const image =
+                bird.mainImage ||
+                "https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=800&q=80";
+
+            card.innerHTML = `
+                <img src="${image}" alt="${getText(bird.englishName)}">
+
+                <div class="highlight-card-content">
+                    <h3>
+                        ${
+                            currentLanguage === "lo"
+                                ? getText(bird.laoName)
+                                : getText(bird.englishName)
+                        }
+                    </h3>
+
+                    <div class="scientific">
+                        ${getText(bird.scientificName)}
+                    </div>
+
+                    <span class="status-badge">
+                        ${
+                            currentLanguage === "lo"
+                                ? getText(bird.iucnStatus || bird.iucnCategory)
+                                : getText(bird.iucnStatus || bird.iucnCategory)
+                        }
+                    </span>
+                </div>
+            `;
+
+            card.addEventListener("click", function () {
+                window.location.href =
+                    "species.html?id=" +
+                    encodeURIComponent(bird.id);
+            });
+
+            track.appendChild(card);
+        });
+    }
+
+    /* =========================================
+       SLIDER SYSTEM
+    ========================================= */
+
+    const sliders = {
+        threatened: {
+            track: "threatenedTrack",
+            position: 0
+        },
+        rare: {
+            track: "rareTrack",
+            position: 0
+        }
+    };
+
+    function moveSlider(type, direction) {
+
+        const slider = sliders[type];
+
+        const track =
+            document.getElementById(slider.track);
+
+        const cards =
+            track.querySelectorAll(".highlight-card");
+
+        if (cards.length === 0) {
+            return;
+        }
+
+        const cardWidth =
+            cards[0].offsetWidth + 20;
+
+        const visibleCards =
+            window.innerWidth <= 550
+                ? 1
+                : window.innerWidth <= 800
+                    ? 2
+                    : window.innerWidth <= 1100
+                        ? 3
+                        : 4;
+
+        const maxPosition =
+            Math.max(
+                0,
+                cards.length - visibleCards
+            );
+
+        slider.position += direction;
+
+        if (slider.position > maxPosition) {
+            slider.position = 0;
+        }
+
+        if (slider.position < 0) {
+            slider.position = maxPosition;
+        }
+
+        track.style.transform =
+            "translateX(-" +
+            (slider.position * cardWidth) +
+            "px)";
+    }
+
+    document
+        .getElementById("threatenedPrev")
+        .addEventListener("click", function () {
+            moveSlider("threatened", -1);
+        });
+
+    document
+        .getElementById("threatenedNext")
+        .addEventListener("click", function () {
+            moveSlider("threatened", 1);
+        });
+
+    document
+        .getElementById("rarePrev")
+        .addEventListener("click", function () {
+            moveSlider("rare", -1);
+        });
+
+    document
+        .getElementById("rareNext")
+        .addEventListener("click", function () {
+            moveSlider("rare", 1);
+        });
+
+    /* =========================================
+       AUTO SLIDE
+       Move each carousel automatically every 5 seconds.
+       ========================================= */
+
+    let threatenedAutoSlide = null;
+    let rareAutoSlide = null;
+
+    function startAutoSlides() {
+
+        if (threatenedAutoSlide) {
+            clearInterval(threatenedAutoSlide);
+        }
+
+        if (rareAutoSlide) {
+            clearInterval(rareAutoSlide);
+        }
+
+        threatenedAutoSlide = setInterval(function () {
+            moveSlider("threatened", 1);
+        }, 5000);
+
+        rareAutoSlide = setInterval(function () {
+            moveSlider("rare", 1);
+        }, 5000);
+    }
+
+    startAutoSlides();
+
+    /* =========================================
+       LANGUAGE
+    ========================================= */
+
+    function updatePageLanguage() {
+
+        document.documentElement.lang =
+            currentLanguage === "lo"
+                ? "lo"
+                : "en";
+
+        document
+            .querySelectorAll("[data-en][data-lo]")
+            .forEach(function (element) {
+
+                element.textContent =
+                    currentLanguage === "lo"
+                        ? element.getAttribute("data-lo")
+                        : element.getAttribute("data-en");
+            });
+
+        document
+            .getElementById("laoButton")
+            .classList.toggle(
+                "active",
+                currentLanguage === "lo"
+            );
+
+        document
+            .getElementById("englishButton")
+            .classList.toggle(
+                "active",
+                currentLanguage === "en"
+            );
+
+        loadFeaturedBird();
+        renderThreatenedBirds();
+        renderRareBirds();
+
+        sliders.threatened.position = 0;
+        sliders.rare.position = 0;
+
+        document.getElementById("threatenedTrack").style.transform = "translateX(0)";
+        document.getElementById("rareTrack").style.transform = "translateX(0)";
+
+        /* Restart automatic carousel movement after re-rendering */
+        startAutoSlides();
+    }
+
+    document
+        .getElementById("laoButton")
+        .addEventListener("click", function () {
+
+            currentLanguage = "lo";
+
+            localStorage.setItem(
+                "laobirds-language",
+                "lo"
+            );
+
+            updatePageLanguage();
+        });
+
+    document
+        .getElementById("englishButton")
+        .addEventListener("click", function () {
+
+            currentLanguage = "en";
+
+            localStorage.setItem(
+                "laobirds-language",
+                "en"
+            );
+
+            updatePageLanguage();
+        });
+
+    /* =========================================
+       START
+    ========================================= */
+
+    updatePageLanguage();
 </script>
+
 </body>
 </html>

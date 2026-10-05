@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaoBirds | Login</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!--
+  This small script is intentionally loaded before Supabase.
+  Therefore the Login/Register tabs will work even if
+  Supabase is not configured yet.
+-->
+<script>
+(function () {
+    window.LaoBirdsAuthMode = "login";
+
+    window.setLaoBirdsAuthMode = function (mode) {
+        window.LaoBirdsAuthMode = mode;
+
+        var loginTab = document.getElementById("loginTab");
+        var registerTab = document.getElementById("registerTab");
+        var nameField = document.getElementById("nameField");
+        var confirmField = document.getElementById("confirmField");
+        var pageTitle = document.getElementById("pageTitle");
+        var submitButton = document.getElementById("submitButton");
+        var status = document.getElementById("status");
+
+        var register = mode === "register";
+
+        if (loginTab) {
+            loginTab.classList.toggle("active", !register);
+        }
+
+        if (registerTab) {
+            registerTab.classList.toggle("active", register);
+        }
+
+        if (nameField) {
+            nameField.style.display = register ? "block" : "none";
+        }
+
+        if (confirmField) {
+            confirmField.style.display = register ? "block" : "none";
+        }
+
+        if (pageTitle) {
+            pageTitle.textContent =
+                register ? "Create account" : "Login";
+        }
+
+        if (submitButton) {
+            submitButton.textContent =
+                register ? "Register" : "Login";
+        }
+
+        if (status) {
+            status.className = "status";
+            status.textContent = "";
+        }
+    };
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+:root{
+    --green:#14573f;
+    --green-dark:#0f4633;
+    --line:#e2e9e5;
+    --muted:#68776f;
+}
+
+body{
+    margin:0;
+    background:#f5f7f5;
+    color:#26352f;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    background:#fff;
+    border-bottom:1px solid #e5e5e5;
+}
+
+.header-content{
+    display:flex;
+    align-items:center;
+    min-height:85px;
+}
+
+.logo a{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    text-decoration:none;
+}
+
+.site-logo{
+    height:70px;
+    width:auto;
+    display:block;
+}
+
+.logo-name{
+    font-size:24px;
+    font-weight:700;
+    color:var(--green);
+}
+
+header nav{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-left:auto;
+}
+
+header nav>a{
+    color:#333;
+    text-decoration:none;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+header nav>a:hover{
+    color:var(--green);
+}
+
+.language-switcher{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    margin-left:8px;
+    white-space:nowrap;
+}
+
+.language-switcher button{
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    padding:7px 8px;
+    border-radius:7px;
+}
+
+.language-switcher button.active{
+    background:var(--green);
+    color:#fff;
+    font-weight:700;
+}
+
+main{
+    min-height:650px;
+    padding:55px 0;
+}
+
+.auth-wrap{
+    width:min(460px,100%);
+    margin:0 auto;
+}
+
+.auth-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 8px 30px rgba(15,70,51,.05);
+}
+
+.auth-card h1{
+    margin:0 0 8px;
+    color:var(--green);
+    font-size:34px;
+}
+
+.auth-subtitle{
+    margin:0 0 24px;
+    color:var(--muted);
+    line-height:1.6;
+}
+
+.tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    background:#eef4f1;
+    border-radius:10px;
+    padding:4px;
+    margin-bottom:22px;
+}
+
+.tabs button{
+    appearance:none;
+    border:none;
+    background:transparent;
+    padding:10px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:700;
+    color:#53635b;
+    font:inherit;
+}
+
+.tabs button.active{
+    background:#fff;
+    color:var(--green);
+    box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+
+.field{
+    margin-bottom:15px;
+}
+
+.field label{
+    display:block;
+    margin-bottom:7px;
+    font-size:13px;
+    font-weight:700;
+    color:#405149;
+}
+
+.field input{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #ccd7d1;
+    border-radius:9px;
+    padding:12px;
+    font:inherit;
+    outline:none;
+}
+
+.field input:focus{
+    border-color:var(--green);
+}
+
+.primary{
+    width:100%;
+    border:none;
+    border-radius:9px;
+    background:var(--green);
+    color:#fff;
+    padding:12px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:5px;
+    font:inherit;
+}
+
+.primary:hover{
+    background:var(--green-dark);
+}
+
+.primary:disabled{
+    opacity:.65;
+    cursor:not-allowed;
+}
+
+.status{
+    display:none;
+    margin-top:15px;
+    border-radius:10px;
+    padding:12px;
+    line-height:1.5;
+    font-size:14px;
+}
+
+.status.success{
+    display:block;
+    background:#eaf5ec;
+    border:1px solid #c8dfcd;
+    color:#35643d;
+}
+
+.status.error{
+    display:block;
+    background:#fff0f0;
+    border:1px solid #efcaca;
+    color:#913030;
+}
+
+.small-note{
+    margin-top:18px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.6;
+}
+
+footer{
+    background:#143a2d;
+    color:#cfe0d8;
+    padding:34px 0;
+}
+
+.footer-content{
+    display:flex;
+    align-items:flex-start;
+    gap:22px;
+}
+
+.footer-logo img{
+    width:95px;
+}
+
+.footer-info{
+    flex:1;
+}
+
+.footer-info h3{
+    margin:0 0 8px;
+    color:#fff;
+}
+
+@media(max-width:900px){
+    .header-content{
+        flex-wrap:wrap;
+        padding:10px 0;
+    }
+
+    header nav{
+        flex-wrap:wrap;
+        margin:8px 0 0;
+    }
+}
+
+@media(max-width:600px){
+    .auth-card{
+        padding:22px;
+    }
+
+    .footer-content{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container header-content">
+    <div class="logo">
+        <a href="index.html">
+            <img src="logo.png" alt="LaoBirds Logo" class="site-logo">
+            <span class="logo-name">LaoBirds</span>
+        </a>
+    </div>
+
+    <nav>
+        <a href="index.html" data-en="Home" data-lo="ໜ້າຫຼັກ">Home</a>
+        <a href="birds.html" data-en="Birds" data-lo="ນົກ">Birds</a>
+        <a href="map.html" data-en="Map" data-lo="ແຜນທີ່">Map</a>
+        <a href="my-laobirds.html" data-en="My LaoBirds" data-lo="My LaoBirds">My LaoBirds</a>
+        <a href="laos-list.html" data-en="Laos List" data-lo="ບັນຊີນົກລາວ">Laos List</a>
+
+        <div class="language-switcher">
+            <button id="laoButton" type="button">🇱🇦 ລາວ</button>
+            <span>|</span>
+            <button id="englishButton" type="button">🇬🇧 English</button>
+        </div>
+    </nav>
+</div>
+</header>
+
+<main>
+<div class="container auth-wrap">
+
+<section class="auth-card">
+
+    <h1 id="pageTitle">Login</h1>
+
+    <p
+        class="auth-subtitle"
+        data-en="Sign in to save your bird surveys, observations and photos to My LaoBirds."
+        data-lo="ເຂົ້າສູ່ລະບົບເພື່ອບັນທຶກການສຳຫຼວດ, ການພົບເຫັນ ແລະ ຮູບພາບໄວ້ໃນ My LaoBirds.">
+        Sign in to save your bird surveys, observations and photos to My LaoBirds.
+    </p>
+
+    <div class="tabs">
+        <button
+            id="loginTab"
+            class="active"
+            type="button"
+            onclick="window.setLaoBirdsAuthMode('login')">
+            Login
+        </button>
+
+        <button
+            id="registerTab"
+            type="button"
+            onclick="window.setLaoBirdsAuthMode('register')">
+            Register
+        </button>
+    </div>
+
+    <div id="nameField" class="field" style="display:none;">
+        <label>Display name</label>
+        <input id="displayName" type="text" autocomplete="name">
+    </div>
+
+    <div class="field">
+        <label>Email</label>
+        <input id="email" type="email" autocomplete="email">
+    </div>
+
+    <div class="field">
+        <label>Password</label>
+        <input id="password" type="password" autocomplete="current-password">
+    </div>
+
+    <div id="confirmField" class="field" style="display:none;">
+        <label>Confirm password</label>
+        <input id="confirmPassword" type="password" autocomplete="new-password">
+    </div>
+
+    <button
+        id="submitButton"
+        class="primary"
+        type="button">
+        Login
+    </button>
+
+    <div id="status" class="status"></div>
+
+    <div class="small-note">
+        Your account will be used to connect checklists and observations to your own My LaoBirds dashboard.
+    </div>
+
+</section>
+</div>
+</main>
+
+<footer>
+<div class="container footer-content">
+    <div class="footer-logo">
+        <img src="logo.png" alt="LaoBirds Logo">
+    </div>
+
+    <div class="footer-info">
+        <h3>LaoBirds</h3>
+        <p>A bird observation and learning platform for Laos.</p>
+        <p>© LaoBirds</p>
+    </div>
+</div>
+</footer>
+
+<script>
+(function () {
+    function getText(value) {
+        if (value === null || value === undefined) return "";
+        if (typeof value === "object") {
+            return value[currentLanguage] || value.en || value.lo || "";
+        }
+        return String(value);
+    }
+
+    let currentLanguage =
+        localStorage.getItem("laobirds-language") || "en";
+
+    const config =
+        window.LaoBirdsSupabaseConfig || {};
+
+    let supabaseClient = null;
+
+    function showStatus(message, type) {
+        const box = document.getElementById("status");
+        box.className = "status " + type;
+        box.textContent = message;
+    }
+
+    function clearStatus() {
+        const box = document.getElementById("status");
+        box.className = "status";
+        box.textContent = "";
+    }
+
+    function localizePage() {
+        document.documentElement.lang =
+            currentLanguage === "lo" ? "lo" : "en";
+
+        document
+            .querySelectorAll("[data-en][data-lo]")
+            .forEach(function (element) {
+                element.textContent =
+                    currentLanguage === "lo"
+                        ? element.getAttribute("data-lo")
+                        : element.getAttribute("data-en");
+            });
+
+        document
+            .getElementById("laoButton")
+            .classList.toggle(
+                "active",
+                currentLanguage === "lo"
+            );
+
+        document
+            .getElementById("englishButton")
+            .classList.toggle(
+                "active",
+                currentLanguage === "en"
+            );
+    }
+
+    function initSupabase() {
+        try {
+            if (
+                !window.supabase ||
+                typeof window.supabase.createClient !== "function"
+            ) {
+                return;
+            }
+
+            if (
+                !config.url ||
+                !config.publishableKey ||
+                String(config.url).includes("YOUR_SUPABASE")
+            ) {
+                return;
+            }
+
+            supabaseClient =
+                window.supabase.createClient(
+                    config.url,
+                    config.publishableKey
+                );
+        } catch (error) {
+            supabaseClient = null;
+        }
+    }
+
+    async function submitAuth() {
+
+        clearStatus();
+
+        if (!supabaseClient) {
+            showStatus(
+                currentLanguage === "lo"
+                    ? "ກະລຸນາໃສ່ Project URL ແລະ Publishable Key ໃນ supabase-config.js ກ່ອນ."
+                    : "Please add your Supabase Project URL and Publishable Key to supabase-config.js first.",
+                "error"
+            );
+            return;
+        }
+
+        const email =
+            document.getElementById("email")
+                .value
+                .trim();
+
+        const password =
+            document.getElementById("password")
+                .value;
+
+        const mode =
+            window.LaoBirdsAuthMode || "login";
+
+        if (!email || !password) {
+            showStatus(
+                currentLanguage === "lo"
+                    ? "ກະລຸນາປ້ອນອີເມວ ແລະ ລະຫັດຜ່ານ."
+                    : "Please enter your email and password.",
+                "error"
+            );
+            return;
+        }
+
+        const button =
+            document.getElementById("submitButton");
+
+        button.disabled = true;
+
+        try {
+
+            if (mode === "register") {
+
+                const displayName =
+                    document.getElementById("displayName")
+                        .value
+                        .trim();
+
+                const confirmPassword =
+                    document.getElementById("confirmPassword")
+                        .value;
+
+                if (password.length < 6) {
+                    throw new Error(
+                        currentLanguage === "lo"
+                            ? "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວ."
+                            : "Password must be at least 6 characters."
+                    );
+                }
+
+                if (password !== confirmPassword) {
+                    throw new Error(
+                        currentLanguage === "lo"
+                            ? "ລະຫັດຜ່ານບໍ່ກົງກັນ."
+                            : "The passwords do not match."
+                    );
+                }
+
+                const result =
+                    await supabaseClient.auth.signUp({
+                        email: email,
+                        password: password,
+                        options: {
+                            data: {
+                                display_name: displayName
+                            }
+                        }
+                    });
+
+                if (result.error) {
+                    throw result.error;
+                }
+
+                if (result.data.session) {
+                    window.location.href =
+                        "my-laobirds.html";
+                    return;
+                }
+
+                showStatus(
+                    currentLanguage === "lo"
+                        ? "ສະໝັກສຳເລັດ. ກວດອີເມວເພື່ອຢືນຢັນບັນຊີ."
+                        : "Registration successful. Check your email to confirm your account.",
+                    "success"
+                );
+
+            } else {
+
+                const result =
+                    await supabaseClient.auth
+                        .signInWithPassword({
+                            email: email,
+                            password: password
+                        });
+
+                if (result.error) {
+                    throw result.error;
+                }
+
+                window.location.href =
+                    "my-laobirds.html";
+            }
+
+        } catch (error) {
+
+            showStatus(
+                error && error.message
+                    ? error.message
+                    : currentLanguage === "lo"
+                        ? "ການລົງທະບຽນລົ້ມເຫຼວ."
+                        : "Authentication failed.",
+                "error"
+            );
+
+        } finally {
+            button.disabled = false;
+        }
+    }
+
+    document
+        .getElementById("submitButton")
+        .addEventListener(
+            "click",
+            submitAuth
+        );
+
+    document
+        .getElementById("laoButton")
+        .addEventListener(
+            "click",
+            function () {
+                currentLanguage = "lo";
+
+                localStorage.setItem(
+                    "laobirds-language",
+                    "lo"
+                );
+
+                localizePage();
+            }
+        );
+
+    document
+        .getElementById("englishButton")
+        .addEventListener(
+            "click",
+            function () {
+                currentLanguage = "en";
+
+                localStorage.setItem(
+                    "laobirds-language",
+                    "en"
+                );
+
+                localizePage();
+            }
+        );
+
+    initSupabase();
+    localizePage();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>LaoBirds - Map of Laos</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+    <!-- LEAFLET CSS -->
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+
+    <style>
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        header .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            min-height: 85px;
+        }
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none;
+        }
+
+        .site-logo {
+            height: 70px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .logo-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #14573f;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+
+        /* =========================================
+           NAVIGATION
+        ========================================= */
+
+        header nav {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-left: 18px;
+            width: auto;
+        }
+
+        header nav > a {
+            white-space: nowrap;
+            text-decoration: none;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        header nav > a:hover {
+            color: #14573f;
+        }
+
+
+        /* =========================================
+           LANGUAGE
+        ========================================= */
+
+        .language-switcher {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .language-switcher button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 7px 8px;
+            border-radius: 7px;
+            color: #555555;
+            transition: 0.2s;
+        }
+
+        .language-switcher button:hover {
+            background: #eef4f1;
+            color: #14573f;
+        }
+
+        .language-switcher button.active {
+            background: #14573f;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+
+        /* =========================================
+           PAGE
+        ========================================= */
+
+        .map-page {
+            padding-top: 40px;
+            padding-bottom: 50px;
+        }
+
+        .map-header {
+            margin-bottom: 25px;
+        }
+
+        .map-header h1 {
+            color: #1d5c45;
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .map-header p {
+            color: #666666;
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 850px;
+        }
+
+
+        /* =========================================
+           MAP CONTROLS
+        ========================================= */
+
+        .map-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .location-button {
+            border: none;
+            background: #1d5c45;
+            color: #ffffff;
+            padding: 11px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .location-button:hover {
+            opacity: 0.88;
+        }
+
+        .location-button.following {
+            background: #b3261e;
+        }
+
+        .location-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+
+        /* =========================================
+           MAP
+        ========================================= */
+
+        #laosMap {
+            width: 100%;
+            height: 650px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #dddddd;
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =========================================
+           LOCATION STATUS
+        ========================================= */
+
+        .location-status {
+            margin-top: 15px;
+            padding: 14px 16px;
+            background: #f4f8f5;
+            border-left: 4px solid #1d5c45;
+            border-radius: 8px;
+            color: #444444;
+        }
+
+        .location-status.error {
+            background: #fff5f5;
+            border-left-color: #b3261e;
+            color: #8a1c1c;
+        }
+
+
+        /* =========================================
+           LOCATION INFORMATION
+        ========================================= */
+
+        .location-panel {
+            margin-top: 18px;
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+        }
+
+        .location-panel h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #14573f;
+            font-size: 24px;
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px 25px;
+        }
+
+        .location-item {
+            padding: 12px;
+            background: #f8faf9;
+            border-radius: 8px;
+        }
+
+        .location-label {
+            display: block;
+            font-size: 13px;
+            color: #777777;
+            margin-bottom: 4px;
+        }
+
+        .location-value {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+            word-break: break-word;
+        }
+
+
+        /* =========================================
+           INFORMATION
+        ========================================= */
+
+        .map-info {
+            margin-top: 20px;
+            padding: 18px 20px;
+            background: #f4f8f5;
+            border-left: 4px solid #1d5c45;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .map-info strong {
+            color: #14573f;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        .footer-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 22px;
+        }
+
+        .footer-logo img {
+            width: 95px;
+            height: auto;
+            display: block;
+        }
+
+        .footer-info {
+            flex: 1;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 1100px) {
+
+            header .header-content {
+                flex-wrap: wrap;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            header nav {
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            .language-switcher {
+                margin-left: 0;
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .site-logo {
+                height: 55px;
+            }
+
+            .logo-name {
+                font-size: 20px;
+            }
+
+            header nav {
+                justify-content: flex-start;
+            }
+
+            #laosMap {
+                height: 500px;
+            }
+
+            .map-header h1 {
+                font-size: 34px;
+            }
+
+            .location-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header>
+
+        <div class="container header-content">
+
+
+            <!-- LOGO -->
+
+            <div class="logo">
+
+                <a href="index.html">
+
+                    <img
+                        src="logo.png"
+                        alt="LaoBirds Logo"
+                        class="site-logo">
+
+                    <span class="logo-name">
+                        LaoBirds
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <nav>
+
+                <a
+                    href="index.html"
+                    data-en="Home"
+                    data-lo="ໜ້າຫຼັກ">
+                    Home
+                </a>
+
+
+                <a
+                    href="birds.html"
+                    data-en="Birds"
+                    data-lo="ນົກ">
+                    Birds
+                </a>
+
+
+                <a
+                    href="map.html"
+                    data-en="Map"
+                    data-lo="ແຜນທີ່">
+                    Map
+                </a>
+
+
+                <a
+                    href="hotspots.html"
+                    data-en="Hotspots"
+                    data-lo="ຈຸດຊົມນົກ">
+                    Hotspots
+                </a>
+
+
+                <a
+                    href="observations.html"
+                    data-en="Observations"
+                    data-lo="ການບັນທຶກ">
+                    Observations
+                </a>
+
+
+                <a
+                    href="iucn.html"
+                    data-en="IUCN List"
+                    data-lo="ບັນຊີ IUCN">
+                    IUCN List
+                </a>
+
+
+                <a
+                    href="laos-list.html"
+                    data-en="Laos List"
+                    data-lo="ບັນຊີນົກລາວ">
+                    Laos List
+                </a>
+
+
+                <!-- LANGUAGE -->
+
+                <div class="language-switcher">
+
+                    <button
+                        id="laoButton"
+                        type="button">
+                        🇱🇦 ລາວ
+                    </button>
+
+                    <span>|</span>
+
+                    <button
+                        id="englishButton"
+                        type="button">
+                        🇬🇧 English
+                    </button>
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main>
+
+        <div class="container map-page">
+
+
+            <!-- PAGE HEADER -->
+
+            <section class="map-header">
+
+                <h1
+                    data-en="Map of Laos"
+                    data-lo="ແຜນທີ່ປະເທດລາວ">
+                    Map of Laos
+                </h1>
+
+
+                <p
+                    data-en="Explore the geography of Laos and your current location."
+                    data-lo="ສຳຫຼວດພູມສາດຂອງປະເທດລາວ ແລະ ຕຳແໜ່ງປັດຈຸບັນຂອງທ່ານ.">
+                    Explore the geography of Laos and your current location.
+                </p>
+
+            </section>
+
+
+            <!-- =================================
+                 LOCATION CONTROLS
+            ================================== -->
+
+            <div class="map-controls">
+
+                <button
+                    id="myLocationButton"
+                    class="location-button"
+                    type="button"
+                    data-en="📍 My Location"
+                    data-lo="📍 ຕຳແໜ່ງຂອງຂ້ອຍ">
+
+                    📍 My Location
+
+                </button>
+
+
+                <button
+                    id="followButton"
+                    class="location-button"
+                    type="button"
+                    data-en="🔴 Follow Me"
+                    data-lo="🔴 ຕິດຕາມຂ້ອຍ">
+
+                    🔴 Follow Me
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================
+                 MAP
+            ================================== -->
+
+            <div id="laosMap"></div>
+
+
+            <!-- =================================
+                 LOCATION STATUS
+            ================================== -->
+
+            <div
+                id="locationStatus"
+                class="location-status">
+
+                <span
+                    data-en="Location is not active yet. Press My Location to begin."
+                    data-lo="ຍັງບໍ່ໄດ້ເປີດການລະບຸຕຳແໜ່ງ. ກົດ ຕຳແໜ່ງຂອງຂ້ອຍ ເພື່ອເລີ່ມ.">
+
+                    Location is not active yet.
+                    Press My Location to begin.
+
+                </span>
+
+            </div>
+
+
+            <!-- =================================
+                 LOCATION DETAILS
+            ================================== -->
+
+            <section class="location-panel">
+
+                <h2
+                    data-en="Your Location"
+                    data-lo="ຕຳແໜ່ງຂອງທ່ານ">
+
+                    Your Location
+
+                </h2>
+
+
+                <div class="location-grid">
+
+
+                    <div class="location-item">
+
+                        <span
+                            class="location-label"
+                            data-en="Country"
+                            data-lo="ປະເທດ">
+
+                            Country
+
+                        </span>
+
+                        <span
+                            id="countryValue"
+                            class="location-value">
+
+                            —
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="location-item">
+
+                        <span
+                            class="location-label"
+                            data-en="Province / State"
+                            data-lo="ແຂວງ">
+
+                            Province / State
+
+                        </span>
+
+                        <span
+                            id="provinceValue"
+                            class="location-value">
+
+                            —
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="location-item">
+
+                        <span
+                            class="location-label"
+                            data-en="District / City"
+                            data-lo="ເມືອງ / ນະຄອນ">
+
+                            District / City
+
+                        </span>
+
+                        <span
+                            id="districtValue"
+                            class="location-value">
+
+                            —
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="location-item">
+
+                        <span
+                            class="location-label"
+                            data-en="Latitude"
+                            data-lo="ເສັ້ນຂະໜານ">
+
+                            Latitude
+
+                        </span>
+
+                        <span
+                            id="latitudeValue"
+                            class="location-value">
+
+                            —
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="location-item">
+
+                        <span
+                            class="location-label"
+                            data-en="Longitude"
+                            data-lo="ເສັ້ນແວງ">
+
+                            Longitude
+
+                        </span>
+
+                        <span
+                            id="longitudeValue"
+                            class="location-value">
+
+                            —
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="location-item">
+
+                        <span
+                            class="location-label"
+                            data-en="Accuracy"
+                            data-lo="ຄວາມແມ່ນຍຳ">
+
+                            Accuracy
+
+                        </span>
+
+                        <span
+                            id="accuracyValue"
+                            class="location-value">
+
+                            —
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 MAP INFORMATION
+            ================================== -->
+
+            <div class="map-info">
+
+                <strong
+                    data-en="About Location Tracking"
+                    data-lo="ກ່ຽວກັບການຕິດຕາມຕຳແໜ່ງ">
+
+                    About Location Tracking
+
+                </strong>
+
+
+                <p
+                    data-en="Your browser will ask for permission to use your location. Follow Me keeps the map centered on your moving location while it is enabled."
+                    data-lo="ເບຣົາເຊີຈະຂໍອະນຸຍາດໃຊ້ຕຳແໜ່ງຂອງທ່ານ. ຟັງຊັນຕິດຕາມຂ້ອຍຈະເລື່ອນແຜນທີ່ຕາມຕຳແໜ່ງຂອງທ່ານໃນຂະນະທີ່ເປີດໃຊ້.">
+
+                    Your browser will ask for permission
+                    to use your location.
+                    Follow Me keeps the map centered
+                    on your moving location while it is enabled.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <div class="container footer-content">
+
+
+            <div class="footer-logo">
+
+                <img
+                    src="logo.png"
+                    alt="LaoBirds Logo">
+
+            </div>
+
+
+            <div class="footer-info">
+
+                <h3>
+                    LaoBirds
+                </h3>
+
+
+                <p
+                    data-en="A bird observation and learning platform for Laos."
+                    data-lo="ເວັບໄຊສຳລັບຮຽນຮູ້ ແລະ ບັນທຶກການພົບເຫັນນົກໃນປະເທດລາວ.">
+
+                    A bird observation and learning platform for Laos.
+
+                </p>
+
+
+                <p>
+                    © LaoBirds
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         LEAFLET JS
+    ========================================== -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+
+    <!-- =========================================
+         MAP + LOCATION SYSTEM
+    ========================================== -->
+
+    <script>
+
+
+        /* ========================================
+           MAP
+        ======================================== */
+
+        const map = L.map(
+            "laosMap"
+        );
+
+
+        /* ========================================
+           NORMAL MAP
+        ======================================== */
+
+        const normalMap =
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    maxZoom: 19,
+
+                    attribution:
+                        "&copy; OpenStreetMap contributors"
+                }
+            );
+
+
+        /* ========================================
+           SATELLITE MAP
+        ======================================== */
+
+        const satelliteMap =
+            L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+                    maxZoom: 19,
+
+                    attribution:
+                        "Tiles &copy; Esri"
+                }
+            );
+
+
+        /* DEFAULT = SATELLITE */
+
+        satelliteMap.addTo(
+            map
+        );
+
+
+        /* ========================================
+           BASEMAP SWITCHER
+        ======================================== */
+
+        const baseMaps = {
+
+            "🛰️ Satellite":
+                satelliteMap,
+
+            "🗺️ Normal Map":
+                normalMap
+
+        };
+
+
+        L.control
+            .layers(
+                baseMaps
+            )
+            .addTo(
+                map
+            );
+
+
+        /* ========================================
+           INITIAL MAP POSITION
+        ======================================== */
+
+        map.setView(
+            [18.2, 103.9],
+            6
+        );
+
+
+        /* ========================================
+           LOCATION VARIABLES
+        ======================================== */
+
+        let userMarker = null;
+
+        let accuracyCircle = null;
+
+        let watchId = null;
+
+        let isFollowing = false;
+
+        let lastGeocodedLat = null;
+
+        let lastGeocodedLon = null;
+
+
+        /* ========================================
+           ELEMENTS
+        ======================================== */
+
+        const myLocationButton =
+            document.getElementById(
+                "myLocationButton"
+            );
+
+
+        const followButton =
+            document.getElementById(
+                "followButton"
+            );
+
+
+        const locationStatus =
+            document.getElementById(
+                "locationStatus"
+            );
+
+
+        const countryValue =
+            document.getElementById(
+                "countryValue"
+            );
+
+
+        const provinceValue =
+            document.getElementById(
+                "provinceValue"
+            );
+
+
+        const districtValue =
+            document.getElementById(
+                "districtValue"
+            );
+
+
+        const latitudeValue =
+            document.getElementById(
+                "latitudeValue"
+            );
+
+
+        const longitudeValue =
+            document.getElementById(
+                "longitudeValue"
+            );
+
+
+        const accuracyValue =
+            document.getElementById(
+                "accuracyValue"
+            );
+
+
+        /* ========================================
+           STATUS MESSAGE
+        ======================================== */
+
+        function setLocationStatus(
+            message,
+            isError = false
+        ) {
+
+            locationStatus.innerHTML =
+                message;
+
+            locationStatus.classList.toggle(
+                "error",
+                isError
+            );
+
+        }
+
+
+        /* ========================================
+           UPDATE POSITION ON MAP
+        ======================================== */
+
+        function updateUserMarker(
+            latitude,
+            longitude,
+            accuracy
+        ) {
+
+
+            const userLatLng =
+                [
+                    latitude,
+                    longitude
+                ];
+
+
+            /* CREATE MARKER */
+
+            if (!userMarker) {
+
+                userMarker =
+                    L.circleMarker(
+                        userLatLng,
+                        {
+                            radius: 9,
+
+                            fillColor: "#d62828",
+
+                            color: "#ffffff",
+
+                            weight: 3,
+
+                            opacity: 1,
+
+                            fillOpacity: 1
+                        }
+                    ).addTo(
+                        map
+                    );
+
+
+                userMarker.bindPopup(
+                    "<strong>You are here</strong>"
+                );
+
+            } else {
+
+                userMarker.setLatLng(
+                    userLatLng
+                );
+
+            }
+
+
+            /* ACCURACY CIRCLE */
+
+            if (!accuracyCircle) {
+
+                accuracyCircle =
+                    L.circle(
+                        userLatLng,
+                        {
+                            radius: accuracy,
+
+                            color: "#d62828",
+
+                            fillColor: "#d62828",
+
+                            fillOpacity: 0.12,
+
+                            weight: 1
+                        }
+                    ).addTo(
+                        map
+                    );
+
+            } else {
+
+                accuracyCircle.setLatLng(
+                    userLatLng
+                );
+
+                accuracyCircle.setRadius(
+                    accuracy
+                );
+
+            }
+
+        }
+
+
+        /* ========================================
+           POSITION SUCCESS
+        ======================================== */
+
+        function handlePosition(
+            position
+        ) {
+
+
+            const latitude =
+                position.coords.latitude;
+
+
+            const longitude =
+                position.coords.longitude;
+
+
+            const accuracy =
+                position.coords.accuracy;
+
+
+            /* DISPLAY COORDINATES */
+
+            latitudeValue.textContent =
+                latitude.toFixed(6);
+
+
+            longitudeValue.textContent =
+                longitude.toFixed(6);
+
+
+            accuracyValue.textContent =
+                Math.round(
+                    accuracy
+                ) + " m";
+
+
+            /* MAP MARKER */
+
+            updateUserMarker(
+                latitude,
+                longitude,
+                accuracy
+            );
+
+
+            /* FOLLOW */
+
+            if (isFollowing) {
+
+                map.setView(
+                    [
+                        latitude,
+                        longitude
+                    ],
+                    16,
+                    {
+                        animate: true
+                    }
+                );
+
+            }
+
+
+            /* FIRST LOCATION */
+
+            if (
+                lastGeocodedLat === null ||
+                lastGeocodedLon === null
+            ) {
+
+                reverseGeocode(
+                    latitude,
+                    longitude
+                );
+
+            }
+
+
+            /* ONLY REVERSE GEOCODE IF
+               USER MOVES A SIGNIFICANT DISTANCE */
+
+            else {
+
+                const movedDistance =
+                    map.distance(
+                        [
+                            lastGeocodedLat,
+                            lastGeocodedLon
+                        ],
+                        [
+                            latitude,
+                            longitude
+                        ]
+                    );
+
+
+                if (
+                    movedDistance >= 100
+                ) {
+
+                    reverseGeocode(
+                        latitude,
+                        longitude
+                    );
+
+                }
+
+            }
+
+
+            setLocationStatus(
+                currentLanguage === "lo"
+                    ? "ກຳລັງຮັບຕຳແໜ່ງ GPS..."
+                    : "GPS location received."
+            );
+
+        }
+
+
+        /* ========================================
+           POSITION ERROR
+        ======================================== */
+
+        function handleLocationError(
+            error
+        ) {
+
+            let message = "";
+
+
+            if (
+                error.code ===
+                error.PERMISSION_DENIED
+            ) {
+
+                message =
+                    currentLanguage === "lo"
+                        ? "ທ່ານບໍ່ໄດ້ອະນຸຍາດໃຫ້ເວັບໄຊໃຊ້ຕຳແໜ່ງ."
+                        : "Location permission was denied.";
+
+            }
+
+
+            else if (
+                error.code ===
+                error.POSITION_UNAVAILABLE
+            ) {
+
+                message =
+                    currentLanguage === "lo"
+                        ? "ບໍ່ສາມາດຮັບຕຳແໜ່ງປັດຈຸບັນໄດ້."
+                        : "Your current location is unavailable.";
+
+            }
+
+
+            else if (
+                error.code ===
+                error.TIMEOUT
+            ) {
+
+                message =
+                    currentLanguage === "lo"
+                        ? "ການຮັບຕຳແໜ່ງໝົດເວລາ."
+                        : "Location request timed out.";
+
+            }
+
+
+            else {
+
+                message =
+                    currentLanguage === "lo"
+                        ? "ເກີດຂໍ້ຜິດພາດໃນການຮັບຕຳແໜ່ງ."
+                        : "Unable to get your location.";
+
+            }
+
+
+            setLocationStatus(
+                message,
+                true
+            );
+
+        }
+
+
+        /* ========================================
+           GET ONE LOCATION
+        ======================================== */
+
+        function getMyLocation() {
+
+
+            if (
+                !navigator.geolocation
+            ) {
+
+                setLocationStatus(
+                    currentLanguage === "lo"
+                        ? "ເບຣາວເຊີນີ້ບໍ່ຮອງຮັບ GPS."
+                        : "This browser does not support geolocation.",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            myLocationButton.disabled =
+                true;
+
+
+            setLocationStatus(
+                currentLanguage === "lo"
+                    ? "ກຳລັງຄົ້ນຫາຕຳແໜ່ງ..."
+                    : "Finding your location..."
+            );
+
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+
+                    handlePosition(
+                        position
+                    );
+
+
+                    map.setView(
+                        [
+                            position.coords.latitude,
+                            position.coords.longitude
+                        ],
+                        16
+                    );
+
+
+                    myLocationButton.disabled =
+                        false;
+
+                },
+
+                function(error) {
+
+                    handleLocationError(
+                        error
+                    );
+
+
+                    myLocationButton.disabled =
+                        false;
+
+                },
+
+                {
+                    enableHighAccuracy: true,
+
+                    timeout: 15000,
+
+                    maximumAge: 5000
+
+                }
+            );
+
+        }
+
+
+        /* ========================================
+           START FOLLOW
+        ======================================== */
+
+        function startFollow() {
+
+
+            if (
+                !navigator.geolocation
+            ) {
+
+                setLocationStatus(
+                    currentLanguage === "lo"
+                        ? "ເບຣາວເຊີນີ້ບໍ່ຮອງຮັບ GPS."
+                        : "This browser does not support geolocation.",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if (isFollowing) {
+
+                stopFollow();
+
+                return;
+
+            }
+
+
+            isFollowing =
+                true;
+
+
+            followButton.classList.add(
+                "following"
+            );
+
+
+            followButton.textContent =
+                currentLanguage === "lo"
+                    ? "⏹ ຢຸດຕິດຕາມ"
+                    : "⏹ Stop Following";
+
+
+            setLocationStatus(
+                currentLanguage === "lo"
+                    ? "ກຳລັງຕິດຕາມຕຳແໜ່ງຂອງທ່ານ..."
+                    : "Following your location..."
+            );
+
+
+            watchId =
+                navigator.geolocation.watchPosition(
+                    function(position) {
+
+                        handlePosition(
+                            position
+                        );
+
+                    },
+
+                    function(error) {
+
+                        handleLocationError(
+                            error
+                        );
+
+                    },
+
+                    {
+                        enableHighAccuracy: true,
+
+                        timeout: 15000,
+
+                        maximumAge: 3000
+
+                    }
+                );
+
+        }
+
+
+        /* ========================================
+           STOP FOLLOW
+        ======================================== */
+
+        function stopFollow() {
+
+
+            if (
+                watchId !== null
+            ) {
+
+                navigator.geolocation.clearWatch(
+                    watchId
+                );
+
+                watchId = null;
+
+            }
+
+
+            isFollowing =
+                false;
+
+
+            followButton.classList.remove(
+                "following"
+            );
+
+
+            followButton.textContent =
+                currentLanguage === "lo"
+                    ? "🔴 ຕິດຕາມຂ້ອຍ"
+                    : "🔴 Follow Me";
+
+
+            setLocationStatus(
+                currentLanguage === "lo"
+                    ? "ຢຸດການຕິດຕາມຕຳແໜ່ງແລ້ວ."
+                    : "Location following stopped."
+            );
+
+        }
+
+
+        /* ========================================
+           REVERSE GEOCODING
+        ======================================== */
+
+        async function reverseGeocode(
+            latitude,
+            longitude
+        ) {
+
+
+            lastGeocodedLat =
+                latitude;
+
+
+            lastGeocodedLon =
+                longitude;
+
+
+            try {
+
+
+                const url =
+                    "https://nominatim.openstreetmap.org/reverse" +
+                    "?format=json" +
+                    "&lat=" +
+                    encodeURIComponent(
+                        latitude
+                    ) +
+                    "&lon=" +
+                    encodeURIComponent(
+                        longitude
+                    ) +
+                    "&zoom=18" +
+                    "&addressdetails=1" +
+                    "&accept-language=" +
+                    (
+                        currentLanguage === "lo"
+                            ? "lo"
+                            : "en"
+                    );
+
+
+                const response =
+                    await fetch(
+                        url
+                    );
+
+
+                if (
+                    !response.ok
+                ) {
+
+                    throw new Error(
+                        "Reverse geocoding failed."
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                const address =
+                    data.address || {};
+
+
+                /* COUNTRY */
+
+                const country =
+                    address.country
+                    || "—";
+
+
+                /* PROVINCE */
+
+                const province =
+                    address.state
+                    || address.province
+                    || address.region
+                    || address.state_district
+                    || "—";
+
+
+                /* DISTRICT / CITY */
+
+                const district =
+                    address.city
+                    || address.town
+                    || address.municipality
+                    || address.city_district
+                    || address.county
+                    || address.district
+                    || address.village
+                    || "—";
+
+
+                countryValue.textContent =
+                    country;
+
+
+                provinceValue.textContent =
+                    province;
+
+
+                districtValue.textContent =
+                    district;
+
+
+                setLocationStatus(
+                    currentLanguage === "lo"
+                        ? "ກວດພົບຕຳແໜ່ງຂອງທ່ານແລ້ວ."
+                        : "Your location has been identified."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Reverse geocoding error:",
+                    error
+                );
+
+
+                setLocationStatus(
+                    currentLanguage === "lo"
+                        ? "ຮູ້ພິກັດ GPS ແລ້ວ ແຕ່ບໍ່ສາມາດແປງເປັນຊື່ເຂດໄດ້."
+                        : "GPS coordinates were found, but the place name could not be determined.",
+                    true
+                );
+
+            }
+
+        }
+
+
+        /* ========================================
+           BUTTONS
+        ======================================== */
+
+        myLocationButton.addEventListener(
+            "click",
+            getMyLocation
+        );
+
+
+        followButton.addEventListener(
+            "click",
+            startFollow
+        );
+
+
+        /* ========================================
+           LANGUAGE
+        ======================================== */
+
+        let currentLanguage =
+            localStorage.getItem(
+                "laobirds-language"
+            ) || "en";
+
+
+        function updatePageLanguage() {
+
+
+            document.documentElement.lang =
+                currentLanguage === "lo"
+                    ? "lo"
+                    : "en";
+
+
+            const elements =
+                document.querySelectorAll(
+                    "[data-en][data-lo]"
+                );
+
+
+            elements.forEach(
+                function(element) {
+
+                    if (
+                        element.tagName ===
+                        "BUTTON"
+                    ) {
+
+                        if (
+                            element.id ===
+                            "followButton"
+                        ) {
+
+                            if (
+                                isFollowing
+                            ) {
+
+                                element.textContent =
+                                    currentLanguage === "lo"
+                                        ? "⏹ ຢຸດຕິດຕາມ"
+                                        : "⏹ Stop Following";
+
+                            } else {
+
+                                element.textContent =
+                                    currentLanguage === "lo"
+                                        ? "🔴 ຕິດຕາມຂ້ອຍ"
+                                        : "🔴 Follow Me";
+
+                            }
+
+                            return;
+
+                        }
+
+                    }
+
+
+                    element.textContent =
+                        currentLanguage === "lo"
+                            ? element.getAttribute(
+                                "data-lo"
+                            )
+                            : element.getAttribute(
+                                "data-en"
+                            );
+
+                }
+            );
+
+
+            /* LANGUAGE BUTTONS */
+
+            const laoButton =
+                document.getElementById(
+                    "laoButton"
+                );
+
+
+            const englishButton =
+                document.getElementById(
+                    "englishButton"
+                );
+
+
+            laoButton.classList.remove(
+                "active"
+            );
+
+
+            englishButton.classList.remove(
+                "active"
+            );
+
+
+            if (
+                currentLanguage === "lo"
+            ) {
+
+                laoButton.classList.add(
+                    "active"
+                );
+
+            } else {
+
+                englishButton.classList.add(
+                    "active"
+                );
+
+            }
+
+        }
+
+
+        /* ========================================
+           LAO
+        ======================================== */
+
+        document
+            .getElementById(
+                "laoButton"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    currentLanguage =
+                        "lo";
+
+
+                    localStorage.setItem(
+                        "laobirds-language",
+                        "lo"
+                    );
+
+
+                    updatePageLanguage();
+
+                }
+            );
+
+
+        /* ========================================
+           ENGLISH
+        ======================================== */
+
+        document
+            .getElementById(
+                "englishButton"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    currentLanguage =
+                        "en";
+
+
+                    localStorage.setItem(
+                        "laobirds-language",
+                        "en"
+                    );
+
+
+                    updatePageLanguage();
+
+                }
+            );
+
+
+        /* ========================================
+           START
+        ======================================== */
+
+        updatePageLanguage();
+
+    </script>
+
+
+</body>
+
+</html>

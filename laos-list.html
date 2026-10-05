@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaoBirds | Laos Wildlife List – Birds</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .list-page{padding:35px 0 60px}
+        .list-hero{background:linear-gradient(135deg,#eef6f1,#f8fbf9);border:1px solid #dfe9e3;border-radius:18px;padding:28px;margin-bottom:22px}
+        .list-hero h1{margin:0 0 8px;color:#14573f}
+        .list-hero p{margin:0;color:#66736d;line-height:1.6}
+        .list-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:22px 0}
+        .stat-card{background:#fff;border:1px solid #e3e8e5;border-radius:14px;padding:18px}
+        .stat-card strong{display:block;font-size:25px;color:#14573f}
+        .stat-card span{font-size:13px;color:#6a756f}
+        .tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:15px}
+        .search-box{flex:1;min-width:240px;padding:12px 14px;border:1px solid #d9e1dc;border-radius:10px;font-size:14px;outline:none}
+        .filter-btn{border:1px solid #d4ddd8;background:#fff;color:#45524c;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+        .filter-btn.active,.filter-btn:hover{background:#14573f;color:#fff;border-color:#14573f}
+        .table-wrap{background:#fff;border:1px solid #e2e8e4;border-radius:14px;overflow:auto}
+        table{width:100%;border-collapse:collapse;min-width:920px}
+        th,td{padding:12px 13px;border-bottom:1px solid #edf1ee;text-align:left;vertical-align:top}
+        th{background:#f6f8f7;color:#34433c;font-size:13px;position:sticky;top:0;z-index:1}
+        td{font-size:14px;color:#2f3b35}
+        tbody tr:hover{background:#fbfdfc}
+        .scientific{font-style:italic;color:#4c5a53}
+        .badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700}
+        .badge-i{background:#fbe9e7;color:#a53d32}
+        .badge-ii{background:#fff2d8;color:#8b5b00}
+        .badge-iii{background:#eaf3ea;color:#3d7044}
+        .badge-nl{background:#eef0f1;color:#58636a}
+        .empty{padding:30px;text-align:center;color:#75817b}
+        .note{font-size:13px;color:#6c7771;line-height:1.6;margin-top:12px}
+        .count-text{font-size:13px;color:#66736d;margin:4px 0 14px}
+        @media(max-width:1000px){
+            .list-stats{grid-template-columns:repeat(3,1fr)}
+            .list-page{padding-top:20px}
+        }
+        @media(max-width:800px){
+            .list-stats{grid-template-columns:repeat(2,1fr)}
+            .list-page{padding-top:20px}
+        }
+        @media(max-width:520px){
+            .list-stats{grid-template-columns:1fr 1fr}
+            .list-hero{padding:20px}
+        }
+    
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        header .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            min-height: 85px;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none;
+        }
+
+        .site-logo {
+            height: 70px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .logo-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #14573f;
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+        header nav {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-left: auto;
+            width: auto;
+        }
+
+        header nav > a {
+            white-space: nowrap;
+            text-decoration: none;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        header nav > a:hover {
+            color: #14573f;
+        }
+
+        .language-switcher {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .language-switcher button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 7px 8px;
+            border-radius: 7px;
+            color: #555555;
+            transition: 0.2s;
+        }
+
+        .language-switcher button:hover {
+            background: #eef4f1;
+            color: #14573f;
+        }
+
+        .language-switcher button.active {
+            background: #14573f;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .footer-container {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 22px;
+        }
+
+        .footer-logo img {
+            width: 95px;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 1100px) {
+            header .header-content {
+                flex-wrap: wrap;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            header nav {
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            .language-switcher {
+                margin-left: 0;
+            }
+
+            .site-logo {
+                height: 60px;
+            }
+
+            .logo-name {
+                font-size: 21px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container header-content">
+        <div class="logo">
+            <a href="index.html">
+                <img src="logo.png" alt="LaoBirds Logo" class="site-logo">
+                <span class="logo-name">LaoBirds</span>
+            </a>
+        </div>
+
+        <nav>
+            <a href="index.html" data-en="Home" data-lo="ໜ້າຫຼັກ">Home</a>
+            <a href="birds.html" data-en="Birds" data-lo="ນົກ">Birds</a>
+            <a href="map.html" data-en="Map" data-lo="ແຜນທີ່">Map</a>
+            <a href="hotspots.html" data-en="Hotspots" data-lo="ຈຸດຊົມນົກ">Hotspots</a>
+            <a href="observations.html" data-en="Observations" data-lo="ການບັນທຶກ">Observations</a>
+            <a href="iucn.html" data-en="IUCN List" data-lo="ບັນຊີ IUCN">IUCN List</a>
+            <a href="laos-list.html" data-en="Laos List" data-lo="ບັນຊີນົກໃນລາວ">Laos List</a>
+            <div class="language-switcher">
+                <button id="laoButton" type="button">🇱🇦 ລາວ</button>
+                <span>|</span>
+                <button id="englishButton" type="button">🇬🇧 English</button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main class="list-page">
+    <div class="container">
+        <section class="list-hero">
+            <h1 data-en="Laos Wildlife List – Birds" data-lo="ບັນຊີສັດປ່າລາວ – ນົກ">Laos Wildlife List – Birds</h1>
+            <p data-en="Bird entries from the Lao wildlife lists. List I, List II and List III are the official categories; “Not Listed” is used only for birds in the LaoBirds database that are not included in this wildlife list."
+               data-lo="ລາຍການນົກຈາກບັນຊີສັດປ່າຂອງລາວ. ບັນຊີ I, II ແລະ III ແມ່ນໝວດໝູ່ທາງການ; “ບໍ່ຢູ່ໃນບັນຊີ” ໃຊ້ສຳລັບນົກໃນຖານຂໍ້ມູນ LaoBirds ທີ່ບໍ່ພົບໃນບັນຊີສັດປ່ານີ້.">
+                Bird entries from the Lao wildlife lists. List I, List II and List III are the official categories; “Not Listed” is used only for birds in the LaoBirds database that are not included in this wildlife list.
+            </p>
+        </section>
+
+        <section class="list-stats">
+            <div class="stat-card"><strong id="totalCount">0</strong><span data-en="Total entries" data-lo="ລາຍການທັງໝົດ">Total official entries</span></div>
+            <div class="stat-card"><strong id="countI">0</strong><span data-en="List I – Prohibited" data-lo="ບັນຊີ I – ຫ້າມ">List I – Prohibited</span></div>
+            <div class="stat-card"><strong id="countII">0</strong><span data-en="List II – Controlled" data-lo="ບັນຊີ II – ຄວບຄຸມ">List II – Controlled</span></div>
+            <div class="stat-card"><strong id="countIII">0</strong><span data-en="List III – General" data-lo="ບັນຊີ III – ທົ່ວໄປ">List III – General</span></div>
+            <div class="stat-card"><strong id="countNotListed">0</strong><span data-en="Not Listed" data-lo="ບໍ່ຢູ່ໃນບັນຊີ">Not Listed</span></div>
+        </section>
+
+        <section>
+            <div class="tools">
+                <input id="searchInput" class="search-box" type="text"
+                       placeholder="Search Lao name, English name or scientific name..."
+                       data-placeholder-en="Search Lao name, English name or scientific name..."
+                       data-placeholder-lo="ຄົ້ນຫາຊື່ລາວ, ຊື່ອັງກິດ ຫຼື ຊື່ວິທະຍາສາດ...">
+
+                <button class="filter-btn active" data-filter="ALL" data-en="All" data-lo="ທັງໝົດ">All</button>
+                <button class="filter-btn" data-filter="I" data-en="List I" data-lo="ບັນຊີ I">List I</button>
+                <button class="filter-btn" data-filter="II" data-en="List II" data-lo="ບັນຊີ II">List II</button>
+                <button class="filter-btn" data-filter="III" data-en="List III" data-lo="ບັນຊີ III">List III</button>
+                <button class="filter-btn" data-filter="NOT_LISTED" data-en="Not Listed" data-lo="ບໍ່ຢູ່ໃນບັນຊີ">Not Listed</button>
+            </div>
+
+            <div class="count-text" id="resultCount"></div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-en="No." data-lo="ລຳດັບ">No.</th>
+                            <th data-en="Lao Name" data-lo="ຊື່ລາວ">Lao Name</th>
+                            <th data-en="English Name" data-lo="ຊື່ອັງກິດ">English Name</th>
+                            <th data-en="Scientific Name" data-lo="ຊື່ວິທະຍາສາດ">Scientific Name</th>
+                            <th data-en="List" data-lo="ບັນຊີ">List</th>
+                            <th data-en="Category" data-lo="ປະເພດ">Category</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listBody"></tbody>
+                </table>
+                <div id="emptyState" class="empty" style="display:none"
+                     data-en="No matching records."
+                     data-lo="ບໍ່ພົບລາຍການທີ່ກົງກັນ.">
+                    No matching records.
+                </div>
+            </div>
+
+            <p class="note"
+               data-en="List III includes general entries, including bird groups not included in List I and List II; it is therefore not a finite list of individually named species."
+               data-lo="ບັນຊີ III ລວມເຖິງລາຍການທົ່ວໄປ ຮວມທັງນົກທີ່ບໍ່ຢູ່ໃນບັນຊີ I ແລະ II; ດັ່ງນັ້ນ ມັນບໍ່ແມ່ນບັນຊີຊະນິດນົກແບບລະບຸຊື່ທຸກຊະນິດ.">
+                List III includes general entries, including bird groups not included in List I and List II; it is therefore not a finite list of individually named species.
+            </p>
+            <p class="note"
+               data-en="Not Listed is not a legal category. It only means that a bird in the LaoBirds database is not included in the wildlife list used on this page."
+               data-lo="“ບໍ່ຢູ່ໃນບັນຊີ” ບໍ່ແມ່ນໝວດໝູ່ທາງກົດໝາຍ; ໝາຍເຖິງນົກໃນຖານຂໍ້ມູນ LaoBirds ທີ່ບໍ່ຢູ່ໃນບັນຊີສັດປ່າທີ່ໃຊ້ຢູ່ໜ້ານີ້.">
+                Not Listed is not a legal category. It only means that a bird in the LaoBirds database is not included in the wildlife list used on this page.
+            </p>
+        </section>
+    </div>
+</main>
+
+<footer>
+    <div class="container footer-container">
+        <div class="footer-logo">
+            <img src="logo.png" alt="LaoBirds Logo">
+        </div>
+        <div>
+            <h3>LaoBirds</h3>
+            <p data-en="A bird observation and learning platform for Laos."
+               data-lo="ເວັບໄຊສຳລັບຮຽນຮູ້ ແລະ ບັນທຶກການພົບເຫັນນົກໃນປະເທດລາວ.">
+               A bird observation and learning platform for Laos.
+            </p>
+            <p>© LaoBirds</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+const laosList = [
+  {
+    "id": "L001",
+    "lao_name": "ນົກຍູງ",
+    "english_name": "Green Peafowl",
+    "scientific_name": "Pavo muticus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 1
+  },
+  {
+    "id": "L002",
+    "lao_name": "ນົກກົກຄໍຄຳ",
+    "english_name": "Great Hornbill",
+    "scientific_name": "Buceros bicornis",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 2
+  },
+  {
+    "id": "L003",
+    "lao_name": "ນົກກົກຄໍແດງ",
+    "english_name": "Rufous-necked Hornbill",
+    "scientific_name": "Aceros nipalensis",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 3
+  },
+  {
+    "id": "L004",
+    "lao_name": "ນົກກົກຄໍເອີມ",
+    "english_name": "Wreathed Hornbill",
+    "scientific_name": "Rhyticeros undulatus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 4
+  },
+  {
+    "id": "L005",
+    "lao_name": "ນົກແກງ",
+    "english_name": "Oriental Pied Hornbill",
+    "scientific_name": "Anthracoceros albirostris",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 5
+  },
+  {
+    "id": "L006",
+    "lao_name": "ນົກໝານ້ອຍ (ນົກກົງແກງ)",
+    "english_name": "Brown Hornbill",
+    "scientific_name": "Anorrhinus austeni",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 6
+  },
+  {
+    "id": "L007",
+    "lao_name": "ແຮ້ງທຸກຊະນິດ",
+    "english_name": "All species of Vulture",
+    "scientific_name": "Gyps, Aegyplus Sarcogyps sp.",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 7
+  },
+  {
+    "id": "L008",
+    "lao_name": "ນົກວຼ່ວາວ(ນົກຍຸງທອງ)",
+    "english_name": "Crested Argus",
+    "scientific_name": "Rheinardia ocellata",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 8
+  },
+  {
+    "id": "L009",
+    "lao_name": "ນົກເປັດກ່າຫົວຂາວ",
+    "english_name": "White-winged Duck",
+    "scientific_name": "Asarcornis scutulata",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 9
+  },
+  {
+    "id": "L010",
+    "lao_name": "ເປັດກາຫົວຂຽວ",
+    "english_name": "Falcated Duck",
+    "scientific_name": "Mareca falcata",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 10
+  },
+  {
+    "id": "L011",
+    "lao_name": "ເປັດກາຫົວດຳ",
+    "english_name": "Baer's Pochard",
+    "scientific_name": "Aythya baeri",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 11
+  },
+  {
+    "id": "L012",
+    "lao_name": "ນົກເປັດໜ້າດຳ",
+    "english_name": "Masked Finfoot",
+    "scientific_name": "Ephippiorhychus aisticus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 12
+  },
+  {
+    "id": "L013",
+    "lao_name": "ນົກເປັດປ່ອງ",
+    "english_name": "Cotton pygmy-Goose",
+    "scientific_name": "Nettapus coromandelianus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 13
+  },
+  {
+    "id": "L014",
+    "lao_name": "ນົກເປັດລາຍ",
+    "english_name": "Garganey",
+    "scientific_name": "Anas querquedula",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 14
+  },
+  {
+    "id": "L015",
+    "lao_name": "ນົກຂຽນ",
+    "english_name": "Sarus Crane",
+    "scientific_name": "Grus Antigone",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 15
+  },
+  {
+    "id": "L016",
+    "lao_name": "ນົກກາບບົວ",
+    "english_name": "Painted Stork",
+    "scientific_name": "Mycteria leucocephala",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 16
+  },
+  {
+    "id": "L017",
+    "lao_name": "ນົກອຸ້ມລົວ",
+    "english_name": "Giant Ibis",
+    "scientific_name": "Thaumatibis gigantea",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 17
+  },
+  {
+    "id": "L018",
+    "lao_name": "ໄກ່ຂວ່າຫຼວງ(ໄກ່ຂວ່າຫຼັງຂາວ)",
+    "english_name": "Silver Pheasant",
+    "scientific_name": "Lophura nycthemera",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 18
+  },
+  {
+    "id": "L019",
+    "lao_name": "ໄກ່ຂວ່ານິນ",
+    "english_name": "Siamese Fireback",
+    "scientific_name": "Lophura diardi",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 19
+  },
+  {
+    "id": "L020",
+    "lao_name": "ນົກກາງກອດ",
+    "english_name": "Grey Peacock-Pheasant",
+    "scientific_name": "Polyplectron bicalcaratum",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 20
+  },
+  {
+    "id": "L021",
+    "lao_name": "ນົກຄໍກ່ານ",
+    "english_name": "Wooly-necked Stork",
+    "scientific_name": "Ciconia episcopus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 21
+  },
+  {
+    "id": "L022",
+    "lao_name": "ນົກກະຊຸມ (ທຸກຊະນິດ)",
+    "english_name": "All Adjutants Lesser Ajutants Great Adjudat",
+    "scientific_name": "Leptoptilos sp.",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 22
+  },
+  {
+    "id": "L023",
+    "lao_name": "ນົກສ້ອນຫອຍ ຫົວດຳ",
+    "english_name": "Black headed ibis",
+    "scientific_name": "Theskiornis melanocephalus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 23
+  },
+  {
+    "id": "L024",
+    "lao_name": "ນົກສ້ອນຫອຍ ຫງ່ອນຂາວ",
+    "english_name": "White shouldered ibis",
+    "scientific_name": "Pseudibis davisoni",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 24
+  },
+  {
+    "id": "L025",
+    "lao_name": "ນົກເຫບ",
+    "english_name": "Purple Swamphen",
+    "scientific_name": "Porphyrio porphyrio",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 25
+  },
+  {
+    "id": "L026",
+    "lao_name": "ນົກສີດຳທຸກຊະນິດ",
+    "english_name": "All Terns",
+    "scientific_name": "Sterna sp.",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 26
+  },
+  {
+    "id": "L027",
+    "lao_name": "ນົກກະສາຄໍດຳ",
+    "english_name": "Black-necked Stork",
+    "scientific_name": "Ephippiorhychus aisticus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 27
+  },
+  {
+    "id": "L028",
+    "lao_name": "ນົກກະແຕ້",
+    "english_name": "Great Thick-knee",
+    "scientific_name": "Heliopais personatus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 28
+  },
+  {
+    "id": "L029",
+    "lao_name": "ແຫຼວອິນຊີ ປ່ຫົວໝົ່ນນ້ອຍ",
+    "english_name": "Lesser Fish Eagle",
+    "scientific_name": "Ichthyophaga humilis",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 29
+  },
+  {
+    "id": "L030",
+    "lao_name": "ແຫຼວອິນຊີ ປ່ຫົວໝົ່ນໃຫ່ຍ",
+    "english_name": "Grey-headed Fish Eagle",
+    "scientific_name": "Ichthyophaga ichthyaetus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 30
+  },
+  {
+    "id": "L031",
+    "lao_name": "ແຫຼວມຸມ",
+    "english_name": "All hawk species",
+    "scientific_name": "Accipirdae",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 31
+  },
+  {
+    "id": "L032",
+    "lao_name": "ແຫຼວອິນຊີປານ້ອຍ",
+    "english_name": "Imperial Eagle",
+    "scientific_name": "Aquila heliacal",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 32
+  },
+  {
+    "id": "L033",
+    "lao_name": "ນົກກະຈອກຟ້າ ເອີກເຫຼືອງ",
+    "english_name": "Baya Weaver",
+    "scientific_name": "Ploceus philippinus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 33
+  },
+  {
+    "id": "L034",
+    "lao_name": "ນົກກະຈາບຄຳ",
+    "english_name": "Asian Golden Weaver",
+    "scientific_name": "Ploceus Hypoxantthus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 34
+  },
+  {
+    "id": "L035",
+    "lao_name": "ນົກກະຈອກຟ້າ ຫົວເຫຼືອງ",
+    "english_name": "Streaked Weaver",
+    "scientific_name": "Ploceus manyar",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 35
+  },
+  {
+    "id": "L036",
+    "lao_name": "ນົກຈຸກສາຍພູຫຼວງ",
+    "english_name": "Black-chinned yuhina",
+    "scientific_name": "Yuhina nigrimenta",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 36
+  },
+  {
+    "id": "L037",
+    "lao_name": "ນົກເຕືອນໄພ ຫາງສັ້ນ",
+    "english_name": "Short-tailed Scimitar-babbler",
+    "scientific_name": "Jabouilleia danjoui",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 37
+  },
+  {
+    "id": "L038",
+    "lao_name": "ນົກກະຮອກປີກດ່າງ",
+    "english_name": "White-winged Magpie",
+    "scientific_name": "Urocissa xanthomelana",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 38
+  },
+  {
+    "id": "L039",
+    "lao_name": "ນົກຄໍງູ",
+    "english_name": "Oriental Darter",
+    "scientific_name": "Anhinga melanogaster",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 39
+  },
+  {
+    "id": "L040",
+    "lao_name": "ນົກແຂກ ຫຼື ນົກແກ້ວ ທຸກຊະນິດ",
+    "english_name": "All Parakeet species",
+    "scientific_name": "4 sp",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 40
+  },
+  {
+    "id": "L041",
+    "lao_name": "ນົກກົດປຶດ",
+    "english_name": "Greater Coucal",
+    "scientific_name": "Centropus sinensis",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 41
+  },
+  {
+    "id": "L042",
+    "lao_name": "ນົກກົດຕອງ",
+    "english_name": "Lesser Coucal",
+    "scientific_name": "Centropus bengalensis",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 42
+  },
+  {
+    "id": "L043",
+    "lao_name": "ນົກກົດດົງ",
+    "english_name": "Coral billed ground cuckoo",
+    "scientific_name": "Carpococcyx renauldi",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 43
+  },
+  {
+    "id": "L044",
+    "lao_name": "ນົກຫອນຂາວ (ນົກຫົວຂວານ)",
+    "english_name": "Eurasian Hoopoe",
+    "scientific_name": "Upupa epops",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 44
+  },
+  {
+    "id": "L045",
+    "lao_name": "ນົກໄຊ່ຊ້າງ",
+    "english_name": "Great slaty woodpecker",
+    "scientific_name": "Mulleripicus pulverulentus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 45
+  },
+  {
+    "id": "L046",
+    "lao_name": "ນົກໄຊ່ຄໍແດງ",
+    "english_name": "Red-collared Woodpecker",
+    "scientific_name": "Picus rabieri",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 46
+  },
+  {
+    "id": "L047",
+    "lao_name": "ນົກສາລິກາ",
+    "english_name": "Hill Myna",
+    "scientific_name": "Gracula religiosa",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 47
+  },
+  {
+    "id": "L048",
+    "lao_name": "ນົກກະສາແດງ",
+    "english_name": "Purple Heron",
+    "scientific_name": "Ardea purpurea",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 48
+  },
+  {
+    "id": "L049",
+    "lao_name": "ນົກເຄົ້າທຸກຊະນິດ",
+    "english_name": "All Owls",
+    "scientific_name": "Asio, Otus, Glaucidium, Athene, Ninox, Ketupa, Strix sp.",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 49
+  },
+  {
+    "id": "L050",
+    "lao_name": "ນົກກະເຫວົ່າ",
+    "english_name": "Asian Koel",
+    "scientific_name": "Eudynamys scolopacea",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 50
+  },
+  {
+    "id": "L051",
+    "lao_name": "ນົກກະເຕັນຊີວໃຫ່ຍ",
+    "english_name": "Blyth's Kingfisher",
+    "scientific_name": "Alecdo Hercules",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 51
+  },
+  {
+    "id": "L052",
+    "lao_name": "ນົກເປົ້າແດງ",
+    "english_name": "Pale-capped Pigeon",
+    "scientific_name": "Columba punicea",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 52
+  },
+  {
+    "id": "L053",
+    "lao_name": "ເຫຼົ້າຫົວຂາວເຕັກ",
+    "english_name": "Brahminy Kite",
+    "scientific_name": "Haliastur indus",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 53
+  },
+  {
+    "id": "L054",
+    "lao_name": "ນົກການ້ຳ",
+    "english_name": "Little- / Indian Cormorant",
+    "scientific_name": "Microcarbo niger / Phalacrocorax niger",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 54
+  },
+  {
+    "id": "L055",
+    "lao_name": "ນົກກະແຕວນ້ຳ",
+    "english_name": "River Lapwing",
+    "scientific_name": "Vanellus duvaucelii",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 55
+  },
+  {
+    "id": "L056",
+    "lao_name": "ກາ",
+    "english_name": "Large-billed Crow",
+    "scientific_name": "Corvus macrorhynchos",
+    "laos_list": "I",
+    "category": "Prohibited",
+    "official_list_no": 56
+  },
+  {
+    "id": "L057",
+    "lao_name": "ນົກໂຫຼ",
+    "english_name": "Wood-pecker",
+    "scientific_name": "Picus spp.",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 1
+  },
+  {
+    "id": "L058",
+    "lao_name": "ນົກເຂົາ ທຸກຊະນິດ",
+    "english_name": "All Dove species",
+    "scientific_name": null,
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 2
+  },
+  {
+    "id": "L059",
+    "lao_name": "ນົກກະແຕຫນ້າແດງ",
+    "english_name": "Red-wattled Lapwing",
+    "scientific_name": "Vanellus indicus",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 3
+  },
+  {
+    "id": "L060",
+    "lao_name": "ນົກກະຈອກມ່ວນ",
+    "english_name": "Common Myna",
+    "scientific_name": "Acridotheres tristis",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 4
+  },
+  {
+    "id": "L061",
+    "lao_name": "ນົກກະເຕັນ ທຸກຊະນິດ",
+    "english_name": "All King fisher species",
+    "scientific_name": null,
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 5
+  },
+  {
+    "id": "L062",
+    "lao_name": "ນົກຕູ້ວວັງ",
+    "english_name": "Great Barbet",
+    "scientific_name": "Psilopogon virens",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 6
+  },
+  {
+    "id": "L063",
+    "lao_name": "ນົກກະທາງ ທຸກຊະນິດ (ບົວໄມ້)",
+    "english_name": "All Crakes, Rails and coots species",
+    "scientific_name": null,
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 7
+  },
+  {
+    "id": "L064",
+    "lao_name": "ນົກເຂົາເຂຽວ ທຸກຊະນິດ",
+    "english_name": "All Green Pigeons species",
+    "scientific_name": null,
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 8
+  },
+  {
+    "id": "L065",
+    "lao_name": "ນົກຍາງ ທຸກຊະນິດ",
+    "english_name": "All Egrets species",
+    "scientific_name": null,
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 9
+  },
+  {
+    "id": "L066",
+    "lao_name": "ນົກກະຫວີດຄື່າ ທຸກຊະນິດ",
+    "english_name": "All Pittas species",
+    "scientific_name": null,
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 10
+  },
+  {
+    "id": "L067",
+    "lao_name": "ນົກພິກຫຼວງ",
+    "english_name": "Green Imperial Pigeon",
+    "scientific_name": "Ducula aenea",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 11
+  },
+  {
+    "id": "L068",
+    "lao_name": "ນົກໄກ່ນາ",
+    "english_name": "White Breasted Waterhen",
+    "scientific_name": "Amaurornis phoenicurus",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 12
+  },
+  {
+    "id": "L069",
+    "lao_name": "ໄກ່ປ່າ",
+    "english_name": "Red Junglefowl",
+    "scientific_name": "Gallus gallus",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 13
+  },
+  {
+    "id": "L070",
+    "lao_name": "ນົກກິດ ທຸກຊະນິດ",
+    "english_name": "All Thrush, Cochoa and Blackbird species",
+    "scientific_name": null,
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 14
+  },
+  {
+    "id": "L071",
+    "lao_name": "ນົກແອ່ນ ແລະ ນົກນາງແອ່ນ ທຸກຊະນິດ",
+    "english_name": "All swiftlet, and swallow species",
+    "scientific_name": "Artamidae",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 15
+  },
+  {
+    "id": "L072",
+    "lao_name": "ນົກແຕ້ມປູກ Copsychus ທຸກຊະນິດ",
+    "english_name": "All Genuy. Copsychus",
+    "scientific_name": null,
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 16
+  },
+  {
+    "id": "L073",
+    "lao_name": "ນົກຂຽວ ທຸກຊະນິດ",
+    "english_name": "All Oriole species",
+    "scientific_name": null,
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 17
+  },
+  {
+    "id": "L074",
+    "lao_name": "ນົກກະແຈ ຄືນເຕັກ ທຸກຊະນິດ",
+    "english_name": "All in family Motacillidae",
+    "scientific_name": "Motacilla spp.; Anthus spp.; Dendronanthus spp.",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 18
+  },
+  {
+    "id": "L075",
+    "lao_name": "ນົກອິກແກດ ທຸກຊະນິດ",
+    "english_name": "All Scolopacidae and Rostratulidae species",
+    "scientific_name": "Gallinago stenura spp.; Gallinago nemoricola ssp; Gallinago gallinago ssp; Rostratula spp; ssp benghalensis ssp",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 19
+  },
+  {
+    "id": "L076",
+    "lao_name": "ນົກກະຫາ ທຸກຊະນິດ",
+    "english_name": "All Podargidae and Caprimulgidae species",
+    "scientific_name": "Batrachostomus spp.; Lycornis sp.; Caprimulgus spp.",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 20
+  },
+  {
+    "id": "L077",
+    "lao_name": "ນົກກື່ອ ທຸກຊະນິດ",
+    "english_name": "All Laughingthrush species",
+    "scientific_name": "Garrulax spp.",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 21
+  },
+  {
+    "id": "L078",
+    "lao_name": "ນົກກາງຂາກອດ ທຸກຊະນິດ",
+    "english_name": "All Corvidae species",
+    "scientific_name": "Urocissa spp; erythrorhyncha ssp; Cissa hypoleuca spp",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 22
+  },
+  {
+    "id": "L079",
+    "lao_name": "ນົກອະແກ ທຸກຊະນິດ",
+    "english_name": "All Pycnonotidae",
+    "scientific_name": "Spizixos canifrons spp; Pycnonotus jocosus spp",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 23
+  },
+  {
+    "id": "L080",
+    "lao_name": "ນົກເຂົາ ທຸກຊະນິດ",
+    "english_name": "All Drongo Species",
+    "scientific_name": "Dicrurus spp.",
+    "laos_list": "II",
+    "category": "Controlled",
+    "official_list_no": 24
+  },
+  {
+    "id": "L081",
+    "lao_name": "ນົກກະທາປ່າ ທຸກຊະນິດ",
+    "english_name": "All Arborophila species",
+    "scientific_name": null,
+    "laos_list": "III",
+    "category": "General",
+    "official_list_no": 1
+  },
+  {
+    "id": "L082",
+    "lao_name": "ນົກກະລວາດ ທຸກຊະນິດ",
+    "english_name": "All Buttonquails species",
+    "scientific_name": null,
+    "laos_list": "III",
+    "category": "General",
+    "official_list_no": 2
+  },
+  {
+    "id": "L083",
+    "lao_name": "ນົກທຸກຊະນິດ ທີ່ບໍ່ຢູ່ໃນບັນຊີ I ແລະ II",
+    "english_name": "All Bird species out of the list I and II",
+    "scientific_name": null,
+    "laos_list": "III",
+    "category": "General",
+    "official_list_no": 3
+  }
+];
+
+</script>
+<script>
+let currentLanguage = localStorage.getItem("laobirds-language") || "en";
+let currentFilter = "ALL";
+
+const listBody = document.getElementById("listBody");
+const emptyState = document.getElementById("emptyState");
+const searchInput = document.getElementById("searchInput");
+
+const categoryText = {
+    en: { I: "Prohibited", II: "Controlled", III: "General", NOT_LISTED: "Not Listed" },
+    lo: { I: "ຫ້າມ", II: "ຄວບຄຸມ", III: "ທົ່ວໄປ", NOT_LISTED: "ບໍ່ຢູ່ໃນບັນຊີ" }
+};
+
+function applyLanguage() {
+    document.documentElement.lang = currentLanguage === "lo" ? "lo" : "en";
+
+    document.querySelectorAll("[data-en][data-lo]").forEach(el => {
+        el.textContent = currentLanguage === "lo" ? el.dataset.lo : el.dataset.en;
+    });
+
+    document.querySelectorAll("[data-placeholder-en][data-placeholder-lo]").forEach(el => {
+        el.placeholder = currentLanguage === "lo"
+            ? el.dataset.placeholderLo
+            : el.dataset.placeholderEn;
+    });
+
+    document.getElementById("laoButton").classList.toggle("active", currentLanguage === "lo");
+    document.getElementById("englishButton").classList.toggle("active", currentLanguage === "en");
+
+    renderList();
+}
+
+function renderList() {
+    const term = searchInput.value.trim().toLowerCase();
+
+    const filtered = laosList.filter(item => {
+        const itemStatus = item.laos_list || "NOT_LISTED";
+        const matchesFilter = currentFilter === "ALL" || itemStatus === currentFilter;
+        const haystack = [
+            item.lao_name || "",
+            item.english_name || "",
+            item.scientific_name || ""
+        ].join(" ").toLowerCase();
+
+        return matchesFilter && haystack.includes(term);
+    });
+
+    listBody.innerHTML = "";
+
+    filtered.forEach((item, index) => {
+        const tr = document.createElement("tr");
+
+        const itemStatus = item.laos_list || "NOT_LISTED";
+        const badgeClass =
+            itemStatus === "I" ? "badge-i" :
+            itemStatus === "II" ? "badge-ii" :
+            itemStatus === "III" ? "badge-iii" : "badge-nl";
+        tr.innerHTML = `
+            <td>${item.official_list_no ?? index + 1}</td>
+            <td>${escapeHtml(item.lao_name || "")}</td>
+            <td>${escapeHtml(item.english_name || "")}</td>
+            <td class="scientific">${escapeHtml(item.scientific_name || "—")}</td>
+            <td><span class="badge ${badgeClass}">${escapeHtml(itemStatus)}</span></td>
+            <td>${escapeHtml(categoryText[currentLanguage][itemStatus] || item.category || "")}</td>
+        `;
+
+        listBody.appendChild(tr);
+    });
+
+    emptyState.style.display = filtered.length ? "none" : "block";
+
+    const resultText = currentLanguage === "lo"
+        ? `ສະແດງ ${filtered.length} ຈາກ ${laosList.length} ລາຍການ`
+        : `Showing ${filtered.length} of ${laosList.length} entries`;
+
+    document.getElementById("resultCount").textContent = resultText;
+}
+
+function updateStats() {
+    document.getElementById("totalCount").textContent = laosList.length;
+    document.getElementById("countI").textContent = laosList.filter(x => x.laos_list === "I").length;
+    document.getElementById("countII").textContent = laosList.filter(x => x.laos_list === "II").length;
+    document.getElementById("countIII").textContent = laosList.filter(x => x.laos_list === "III").length;
+    document.getElementById("countNotListed").textContent = laosList.filter(x => !["I", "II", "III"].includes(x.laos_list)).length;
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+document.querySelectorAll(".filter-btn").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        currentFilter = button.dataset.filter;
+        renderList();
+    });
+});
+
+searchInput.addEventListener("input", renderList);
+
+document.getElementById("laoButton").addEventListener("click", () => {
+    currentLanguage = "lo";
+    localStorage.setItem("laobirds-language", "lo");
+    applyLanguage();
+});
+
+document.getElementById("englishButton").addEventListener("click", () => {
+    currentLanguage = "en";
+    localStorage.setItem("laobirds-language", "en");
+    applyLanguage();
+});
+
+updateStats();
+applyLanguage();
+</script>
+</body>
+</html>
